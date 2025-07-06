@@ -1,10 +1,23 @@
-# Ignore everything
-*
+# Ignore OS and editor junk everywhere
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.tmp
+*~
+.nfs*
 
-# Track only these
+# Ignore everything else by default
+*
 !.gitignore
 !.gitinclude
+!README.md
 !setup.sh
-!linux/**
+
+# Unignore these folders and everything in them
+!macos/
 !macos/**
+!linux/
+!linux/**
+!common/
 !common/**
