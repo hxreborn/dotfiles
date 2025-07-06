@@ -1,0 +1,10 @@
+# Ignore everything
+*
+
+# Track only these
+!.gitignore
+!.gitinclude
+!setup.sh
+!linux/**
+!macos/**
+!common/**
