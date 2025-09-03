@@ -25,6 +25,19 @@ dotfiles/
 ./scripts/setup.sh
 ```
 
+### Quick Install - zsh Keybinds Only
+
+Install just the Emacs-style terminal keybindings without the full dotfiles setup:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/rafareborn/dotfiles/master/scripts/install-zsh-keybinds.sh | sh
+```
+
+This will:
+- Download `zsh-emacs-keybinds.zsh` to `~/.config/zsh/`
+- Add source line to `~/.zshrc` (if found and not already present)
+- Provide manual setup instructions if needed
+
 ---
 
 ## Platform-Specific Configs
