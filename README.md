@@ -55,7 +55,8 @@ This will:
 ### Window Manager Setups
 
 * **Amethyst** — integrates with native macOS Spaces for a smoother trackpad-driven experience ([GitHub](https://github.com/ianyh/Amethyst))
-* **AeroSpace** — full tiling model inspired by i3. Currently in beta (v0.18.5); more configurable but may feel clunky for some. ([GitHub](https://github.com/nikitabobko/AeroSpace)).
+* **AeroSpace** — full tiling model inspired by i3. Currently in beta (v0.18.5); more configurable but may feel clunky for some. ([GitHub](https://github.com/nikitabobko/AeroSpace))
+* **Yabai + skhd** — advanced tiling window manager with scriptable configuration and hotkey daemon ([GitHub](https://github.com/koekeishiya/yabai))
 
 ---
 
@@ -144,6 +145,39 @@ Then:
 * Grant access under: System Settings → Privacy & Security → Accessibility
 * Add to login items
 
+---
+
+### Yabai + skhd (Advanced Tiling)
+
+#### Summary
+
+Scriptable tiling window manager with powerful customization and hotkey daemon for advanced users.
+
+#### Keybindings
+
+*Note: Keybindings are defined in `.config/skhd/skhdrc` and can be fully customized*
+
+#### Setup
+
+```sh
+# Install yabai and skhd
+brew install koekeishiya/formulae/yabai
+brew install koekeishiya/formulae/skhd
+
+# Copy configurations
+cp .config/yabai/yabairc ~/.config/yabai/yabairc
+cp .config/skhd/skhdrc ~/.config/skhd/skhdrc
+
+# Start services
+yabai --start-service
+skhd --start-service
+```
+
+Then:
+
+* Grant access under: System Settings → Privacy & Security → Accessibility
+* Disable System Integrity Protection (SIP) for advanced features
+* Configure scripting additions if needed
 
 </details>
 
