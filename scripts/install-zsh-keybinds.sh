@@ -1,22 +1,59 @@
-#!/bin/sh
-set -e
+#!/usr/bin/env bash
+# shellcheck disable=SC2155
 
-# Auto-detect repo URL from script location
-SCRIPT_URL=$(ps -o args= $$ | grep -o 'https://[^|]*install-zsh-keybinds.sh' || echo "")
-if [ -n "$SCRIPT_URL" ]; then
-    BASE_URL=${SCRIPT_URL%/scripts/install-zsh-keybinds.sh}
-    KEYBINDS_URL="$BASE_URL/.config/zsh/zsh-emacs-keybinds.zsh"
-else
-    echo "Could not detect repo URL. Set KEYBINDS_URL manually."
-    exit 1
-fi
+set -euo pipefail
+IFS=$'\n\t'
 
-mkdir -p "$HOME/.config/zsh"
-curl -fsSL "$KEYBINDS_URL" -o "$HOME/.config/zsh/zsh-emacs-keybinds.zsh"
+#--------------------- Globals ----------------------#
+ZSH_CONF_DIR="${HOME}/.config/zsh"
+KEYBINDS_FILE="zsh-emacs-keybinds.zsh"
+KEYBINDS_LOCAL_PATH="${ZSH_CONF_DIR}/${KEYBINDS_FILE}"
+ZSHRC="${HOME}/.zshrc"
+KEYBINDS_URL=""
 
-if [ -f "$HOME/.zshrc" ] && ! grep -q "zsh-emacs-keybinds.zsh" "$HOME/.zshrc"; then
-    echo "[ -f ~/.config/zsh/zsh-emacs-keybinds.zsh ] && source ~/.config/zsh/zsh-emacs-keybinds.zsh" >> "$HOME/.zshrc"
-    echo "Added to .zshrc - reload shell"
-elif [ ! -f "$HOME/.zshrc" ]; then
-    echo "Add to your .zshrc: [ -f ~/.config/zsh/zsh-emacs-keybinds.zsh ] && source ~/.config/zsh/zsh-emacs-keybinds.zsh"
-fi
+#-------------------- Functions ---------------------#
+detect_repo_url() {
+    local args url
+    args=$(ps -o args= $$) || {
+        printf 'Unable to inspect process arguments\n' >&2
+        return 1
+    }
+
+    url=$(grep -oE 'https://[^ ]*install-zsh-keybinds\.sh' <<<"$args" || true)
+    [[ -z $url ]] && return 1
+
+    KEYBINDS_URL="${url%/scripts/install-zsh-keybinds.sh}/.config/zsh/${KEYBINDS_FILE}"
+}
+
+download_keybinds() {
+    mkdir -p "$ZSH_CONF_DIR"
+    if ! curl -fsSL "$KEYBINDS_URL" -o "$KEYBINDS_LOCAL_PATH"; then
+        printf 'Failed to download %s\n' "$KEYBINDS_URL" >&2
+        return 1
+    fi
+    printf 'Keybinds saved to %s\n' "$KEYBINDS_LOCAL_PATH"
+}
+
+update_zshrc() {
+    local entry="[ -f ~/.config/zsh/${KEYBINDS_FILE} ] && source ~/.config/zsh/${KEYBINDS_FILE}"
+    if [[ -f $ZSHRC ]]; then
+        grep -qF "$KEYBINDS_FILE" "$ZSHRC" || printf '%s\n' "$entry" >>"$ZSHRC"
+    else
+        printf '%s\n' "$entry" >"$ZSHRC"
+    fi
+    printf 'Updated %s\n' "$ZSHRC"
+}
+
+main() {
+    KEYBINDS_URL=${1:-}
+    [[ -z $KEYBINDS_URL ]] && detect_repo_url || true
+    [[ -z $KEYBINDS_URL ]] && {
+        printf 'Usage: %s <KEYBINDS_URL>\n' "${0##*/}" >&2
+        exit 1
+    }
+
+    download_keybinds
+    update_zshrc
+}
+
+main "$@"
