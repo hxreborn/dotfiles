@@ -1,26 +1,28 @@
 # dotfiles
 
-Cross-platform dotfiles for macOS and Linux.
+Cross-platform dotfiles following XDG Base Directory specification.
 
 ```
 dotfiles/
-├── macos/
-│   ├── aerospace/        # AeroSpace WM config (i3-like, powerful — currently in beta, may feel clunky)
+├── .config/              # XDG_CONFIG_HOME (~/.config)
+│   ├── aerospace/        # AeroSpace WM config (i3-like tiling)
 │   │   └── aerospace.toml
-│   ├── amethyst/         # Amethyst config (macOS-native, simpler feel)
-│   │   └── .amethyst.yml
-│   ├── zsh/              # macOS shell setup
-│   │   └── .zshrc
-│   └── setup.sh          # macOS installer script
-├── linux/
-│   └── setup.sh          # Placeholder for Linux (e.g. Hyprland)
-├── setup.sh              # Cross-platform bootstrap
+│   └── amethyst/         # Amethyst config (macOS-native tiling)
+│       └── amethyst.yml
+├── .local/
+│   └── share/            # XDG_DATA_HOME (~/.local/share)
+│       └── (wallpapers, themes, icons, templates)
+├── scripts/              # Installation and setup scripts
+│   ├── setup.sh          # Cross-platform bootstrap
+│   ├── macos-setup.sh    # macOS installer
+│   └── linux-setup.sh   # Linux installer (placeholder)
+└── README.md
 ```
 
 ## Usage
 
 ```sh
-./setup.sh
+./scripts/setup.sh
 ```
 
 ---
@@ -60,7 +62,7 @@ Minimal configuration for users who prefer macOS Spaces and want light tiling su
 
 ```sh
 brew install --cask amethyst
-cp macos/amethyst/.amethyst.yml ~/.amethyst.yml
+cp .config/amethyst/amethyst.yml ~/.amethyst.yml
 open -a Amethyst
 ```
 
@@ -113,7 +115,7 @@ Powerful window manager designed for full tiling workflows. Feels more like Linu
 #### Setup
 
 ```sh
-cp macos/aerospace/aerospace.toml ~/.aerospace.toml
+cp .config/aerospace/aerospace.toml ~/.aerospace.toml
 open -a AeroSpace
 ```
 
