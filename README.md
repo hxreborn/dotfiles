@@ -7,15 +7,18 @@ dotfiles/
 ├── .config/              # XDG_CONFIG_HOME (~/.config)
 │   ├── aerospace/        # AeroSpace WM config (i3-like tiling)
 │   │   └── aerospace.toml
-│   └── amethyst/         # Amethyst config (macOS-native tiling)
-│       └── amethyst.yml
+│   ├── amethyst/         # Amethyst config (macOS-native tiling)
+│   │   └── amethyst.yml
+│   └── zsh/              # zsh shell configuration
+│       └── zsh-emacs-keybinds.zsh
 ├── .local/
 │   └── share/            # XDG_DATA_HOME (~/.local/share)
 │       └── (wallpapers, themes, icons, templates)
 ├── scripts/              # Installation and setup scripts
 │   ├── setup.sh          # Cross-platform bootstrap
 │   ├── macos-setup.sh    # macOS installer
-│   └── linux-setup.sh   # Linux installer (placeholder)
+│   ├── linux-setup.sh   # Linux installer (placeholder)
+│   └── install-zsh-keybinds.sh  # Standalone zsh keybinds installer
 └── README.md
 ```
 
