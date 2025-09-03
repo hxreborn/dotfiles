@@ -14,10 +14,10 @@ Thumbs.db
 !README.md
 !setup.sh
 
-# Unignore these folders and everything in them
-!macos/
-!macos/**
-!linux/
-!linux/**
-!common/
-!common/**
+# Unignore XDG directories and everything in them
+!.config/
+!.config/**
+!.local/
+!.local/**
+!scripts/
+!scripts/**
