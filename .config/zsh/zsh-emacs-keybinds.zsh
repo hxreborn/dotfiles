@@ -57,13 +57,6 @@ bind_emacs '^[[1;5B' down-line-or-history # Ctrl+Down
 # bind_emacs '^[[3;5~' kill-word          # Ctrl+Delete (CSI 3;5~)
 # bind_emacs '^[[3;3~' backward-kill-word # Alt+Delete  (CSI 3;3~)
 
-# ── completion menu (menuselect) ─────────────────────────────────────────────
-bindkey -M menuselect '^[[Z' reverse-menu-complete # Shift+Tab: cycle backward
-bindkey -M menuselect '^[[A' up-line-or-history    # Up: move selection up
-bindkey -M menuselect '^[[B' down-line-or-history  # Down: move selection down
-bindkey -M menuselect '^[[C' forward-char          # Right: move selection right
-bindkey -M menuselect '^[[D' backward-char         # Left: move selection left
-
 # ── history search ───────────────────────────────────────────────────────────
 bindkey '^R' history-incremental-search-backward # Ctrl+R
 bindkey '^P' up-line-or-history                  # Ctrl+P
