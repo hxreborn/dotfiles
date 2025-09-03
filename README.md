@@ -9,6 +9,10 @@ dotfiles/
 │   │   └── aerospace.toml
 │   ├── amethyst/         # Amethyst config (macOS-native tiling)
 │   │   └── amethyst.yml
+│   ├── skhd/             # Simple hotkey daemon (keybinds for yabai)
+│   │   └── skhdrc
+│   ├── yabai/            # Yabai tiling window manager
+│   │   └── yabairc
 │   └── zsh/              # zsh shell configuration
 │       └── zsh-emacs-keybinds.zsh
 ├── .local/
