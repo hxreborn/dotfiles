@@ -37,7 +37,7 @@ dotfiles/
 Install just the Emacs-style terminal keybindings without the full dotfiles setup:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/hexpreso/dotfiles/master/scripts/install-zsh-keybinds.sh | sh
+curl -fsSL https://raw.githubusercontent.com/rxreborn/dotfiles/master/scripts/install-zsh-keybinds.sh | sh
 ```
 
 This will:
