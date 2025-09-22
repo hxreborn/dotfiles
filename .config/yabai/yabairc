@@ -19,7 +19,7 @@ yabai -m config auto_balance off
 
 yabai -m config window_animation_duration 0.12
 yabai -m config window_animation_easing ease_in_out_cubic
-borders style=round width=6.0 active_color=0xffe1e3e4 inactive_color=0xff494d64 &
+borders style=round width=5.0 active_color=0xffe1e3e4 inactive_color=0xff494d64 &
 
 # opacity + animations
 yabai -m config window_opacity on
@@ -45,7 +45,7 @@ yabai -m config mouse_drop_action swap
 # === space defaults ===
 # --- Layout & spacing ---
 yabai -m config layout bsp
-yabai -m config window_gap 12
+yabai -m config window_gap 10
 yabai -m config top_padding 8
 yabai -m config bottom_padding 8
 yabai -m config left_padding 8
@@ -75,5 +75,5 @@ yabai -m signal --add event=display_changed action="sketchybar --trigger display
 yabai -m signal --add event=window_moved action="yabai -m space --balance"
 yabai -m signal --add event=window_created action="yabai -m space --balance"
 yabai -m signal --add event=window_destroyed action="yabai -m space --balance"
-yabai -m config external_bar all:$(($(sketchybar --query bar | jq -r .height) + 2)):0
+yabai -m config external_bar all:$(($(sketchybar --query bar | jq -r .height) + 1)):0
 echo "yabai configuration loaded.."
