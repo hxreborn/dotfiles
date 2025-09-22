@@ -44,26 +44,34 @@ lalt + shift - n: bash -lc 'yabai -m space --create && idx="$(yabai -m query --s
 
 # --- Workspaces (Spaces) ---
 # Navigate: SUPER+1..0
-lalt - 1: yabai -m space --focus 1
-lalt - 2: yabai -m space --focus 2
-lalt - 3: yabai -m space --focus 3
-lalt - 4: yabai -m space --focus 4
+lalt - 1: ~/yabai-tahoe -m space --focus 1
+lalt - 2: ~/yabai-tahoe -m space --focus 2
+lalt - 3: ~/yabai-tahoe -m space --focus 3
+lalt - 4: ~/yabai-tahoe -m space --focus 4
 lalt - 5: yabai -m space --focus 5
 lalt - 6: yabai -m space --focus 6
 lalt - 7: yabai -m space --focus 7
 lalt - 8: yabai -m space --focus 8
 lalt - 9: yabai -m space --focus 9
+# #### TAHOE WORKAROUND NO SA-YABAI - DISABLED, USING YABAI-TAHOE NOW
+# # ctrl-1..4 to focus spaces 1..4 (triggered by Left Alt)
+# lalt - 1 : osascript -e 'tell application "System Events" to keystroke "1" using control down'
+# lalt - 2 : osascript -e 'tell application "System Events" to keystroke "2" using control down'
+# lalt - 3 : osascript -e 'tell application "System Events" to keystroke "3" using control down'
+# lalt - 4 : osascript -e 'tell application "System Events" to keystroke "4" using control down'
+# ####
+
 
 # Move (silent): SUPER+ALT+1..9  → use lalt+ctrl here
-lalt + ctrl - 1: yabai -m window --space 1
-lalt + ctrl - 2: yabai -m window --space 2
-lalt + ctrl - 3: yabai -m window --space 3
-lalt + ctrl - 4: yabai -m window --space 4
-lalt + ctrl - 5: yabai -m window --space 5
-lalt + ctrl - 6: yabai -m window --space 6
-lalt + ctrl - 7: yabai -m window --space 7
-lalt + ctrl - 8: yabai -m window --space 8
-lalt + ctrl - 9: yabai -m window --space 9
+lalt + ctrl - 1: yabai -m window --space 1; yabai -m space 1 --layout bsp
+lalt + ctrl - 2: yabai -m window --space 2; yabai -m space 2 --layout bsp
+lalt + ctrl - 3: yabai -m window --space 3; yabai -m space 3 --layout bsp
+lalt + ctrl - 4: yabai -m window --space 4; yabai -m space 4 --layout bsp
+lalt + ctrl - 5: yabai -m window --space 5; yabai -m space 5 --layout bsp
+lalt + ctrl - 6: yabai -m window --space 6; yabai -m space 6 --layout bsp
+lalt + ctrl - 7: yabai -m window --space 7; yabai -m space 7 --layout bsp
+lalt + ctrl - 8: yabai -m window --space 8; yabai -m space 8 --layout bsp
+lalt + ctrl - 9: yabai -m window --space 9; yabai -m space 9 --layout bsp
 
 # Move + follow: SUPER+SHIFT+1..9
 lalt + shift - 1: yabai -m window --space 1; yabai -m space --focus 1
