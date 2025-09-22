@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 
-# load scripting addition (requires SIP partially disabled)
-sudo yabai --load-sa
-yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+# load scripting addition (requires SIP partially disabled) - TAHOE SUPPORT
+sudo ~/yabai-tahoe --load-sa
+yabai -m signal --add event=dock_did_restart action="sudo ~/yabai-tahoe --load-sa"
 
 # make sure jq is available in launchd context
 export PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH
@@ -72,5 +72,8 @@ yabai -m rule --add app="^Karabiner-EventViewer$" manage=off
 yabai -m signal --add event=space_changed action="sketchybar --trigger space_change"
 yabai -m signal --add event=window_focused action="sketchybar --trigger window_focus"
 yabai -m signal --add event=display_changed action="sketchybar --trigger display_change"
-yabai -m config external_bar all:$(sketchybar --query bar | jq .height):0
+yabai -m signal --add event=window_moved action="yabai -m space --balance"
+yabai -m signal --add event=window_created action="yabai -m space --balance"
+yabai -m signal --add event=window_destroyed action="yabai -m space --balance"
+yabai -m config external_bar all:$(($(sketchybar --query bar | jq -r .height) + 2)):0
 echo "yabai configuration loaded.."
