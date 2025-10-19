@@ -11,6 +11,9 @@ dotfiles/
 │   │   └── amethyst.yml
 │   ├── skhd/             # Simple hotkey daemon (keybinds for yabai)
 │   │   └── skhdrc
+│   ├── vscode/           # VSCode configuration
+│   │   ├── settings.json # Editor settings, themes, terminal config
+│   │   └── keybindings.json # Custom keyboard shortcuts
 │   ├── yabai/            # Yabai tiling window manager
 │   │   └── yabairc
 │   └── zsh/              # zsh shell configuration
@@ -23,9 +26,6 @@ dotfiles/
 │   ├── macos-setup.sh    # macOS installer
 │   ├── linux-setup.sh   # Linux installer (placeholder)
 │   └── install-zsh-keybinds.sh  # Standalone zsh keybinds installer
-├── vscode/               # VSCode configuration
-│   ├── settings.json     # Editor settings, themes, terminal config
-│   └── keybindings.json  # Custom keyboard shortcuts
 └── README.md
 ```
 
@@ -74,8 +74,26 @@ This will:
 
 ```bash
 # Create symbolic links to VSCode configuration
-ln -s "$(pwd)/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
-ln -s "$(pwd)/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User/keybindings.json"
+ln -s "$(pwd)/.config/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
+ln -s "$(pwd)/.config/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User/keybindings.json"
+```
+
+### Manual Setup
+
+Copy the files manually to your VSCode User directory:
+
+```bash
+# macOS
+cp .config/vscode/settings.json "$HOME/Library/Application Support/Code/User/"
+cp .config/vscode/keybindings.json "$HOME/Library/Application Support/Code/User/"
+
+# Linux
+cp .config/vscode/settings.json "$HOME/.config/Code/User/"
+cp .config/vscode/keybindings.json "$HOME/.config/Code/User/"
+
+# Windows
+cp .config/vscode/settings.json "%APPDATA%\Code\User\"
+cp .config/vscode/keybindings.json "%APPDATA%\Code\User\"
 ```
 
 ---
