@@ -1,0 +1,77 @@
+{
+  "files.associations": { ".aerospace.toml": "yaml" },
+  "security.workspace.trust.untrustedFiles": "open",
+  "editor.unicodeHighlight.allowedLocales": { "cs": true },
+
+  /* === Language-specific formatting === */
+  "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[css]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+
+  /* === Updates / QoL === */
+  "update.showReleaseNotes": false,
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
+
+  /* === Theme / Icons === */
+  "workbench.colorTheme": "GitHub Dark Default",
+  "workbench.iconTheme": "material-icon-theme",
+
+  /* === GitHub Copilot === */
+  "github.copilot.advanced": {},
+
+  /* === Terminal Profiles === */
+  "terminal.integrated.profiles.osx": {
+    "bash": { "path": "bash", "args": ["-l"], "icon": "terminal-bash" },
+    "zsh": { "path": "zsh", "args": ["-l"] },
+    "fish": { "path": "fish", "args": ["-l"] },
+    "tmux": {
+      "path": "zsh",
+      "args": ["-lc", "tmux new -A -s DEV"],
+      "icon": "terminal-tmux"
+    },
+    "pwsh": { "path": "pwsh", "icon": "terminal-powershell" },
+    "kitty": { "path": "/opt/homebrew/bin/kitty" },
+    "ghostty": { "path": "/opt/homebrew/bin/ghostty" }
+  },
+
+  /* Default terminal INSIDE VSCode */
+  "terminal.integrated.defaultProfile.osx": "zsh",
+
+  /* Default terminal OUTSIDE VSCode (⇧⌘C in explorer) */
+  "terminal.external.osxExec": "ghostty",
+  "terminal.explorerKind": "external",
+
+  /* === Editor hygiene === */
+  "editor.formatOnSave": true,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+
+  /* === Integrated Terminal polish === */
+  "terminal.integrated.shellIntegration.enabled": true,
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.defaultLocation": "editor",
+  "terminal.integrated.scrollback": 100000,
+  "terminal.integrated.gpuAcceleration": "on",
+  "terminal.integrated.customGlyphs": true,
+  "terminal.integrated.copyOnSelection": true,
+  "terminal.integrated.enableVisualBell": false,
+  "terminal.integrated.fontFamily": "MesloLGL Nerd Font, MesloLGL Nerd Font Mono, monospace",
+
+  "accessibility.signals.terminalBell": {
+    "sound": "off",
+    "announcement": "off"
+  },
+
+  /* === Explorer / ignore === */
+  "search.useGlobalIgnoreFiles": true,
+  "files.exclude": { "**/.DS_Store": true },
+
+  /* === Git === */
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "redhat.telemetry.enabled": false
+}
