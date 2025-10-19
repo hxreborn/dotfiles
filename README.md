@@ -1,6 +1,6 @@
 # dotfiles
 
-Cross-platform dotfiles following XDG Base Directory specification.
+Cross-platform dotfiles following XDG Base Directory specification with VSCode configuration.
 
 ```
 dotfiles/
@@ -23,6 +23,9 @@ dotfiles/
 │   ├── macos-setup.sh    # macOS installer
 │   ├── linux-setup.sh   # Linux installer (placeholder)
 │   └── install-zsh-keybinds.sh  # Standalone zsh keybinds installer
+├── vscode/               # VSCode configuration
+│   ├── settings.json     # Editor settings, themes, terminal config
+│   └── keybindings.json  # Custom keyboard shortcuts
 └── README.md
 ```
 
@@ -44,6 +47,36 @@ This will:
 - Download `zsh-emacs-keybinds.zsh` to `~/.config/zsh/`
 - Add source line to `~/.zshrc` (if found and not already present)
 - Provide manual setup instructions if needed
+
+## VSCode Configuration
+
+### Features
+
+- **Theme**: GitHub Dark Default with Material Icon Theme
+- **Terminal**: Multiple shell profiles (zsh, bash, fish, tmux, kitty, ghostty)
+- **Editor**: Auto-format on save, trim whitespace, insert final newline
+- **Integration**: Enhanced terminal experience with custom settings
+
+### Key Bindings
+
+- `Shift+Enter`: Send newline in terminal (when terminal is focused)
+
+### Terminal Profiles
+
+- **zsh**: Default shell with login mode
+- **bash**: Bash shell with login mode
+- **fish**: Fish shell with login mode
+- **tmux**: Tmux session management (`tmux new -A -s DEV`)
+- **kitty**: Kitty terminal emulator
+- **ghostty**: Ghostty terminal emulator (default external terminal)
+
+### Installation
+
+```bash
+# Create symbolic links to VSCode configuration
+ln -s "$(pwd)/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
+ln -s "$(pwd)/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User/keybindings.json"
+```
 
 ---
 
@@ -91,18 +124,7 @@ Then:
 
 * Grant access under: System Settings → Privacy & Security → Accessibility
 * Add to login items
-wip:
-System Settings → Keyboard → Keyboard Shortcuts
 
-Go to "Mission Control"
-
-Find:
-
-Move left a space (⌃ ←)
-
-Move right a space (⌃ →)
-
-Uncheck both to disable them.
 ---
 
 ### AeroSpace (⌥-based bindings)

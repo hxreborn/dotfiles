@@ -7,6 +7,21 @@ Thumbs.db
 *~
 .nfs*
 
+# macOS
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
+# Editor backups
+*.bak
+
 # Ignore everything else by default
 *
 !.gitignore
