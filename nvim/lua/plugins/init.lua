@@ -1,0 +1,2 @@
+-- Custom plugins configuration
+return {}
