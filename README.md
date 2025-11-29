@@ -1,138 +1,35 @@
 # dotfiles
 
-Cross-platform dotfiles following XDG Base Directory specification with VSCode configuration.
+XDG-compliant dotfiles.
 
-```
-dotfiles/
-├── .config/              # XDG_CONFIG_HOME (~/.config)
-│   ├── aerospace/        # AeroSpace WM config (i3-like tiling)
-│   │   └── aerospace.toml
-│   ├── amethyst/         # Amethyst config (macOS-native tiling)
-│   │   └── amethyst.yml
-│   ├── nvim/             # Neovim configuration (LazyVim)
-│   │   ├── init.lua
-│   │   ├── lazy-lock.json
-│   │   └── lua/
-│   │       ├── config/
-│   │       └── plugins/
-│   ├── skhd/             # Simple hotkey daemon (keybinds for yabai)
-│   │   └── skhdrc
-│   ├── vscode/           # VSCode configuration
-│   │   ├── settings.json # Editor settings, themes, terminal config
-│   │   └── keybindings.json # Custom keyboard shortcuts
-│   ├── yabai/            # Yabai tiling window manager
-│   │   └── yabairc
-│   └── zsh/              # zsh shell configuration
-│       └── zsh-emacs-keybinds.zsh
-├── .local/
-│   └── share/            # XDG_DATA_HOME (~/.local/share)
-│       └── (wallpapers, themes, icons, templates)
-├── scripts/              # Installation and setup scripts
-│   ├── setup.sh          # Cross-platform bootstrap
-│   ├── macos-setup.sh    # macOS installer
-│   ├── linux-setup.sh   # Linux installer (placeholder)
-│   └── install-zsh-keybinds.sh  # Standalone zsh keybinds installer
-└── README.md
-```
-
-## Usage
+## Install
 
 ```sh
 ./scripts/setup.sh
 ```
 
-### Quick Install - zsh Keybinds Only
-
-Install just the Emacs-style terminal keybindings without the full dotfiles setup:
+### zsh Keybinds Only
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/hxreborn/dotfiles/master/scripts/install-zsh-keybinds.sh | sh
 ```
 
-This will:
-- Download `zsh-emacs-keybinds.zsh` to `~/.config/zsh/`
-- Add source line to `~/.zshrc` (if found and not already present)
-- Provide manual setup instructions if needed
-
-## VSCode Configuration
-
-### Features
-
-- **Theme**: GitHub Dark Default with Material Icon Theme
-- **Terminal**: Multiple shell profiles (zsh, bash, fish, tmux, kitty, ghostty)
-- **Editor**: Auto-format on save, trim whitespace, insert final newline
-- **Integration**: Enhanced terminal experience with custom settings
-
-### Key Bindings
-
-- `Shift+Enter`: Send newline in terminal (when terminal is focused)
-
-### Terminal Profiles
-
-- **zsh**: Default shell with login mode
-- **bash**: Bash shell with login mode
-- **fish**: Fish shell with login mode
-- **tmux**: Tmux session management (`tmux new -A -s DEV`)
-- **kitty**: Kitty terminal emulator
-- **ghostty**: Ghostty terminal emulator (default external terminal)
-
-### Installation
+## VSCode
 
 ```bash
-# Create symbolic links to VSCode configuration
 ln -s "$(pwd)/.config/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
 ln -s "$(pwd)/.config/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User/keybindings.json"
 ```
 
-### Manual Setup
+Linux: `~/.config/Code/User/`
 
-Copy the files manually to your VSCode User directory:
+## Neovim
 
-```bash
-# macOS
-cp .config/vscode/settings.json "$HOME/Library/Application Support/Code/User/"
-cp .config/vscode/keybindings.json "$HOME/Library/Application Support/Code/User/"
-
-# Linux
-cp .config/vscode/settings.json "$HOME/.config/Code/User/"
-cp .config/vscode/keybindings.json "$HOME/.config/Code/User/"
-
-# Windows
-cp .config/vscode/settings.json "%APPDATA%\Code\User\"
-cp .config/vscode/keybindings.json "%APPDATA%\Code\User\"
-```
-
-## Neovim Configuration
-
-### Features
-
-- LazyVim framework with 32 managed plugins
-- Mason for LSP management
-- Tokyo Night theme
-- blink.cmp for completion
-- noice.nvim enhanced UI, lualine statusline
-- gitsigns for git integration
-
-### Installation
+LazyVim configuration.
 
 ```bash
-# Automated
-./scripts/setup.sh
-
-# Manual
 ln -s "$(pwd)/.config/nvim" "$HOME/.config/nvim"
 ```
-
-**Install Neovim:**
-- macOS: `brew install neovim`
-- Linux (Arch): `sudo pacman -S neovim`
-- Linux (Debian): `sudo apt install neovim`
-
-First launch auto-installs plugins: `nvim`
-
-### Key Bindings
-
-Leader key: `Space`
 
 | Action          | Shortcut      |
 | --------------- | ------------- |
@@ -141,168 +38,61 @@ Leader key: `Space`
 | Find text       | Space + /     |
 | Git status      | Space + g + s |
 | Code actions    | Space + c + a |
-| Rename symbol   | Space + c + r |
 | Format document | Space + c + f |
 | Toggle terminal | Ctrl + /      |
-| Switch buffer   | Shift + H/L   |
 
-Full reference: Press `Space` in nvim
-
-### Customization
-
-Custom config files:
-- `lua/config/options.lua` - Editor options
-- `lua/config/keymaps.lua` - Keybindings
-- `lua/config/autocmds.lua` - Autocommands
-- `lua/plugins/init.lua` - Custom plugins
-
-LazyVim defaults: https://github.com/LazyVim/LazyVim/tree/main/lua/lazyvim/config
-
-### Troubleshooting
-
-**Clean reinstall:**
-```bash
-rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim
-nvim  # Reinstalls from lazy-lock.json
-```
-
-**Health check:**
-```bash
-nvim +checkhealth
-```
+Clean reinstall: `rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim && nvim`
 
 ---
 
-## Platform-Specific Configs
+## macOS Window Managers
 
-<details>
-<summary><strong>macOS</strong></summary>
+All require Accessibility permission.
 
-### Window Manager Setups
-
-* **Amethyst** — integrates with native macOS Spaces for a smoother trackpad-driven experience ([GitHub](https://github.com/ianyh/Amethyst))
-* **AeroSpace** — full tiling model inspired by i3. Currently in beta (v0.18.5); more configurable but may feel clunky for some. ([GitHub](https://github.com/nikitabobko/AeroSpace))
-* **Yabai + skhd** — advanced tiling window manager with scriptable configuration and hotkey daemon ([GitHub](https://github.com/koekeishiya/yabai))
-
----
-
-### Amethyst + macOS Spaces
-
-#### Summary
-
-Minimal configuration for users who prefer macOS Spaces and want light tiling support.
-
-#### Keybindings
-
-| Action                 | Shortcut              |
-| ---------------------- | --------------------- |
-| Move focus             | ^ + ← ↓ ↑ →           |
-| Move window            | ^ + ⇧ + ← ↓ ↑ →       |
-| Toggle float mode      | ^ + T                 |
-| Reload config          | ^ + ⇧ + R             |
-| Switch to Space        | ^ + 1 / 2 / 3 / 4 / 5 |
-| Move window to Space   | ^ + ⇧ + 1–5           |
-| Cycle layout           | ^ + Space             |
-| Toggle layout manually | ^ + L                 |
-
-#### Setup
+### Amethyst
 
 ```sh
 brew install --cask amethyst
 cp .config/amethyst/amethyst.yml ~/.amethyst.yml
-open -a Amethyst
 ```
 
-Then:
+| Action               | Shortcut              |
+| -------------------- | --------------------- |
+| Move focus           | ^ + ← ↓ ↑ →           |
+| Move window          | ^ + ⇧ + ← ↓ ↑ →       |
+| Toggle float         | ^ + T                 |
+| Switch to Space      | ^ + 1 / 2 / 3 / 4 / 5 |
+| Move window to Space | ^ + ⇧ + 1–5           |
+| Cycle layout         | ^ + Space             |
 
-* Grant access under: System Settings → Privacy & Security → Accessibility
-* Add to login items
+### AeroSpace
 
----
-
-### AeroSpace (⌥-based bindings)
-
-#### Summary
-
-Powerful window manager designed for full tiling workflows. Feels more like Linux WMs (e.g., i3). Currently in beta (v0.18.5).
-
-#### Keybindings
-
-| Action             | Shortcut        |
-| ------------------ | --------------- |
-| Launch Terminal    | ⌥ + Delete      |
-| Launch Browser     | ⌥ + B           |
-| Launch Finder      | ⌥ + E           |
-| Layout: tiles      | ⌥ + /           |
-| Layout: accordion  | ⌥ + ^ + ,       |
-| Focus movement     | ⌥ + H J K L     |
-| Move window        | ⌥ + ⇧ + H J K L |
-| Resize window      | ⌥ + ^ + H J K L |
-| Smart resize       | ⌥ + , / .       |
-| Toggle fullscreen  | ⌥ + M           |
-| Toggle floating    | ⌥ + ⇧ + Space   |
-| Switch workspace   | ⌥ + A S D F G   |
-| Send window to WS  | ⌥ + ⇧ + A–G     |
-| Back workspace     | ⌥ + Tab         |
-| Move WS to monitor | ⌥ + ⇧ + Tab     |
-| Close window       | ⌥ + Q           |
-| Reload config      | ^ + ⌥ + R       |
-
-#### Setup
+i3-inspired tiling. Beta (v0.18.5).
 
 ```sh
 cp .config/aerospace/aerospace.toml ~/.aerospace.toml
-open -a AeroSpace
 ```
 
-Then:
+| Action            | Shortcut        |
+| ----------------- | --------------- |
+| Focus movement    | ⌥ + H J K L     |
+| Move window       | ⌥ + ⇧ + H J K L |
+| Resize window     | ⌥ + ^ + H J K L |
+| Toggle fullscreen | ⌥ + M           |
+| Toggle floating   | ⌥ + ⇧ + Space   |
+| Switch workspace  | ⌥ + A S D F G   |
+| Send to workspace | ⌥ + ⇧ + A–G     |
+| Close window      | ⌥ + Q           |
 
-* Grant access under: System Settings → Privacy & Security → Accessibility
-* Add to login items
+### Yabai + skhd
 
----
-
-### Yabai + skhd (Advanced Tiling)
-
-#### Summary
-
-Scriptable tiling window manager with powerful customization and hotkey daemon for advanced users.
-
-#### Keybindings
-
-*Note: Keybindings are defined in `.config/skhd/skhdrc` and can be fully customized*
-
-#### Setup
+Requires SIP disabled for full features.
 
 ```sh
-# Install yabai and skhd
-brew install koekeishiya/formulae/yabai
-brew install koekeishiya/formulae/skhd
-
-# Copy configurations
+brew install koekeishiya/formulae/yabai koekeishiya/formulae/skhd
 cp .config/yabai/yabairc ~/.config/yabai/yabairc
 cp .config/skhd/skhdrc ~/.config/skhd/skhdrc
-
-# Start services
-yabai --start-service
-skhd --start-service
+yabai --start-service && skhd --start-service
 ```
 
-Then:
-
-* Grant access under: System Settings → Privacy & Security → Accessibility
-* Disable System Integrity Protection (SIP) for advanced features
-* Configure scripting additions if needed
-
-</details>
-
-<details>
-<summary><strong>Linux</strong></summary>
-
-Placeholder for future expansion. Intended to support:
-
-* Hyprland or other tiling WMs
-* KDE Wayland tuning
-* Shared setup: `.zshrc`, `.gitconfig`, helper scripts
-
-</details>
+Keybindings in `.config/skhd/skhdrc`.
