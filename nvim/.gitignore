@@ -1,0 +1,13 @@
+# Lazy.nvim auto-generated
+lazy-lock.json
+lazyvim.json
+
+# Temp/debug files
+.repro/
+.tests/
+debug/
+*.log
+data/
+tt.*
+foo.*
+doc/tags
