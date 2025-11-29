@@ -1,6 +1,6 @@
 # dotfiles
 
-XDG-compliant dotfiles.
+Dotfiles organized for XDG paths.
 
 ## Index
 
