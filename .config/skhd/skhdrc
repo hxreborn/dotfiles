@@ -44,16 +44,16 @@ lalt + shift - n: bash -lc 'yabai -m space --create && idx="$(yabai -m query --s
 
 # --- Workspaces (Spaces) ---
 # Navigate: SUPER+1..0
-lalt - 1: ~/yabai-tahoe -m space --focus 1
-lalt - 2: ~/yabai-tahoe -m space --focus 2
-lalt - 3: ~/yabai-tahoe -m space --focus 3
-lalt - 4: ~/yabai-tahoe -m space --focus 4
+lalt - 1: yabai -m space --focus 1
+lalt - 2: yabai -m space --focus 2
+lalt - 3: yabai -m space --focus 3
+lalt - 4: yabai -m space --focus 4
 lalt - 5: yabai -m space --focus 5
 lalt - 6: yabai -m space --focus 6
 lalt - 7: yabai -m space --focus 7
 lalt - 8: yabai -m space --focus 8
 lalt - 9: yabai -m space --focus 9
-# #### TAHOE WORKAROUND NO SA-YABAI - DISABLED, USING YABAI-TAHOE NOW
+# #### FALLBACK WITHOUT SA-YABAI (disabled)
 # # ctrl-1..4 to focus spaces 1..4 (triggered by Left Alt)
 # lalt - 1 : osascript -e 'tell application "System Events" to keystroke "1" using control down'
 # lalt - 2 : osascript -e 'tell application "System Events" to keystroke "2" using control down'

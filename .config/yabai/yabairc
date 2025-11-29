@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 
-# load scripting addition (requires SIP partially disabled) - TAHOE SUPPORT
-sudo ~/yabai-tahoe --load-sa
-yabai -m signal --add event=dock_did_restart action="sudo ~/yabai-tahoe --load-sa"
+# load scripting addition (requires SIP partially disabled)
+sudo yabai --load-sa
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
 # make sure jq is available in launchd context
 export PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH
