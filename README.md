@@ -8,7 +8,7 @@ XDG-compliant dotfiles.
 - [zsh Keybinds Only](#zsh-keybinds-only)
 - [VSCode](#vscode)
 - [Neovim](#neovim)
-- [macOS Window Managers](#macos-window-managers)
+- [macOS WMs](#macos-wms)
   - [Amethyst](#amethyst)
   - [AeroSpace](#aerospace)
   - [Yabai + skhd](#yabai--skhd)
@@ -16,6 +16,8 @@ XDG-compliant dotfiles.
 ## Install
 
 ```sh
+git clone https://github.com/hxreborn/dotfiles.git
+cd dotfiles
 ./scripts/setup.sh
 ```
 
@@ -27,7 +29,9 @@ curl -fsSL https://raw.githubusercontent.com/hxreborn/dotfiles/master/scripts/in
 
 ## VSCode
 
-```bash
+```sh
+git clone --depth 1 --filter=blob:none --sparse https://github.com/hxreborn/dotfiles.git dotfiles-vscode
+cd dotfiles-vscode && git sparse-checkout set .config/vscode
 ln -s "$(pwd)/.config/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
 ln -s "$(pwd)/.config/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User/keybindings.json"
 ```
@@ -38,7 +42,9 @@ Linux: `~/.config/Code/User/`
 
 LazyVim configuration.
 
-```bash
+```sh
+git clone --depth 1 --filter=blob:none --sparse https://github.com/hxreborn/dotfiles.git dotfiles-nvim
+cd dotfiles-nvim && git sparse-checkout set .config/nvim
 ln -s "$(pwd)/.config/nvim" "$HOME/.config/nvim"
 ```
 
@@ -56,7 +62,7 @@ Clean reinstall: `rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim &
 
 ---
 
-## macOS Window Managers
+## macOS WMs
 
 All require Accessibility permission.
 
@@ -64,7 +70,7 @@ All require Accessibility permission.
 
 ```sh
 brew install --cask amethyst
-cp .config/amethyst/amethyst.yml ~/.amethyst.yml
+curl -fsSL https://raw.githubusercontent.com/hxreborn/dotfiles/master/.config/amethyst/amethyst.yml -o ~/.amethyst.yml
 ```
 
 | Action               | Shortcut              |
