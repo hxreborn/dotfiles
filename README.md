@@ -87,7 +87,8 @@ curl -fsSL https://raw.githubusercontent.com/hxreborn/dotfiles/master/.config/am
 i3-inspired tiling. Beta (v0.18.5).
 
 ```sh
-cp .config/aerospace/aerospace.toml ~/.aerospace.toml
+brew install --cask nikitabobko/tap/aerospace
+curl -fsSL https://raw.githubusercontent.com/hxreborn/dotfiles/master/.config/aerospace/aerospace.toml -o ~/.aerospace.toml
 ```
 
 | Action            | Shortcut        |
@@ -107,9 +108,10 @@ Requires SIP disabled for full features.
 
 ```sh
 brew install koekeishiya/formulae/yabai koekeishiya/formulae/skhd
-cp .config/yabai/yabairc ~/.config/yabai/yabairc
-cp .config/skhd/skhdrc ~/.config/skhd/skhdrc
+mkdir -p ~/.config/yabai ~/.config/skhd
+curl -fsSL https://raw.githubusercontent.com/hxreborn/dotfiles/master/.config/yabai/yabairc -o ~/.config/yabai/yabairc
+curl -fsSL https://raw.githubusercontent.com/hxreborn/dotfiles/master/.config/skhd/skhdrc -o ~/.config/skhd/skhdrc
 yabai --start-service && skhd --start-service
 ```
 
-Keybindings in `.config/skhd/skhdrc`.
+Keybindings in `~/.config/skhd/skhdrc`.
