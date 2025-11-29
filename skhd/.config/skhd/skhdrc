@@ -93,7 +93,7 @@ lalt + ctrl + cmd - left: yabai -m window --space prev;  yabai -m space --focus 
 # lalt + shift - , : yabai -m window --display previous; yabai -m display --focus previous
 
 # --- Apps / Launchers ---
-lalt - t: open -n -a "Ghostty" || open -n -a "kitty" || open -n -a "Terminal"
+lalt - t: open -n -a "kitty" || open -n -a "Terminal"
 lalt - e: open -a "Finder"
 lalt - c: open -na "Visual Studio Code"
 lalt - b: open -a "Firefox"

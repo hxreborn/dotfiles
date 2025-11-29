@@ -24,9 +24,10 @@ borders style=round width=5.0 active_color=0xffe1e3e4 inactive_color=0xff494d64 
 # opacity + animations
 yabai -m config window_opacity on
 yabai -m config active_window_opacity 1.00
-yabai -m config normal_window_opacity 0.95
+yabai -m config normal_window_opacity 0.90
 yabai -m config window_opacity_duration 0.12
-yabai -m signal --add label=flash_focus event=window_focused action='yabai -m window --opacity 0.90; sleep $(yabai -m config window_opacity_duration); yabai -m window --opacity 1.0'
+# Flash focus disabled - was interfering with normal opacity management
+# yabai -m signal --add label=flash_focus event=window_focused action='yabai -m window --opacity 0.90; sleep $(yabai -m config window_opacity_duration); yabai -m window --opacity 1.0'
 yabai -m config focus_follows_mouse autofocus
 
 # borders
