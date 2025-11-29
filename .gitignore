@@ -25,6 +25,7 @@ ehthumbs.db
 # Ignore everything else by default
 *
 !.gitignore
+!.gitattributes
 !.gitinclude
 !README.md
 !setup.sh

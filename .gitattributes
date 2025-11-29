@@ -1,0 +1,5 @@
+*.toml linguist-detectable
+*.json linguist-detectable
+*.yml linguist-detectable
+*.lua linguist-detectable
+*.zsh linguist-detectable
