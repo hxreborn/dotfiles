@@ -2,6 +2,17 @@
 
 XDG-compliant dotfiles.
 
+## Index
+
+- [Install](#install)
+- [zsh Keybinds Only](#zsh-keybinds-only)
+- [VSCode](#vscode)
+- [Neovim](#neovim)
+- [macOS Window Managers](#macos-window-managers)
+  - [Amethyst](#amethyst)
+  - [AeroSpace](#aerospace)
+  - [Yabai + skhd](#yabai--skhd)
+
 ## Install
 
 ```sh
