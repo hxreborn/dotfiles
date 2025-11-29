@@ -9,6 +9,12 @@ dotfiles/
 │   │   └── aerospace.toml
 │   ├── amethyst/         # Amethyst config (macOS-native tiling)
 │   │   └── amethyst.yml
+│   ├── nvim/             # Neovim configuration (LazyVim)
+│   │   ├── init.lua
+│   │   ├── lazy-lock.json
+│   │   └── lua/
+│   │       ├── config/
+│   │       └── plugins/
 │   ├── skhd/             # Simple hotkey daemon (keybinds for yabai)
 │   │   └── skhdrc
 │   ├── vscode/           # VSCode configuration
@@ -94,6 +100,75 @@ cp .config/vscode/keybindings.json "$HOME/.config/Code/User/"
 # Windows
 cp .config/vscode/settings.json "%APPDATA%\Code\User\"
 cp .config/vscode/keybindings.json "%APPDATA%\Code\User\"
+```
+
+## Neovim Configuration
+
+### Features
+
+- LazyVim framework with 32 managed plugins
+- Mason for LSP management
+- Tokyo Night theme
+- blink.cmp for completion
+- noice.nvim enhanced UI, lualine statusline
+- gitsigns for git integration
+
+### Installation
+
+```bash
+# Automated
+./scripts/setup.sh
+
+# Manual
+ln -s "$(pwd)/.config/nvim" "$HOME/.config/nvim"
+```
+
+**Install Neovim:**
+- macOS: `brew install neovim`
+- Linux (Arch): `sudo pacman -S neovim`
+- Linux (Debian): `sudo apt install neovim`
+
+First launch auto-installs plugins: `nvim`
+
+### Key Bindings
+
+Leader key: `Space`
+
+| Action          | Shortcut      |
+| --------------- | ------------- |
+| File explorer   | Space + e     |
+| Find files      | Space + Space |
+| Find text       | Space + /     |
+| Git status      | Space + g + s |
+| Code actions    | Space + c + a |
+| Rename symbol   | Space + c + r |
+| Format document | Space + c + f |
+| Toggle terminal | Ctrl + /      |
+| Switch buffer   | Shift + H/L   |
+
+Full reference: Press `Space` in nvim
+
+### Customization
+
+Custom config files:
+- `lua/config/options.lua` - Editor options
+- `lua/config/keymaps.lua` - Keybindings
+- `lua/config/autocmds.lua` - Autocommands
+- `lua/plugins/init.lua` - Custom plugins
+
+LazyVim defaults: https://github.com/LazyVim/LazyVim/tree/main/lua/lazyvim/config
+
+### Troubleshooting
+
+**Clean reinstall:**
+```bash
+rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim
+nvim  # Reinstalls from lazy-lock.json
+```
+
+**Health check:**
+```bash
+nvim +checkhealth
 ```
 
 ---
