@@ -4,8 +4,8 @@ XDG-compliant dotfiles.
 
 ## Index
 
-- [Install](#install)
-- [zsh Keybinds Only](#zsh-keybinds-only)
+- [Install All](#install-all)
+- [zsh](#zsh)
 - [VSCode](#vscode)
 - [Neovim](#neovim)
 - [macOS WMs](#macos-wms)
@@ -13,7 +13,7 @@ XDG-compliant dotfiles.
   - [AeroSpace](#aerospace)
   - [Yabai + skhd](#yabai--skhd)
 
-## Install
+## Install All
 
 ```sh
 git clone https://github.com/hxreborn/dotfiles.git
@@ -21,7 +21,7 @@ cd dotfiles
 ./scripts/setup.sh
 ```
 
-### zsh Keybinds Only
+## zsh
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/hxreborn/dotfiles/master/scripts/install-zsh-keybinds.sh | sh
@@ -48,15 +48,15 @@ cd dotfiles-nvim && git sparse-checkout set .config/nvim
 ln -s "$(pwd)/.config/nvim" "$HOME/.config/nvim"
 ```
 
-| Action          | Shortcut      |
-| --------------- | ------------- |
-| File explorer   | Space + e     |
-| Find files      | Space + Space |
-| Find text       | Space + /     |
-| Git status      | Space + g + s |
-| Code actions    | Space + c + a |
-| Format document | Space + c + f |
-| Toggle terminal | Ctrl + /      |
+| Action          | Shortcut       |
+| --------------- | -------------- |
+| File explorer   | Leader + e     |
+| Find files      | Leader + Space |
+| Find text       | Leader + /     |
+| Git status      | Leader + g + s |
+| Code actions    | Leader + c + a |
+| Format document | Leader + c + f |
+| Toggle terminal | Ctrl + /       |
 
 Clean reinstall: `rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim && nvim`
 
