@@ -2,10 +2,9 @@
 # Comprehensive Emacs-style keybindings for ZSH
 # Combines standard bash/readline keybindings with robust terminal compatibility
 
-# Load ZLE module and reset to stock defaults for clean slate
+# Load ZLE module and set emacs mode
 zmodload -i zsh/zle
-bindkey -d          # reset to stock
-bindkey -e          # Emacs widgets
+bindkey -e          # Emacs widgets (don't reset with -d to preserve plugin wrapping)
 
 # bind_emacs SEQ WIDGET -> bind in active map + emacs (init orders vary)
 # This ensures bindings work regardless of when the keymap is initialized
@@ -152,3 +151,9 @@ bind_emacs '^X^E' edit-command-line # Ctrl+X Ctrl+E - open in editor
 #   - If cat -v prints nothing: terminal intercepted the key
 #   - If cat -v prints "garbage": those bytes are correct, bind them
 #   - If bindings reset: run `bindkey -e` then re-source this file
+
+# Re-bind zsh-autosuggestions widgets after setting keybindings
+# This ensures widgets like forward-word are properly wrapped for partial acceptance
+if typeset -f _zsh_autosuggest_bind_widgets >/dev/null; then
+    _zsh_autosuggest_bind_widgets
+fi
