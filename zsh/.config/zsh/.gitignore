@@ -1,0 +1,20 @@
+# Ignore history files
+.zsh_history
+.zsh_history.backup
+
+# Ignore completion cache
+.zcompdump*
+
+# Ignore backup files
+.zshrc.oh-my-zsh-backup
+*.backup
+
+# Ignore archives
+*.tar.gz
+*.zip
+
+# Ignore CLAUDE helper files (local only)
+.claude/
+
+# Ignore OS files
+.DS_Store

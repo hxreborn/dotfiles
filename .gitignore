@@ -30,12 +30,26 @@ ehthumbs.db
 !README.md
 !setup.sh
 
-# Unignore XDG directories and everything in them
-!.config/
-!.config/**
-!.local/
-!.local/**
+# Unignore stow packages
 !scripts/
 !scripts/**
 !nvim/
 !nvim/**
+!zsh/
+!zsh/**
+!waybar/
+!waybar/**
+!vscode/
+!vscode/**
+!aerospace/
+!aerospace/**
+!amethyst/
+!amethyst/**
+!yabai/
+!yabai/**
+!skhd/
+!skhd/**
+!karabiner/
+!karabiner/**
+!.local/
+!.local/**
