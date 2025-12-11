@@ -1,51 +1,82 @@
 # dotfiles
 
-Dotfiles organized for XDG paths.
+Dotfiles managed with GNU Stow.
+
+## Prerequisites
+
+```sh
+# Install stow
+# Arch/CachyOS
+sudo pacman -S stow
+
+# macOS
+brew install stow
+
+# Debian/Ubuntu
+sudo apt install stow
+```
+
+## Quick Start
+
+```sh
+git clone https://github.com/hxreborn/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+
+# Install individual package
+stow nvim
+
+# Install multiple packages
+stow nvim zsh waybar
+
+# Remove package
+stow -D nvim
+```
 
 ## Index
 
-- [Install All](#install-all)
+- [How Stow Works](#how-stow-works)
+- [Available Packages](#available-packages)
+- [Neovim](#neovim)
 - [zsh](#zsh)
 - [VSCode](#vscode)
-- [Neovim](#neovim)
+- [Waybar](#waybar)
 - [macOS WMs](#macos-wms)
-  - [Amethyst](#amethyst)
-  - [AeroSpace](#aerospace)
-  - [Yabai + skhd](#yabai--skhd)
 
-## Install All
+## How Stow Works
 
-```sh
-git clone https://github.com/hxreborn/dotfiles.git
-cd dotfiles
-./scripts/setup.sh
+Each directory is a "package" that mirrors your home directory structure:
+
+```
+dotfiles/
+├── nvim/.config/nvim/      → ~/.config/nvim
+├── zsh/.config/zsh/        → ~/.config/zsh
+├── waybar/.config/waybar/  → ~/.config/waybar
+└── ...
 ```
 
-## zsh
+Stow creates symlinks from `~` to the repo.
 
-```sh
-curl -fsSL https://raw.githubusercontent.com/hxreborn/dotfiles/master/scripts/install-zsh-keybinds.sh | sh
-```
+## Available Packages
 
-## VSCode
-
-```sh
-git clone --depth 1 --filter=blob:none --sparse https://github.com/hxreborn/dotfiles.git dotfiles-vscode
-cd dotfiles-vscode && git sparse-checkout set .config/vscode
-ln -s "$(pwd)/.config/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
-ln -s "$(pwd)/.config/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User/keybindings.json"
-```
-
-Linux: `~/.config/Code/User/`
+| Package   | Description                    |
+|-----------|--------------------------------|
+| nvim      | LazyVim configuration          |
+| zsh       | Shell configuration            |
+| waybar    | Wayland status bar             |
+| vscode    | VSCode settings & keybindings  |
+| aerospace | macOS tiling WM                |
+| amethyst  | macOS tiling WM                |
+| yabai     | macOS tiling WM                |
+| skhd      | macOS hotkey daemon            |
+| karabiner | macOS keyboard customizer      |
 
 ## Neovim
 
 LazyVim configuration.
 
 ```sh
-git clone --depth 1 --filter=blob:none --sparse https://github.com/hxreborn/dotfiles.git dotfiles-nvim
-cd dotfiles-nvim && git sparse-checkout set .config/nvim
-ln -s "$(pwd)/.config/nvim" "$HOME/.config/nvim"
+cd ~/dotfiles
+stow nvim
 ```
 
 | Action          | Shortcut       |
@@ -60,6 +91,30 @@ ln -s "$(pwd)/.config/nvim" "$HOME/.config/nvim"
 
 Clean reinstall: `rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim && nvim`
 
+## zsh
+
+```sh
+cd ~/dotfiles
+stow zsh
+```
+
+## VSCode
+
+```sh
+cd ~/dotfiles
+stow vscode
+```
+
+Linux: `~/.config/Code/User/`
+macOS: `~/Library/Application Support/Code/User/`
+
+## Waybar
+
+```sh
+cd ~/dotfiles
+stow waybar
+```
+
 ---
 
 ## macOS WMs
@@ -70,7 +125,8 @@ All require Accessibility permission.
 
 ```sh
 brew install --cask amethyst
-curl -fsSL https://raw.githubusercontent.com/hxreborn/dotfiles/master/.config/amethyst/amethyst.yml -o ~/.amethyst.yml
+cd ~/dotfiles
+stow amethyst
 ```
 
 | Action               | Shortcut              |
@@ -88,7 +144,8 @@ i3-inspired tiling. Beta (v0.18.5).
 
 ```sh
 brew install --cask nikitabobko/tap/aerospace
-curl -fsSL https://raw.githubusercontent.com/hxreborn/dotfiles/master/.config/aerospace/aerospace.toml -o ~/.aerospace.toml
+cd ~/dotfiles
+stow aerospace
 ```
 
 | Action            | Shortcut        |
@@ -108,9 +165,8 @@ Requires SIP disabled for full features.
 
 ```sh
 brew install koekeishiya/formulae/yabai koekeishiya/formulae/skhd
-mkdir -p ~/.config/yabai ~/.config/skhd
-curl -fsSL https://raw.githubusercontent.com/hxreborn/dotfiles/master/.config/yabai/yabairc -o ~/.config/yabai/yabairc
-curl -fsSL https://raw.githubusercontent.com/hxreborn/dotfiles/master/.config/skhd/skhdrc -o ~/.config/skhd/skhdrc
+cd ~/dotfiles
+stow yabai skhd
 yabai --start-service && skhd --start-service
 ```
 
