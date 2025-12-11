@@ -1,0 +1,43 @@
+include-default-bindings: false
+
+mod1: [control]
+
+layouts:
+  - tall
+  - fullscreen
+
+window-margins: true
+window-margin-size: 4
+window-resize-step: 6
+
+bindings:
+  # Focus
+  focus-left:  [mod1, left]
+  focus-right: [mod1, right]
+  focus-up:    [mod1, up]
+  focus-down:  [mod1, down]
+
+  # Swap windows
+  swap-left:  [mod1, shift, left]
+  swap-right: [mod1, shift, right]
+  swap-up:    [mod1, shift, up]
+  swap-down:  [mod1, shift, down]
+
+  # Float / layout / reload
+  toggle-float: [mod1, t]
+  cycle-layout: [mod1, space]      # needs ⌃ Space free
+  toggle-focus-follows-mouse: [mod1, l]
+  reload-config: [mod1, shift, r]
+
+  # Spaces 1-5
+  select-space-1: [mod1, 1]
+  select-space-2: [mod1, 2]
+  select-space-3: [mod1, 3]
+  select-space-4: [mod1, 4]
+  select-space-5: [mod1, 5]
+
+  move-to-space-1: [mod1, shift, 1]
+  move-to-space-2: [mod1, shift, 2]
+  move-to-space-3: [mod1, shift, 3]
+  move-to-space-4: [mod1, shift, 4]
+  move-to-space-5: [mod1, shift, 5]
