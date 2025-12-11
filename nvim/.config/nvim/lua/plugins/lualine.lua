@@ -5,7 +5,7 @@ return {
     opts.sections.lualine_a = {
       {
         "mode",
-        icon = { "", align = "left" },
+        icon = { "", align = "left" },
         separator = { left = "" },
         right_padding = 2,
       },
