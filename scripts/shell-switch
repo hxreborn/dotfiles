@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+HYPR="$HOME/.config/hypr"
+
+declare -A SHELL_PATTERN=([noctalia]="qs.*noctalia-shell" [dms]="dms run")
+declare -A SHELL_CMD=([noctalia]="qs -c noctalia-shell" [dms]="dms run")
+
+is_running() { pgrep -f "${SHELL_PATTERN[$1]}" &>/dev/null; }
+
+stop_shell() {
+    is_running "$1" || return 0
+    pkill -f "${SHELL_PATTERN[$1]}" 2>/dev/null || true
+    for _ in {1..6}; do
+        is_running "$1" || return 0
+        sleep 0.5
+    done
+    pkill -9 -f "${SHELL_PATTERN[$1]}" 2>/dev/null || true
+    sleep 0.5
+    ! is_running "$1"
+}
+
+start_shell() {
+    ${SHELL_CMD[$1]} &>/dev/null & disown
+    for _ in {1..10}; do
+        is_running "$1" && return 0
+        sleep 0.5
+    done
+    return 1
+}
+
+apply_config() {
+    ln -sf "${1}-binds.conf" "$HYPR/active-shell-binds.conf"
+    echo "exec-once = ${SHELL_CMD[$1]}" > "$HYPR/shell-start.conf"
+    hyprctl reload 2>/dev/null || true
+}
+
+current="none"
+is_running noctalia && current="noctalia"
+is_running dms && current="dms"
+
+selected=$(printf '%s\n' noctalia dms | while read -r s; do
+    [[ "$s" == "$current" ]] && echo "● $s (active)|$s" || echo "  $s|$s"
+done | fzf --prompt="Switch shell: " --height=40% --border=rounded --reverse \
+    --ansi --delimiter='|' --with-nth=1 --header="Current: $current" | cut -d'|' -f2)
+
+[[ -z "$selected" || "$selected" == "$current" ]] && exit 0
+
+if ! stop_shell "$current"; then
+    notify-send -u critical "Shell Switch" "Failed to stop $current" 2>/dev/null || true
+    exit 1
+fi
+
+apply_config "$selected"
+
+if ! start_shell "$selected"; then
+    notify-send -u critical "Shell Switch" "Failed to start $selected, rolling back" 2>/dev/null || true
+    apply_config "$current"
+    start_shell "$current" || notify-send -u critical "Shell Switch" "Rollback failed" 2>/dev/null || true
+    exit 1
+fi
+
+notify-send "Shell Switch" "Switched to $selected" 2>/dev/null || true
