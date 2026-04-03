@@ -53,3 +53,5 @@ ehthumbs.db
 !karabiner/**
 !.local/
 !.local/**
+!ideavim/
+!ideavim/**

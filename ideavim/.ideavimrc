@@ -1,0 +1,280 @@
+" IdeaVim config - LazyVim defaults
+" ============ CHEATSHEET ============
+" TEXT OBJECTS: vi{ vi( vi[ vi" vit viw vip | af/if=func aa/ia=arg ae/ie=file
+" SURROUND: ds" cs"' ysiw) S" (visual)
+" FLASH: s + 2 chars = jump anywhere, S = treesitter
+" COMMENT: gcc = line, gc = operator
+" NAV: gd=def gr=refs gI=impl K=docs gt=type
+" DIAG: ]d [d = next/prev error
+" HUNK: ]h [h = next/prev git change
+" ====================================
+
+" Leader
+let mapleader = " "
+let maplocalleader = "\\"
+
+" Options
+set scrolloff=4
+set sidescrolloff=8
+set number
+set relativenumber
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+set showmode
+set clipboard=unnamedplus
+set virtualedit=block
+
+" Plugins
+set surround
+set commentary
+set highlightedyank
+set argtextobj
+set textobj-entire
+set functiontextobj
+set NERDTree
+set matchit
+set which-key
+set notimeout
+let g:WhichKey_DefaultDelay = 500
+
+" Which-Key appearance (Catppuccin)
+let g:WhichKey_FontFamily = 'JetBrains Mono'
+let g:WhichKey_FontSize = 14
+let g:WhichKey_KeyColor = '#89B4FA'
+let g:WhichKey_PrefixColor = '#CBA6F7'
+
+set ideajoin
+set idearefactormode=keep
+
+" Handler: let IDE handle C-l for returning from project view to editor
+sethandler <C-l> a:ide
+
+" Flash
+nmap s <Action>(flash.search)
+xmap s <Action>(flash.search)
+omap s <Action>(flash.search)
+nmap S <Action>(flash.treesitter)
+xmap S <Action>(flash.treesitter)
+omap r <Action>(flash.remote)
+
+" Clear search
+nnoremap <Esc> :nohlsearch<CR>
+
+" Save
+nnoremap <C-s> :action SaveAll<CR>
+inoremap <C-s> <Esc>:action SaveAll<CR>
+
+" Window navigation
+nnoremap <C-h> :action ActivateProjectToolWindow<CR>
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+" C-l: handled by IDE keymap (returns from project view to editor)
+
+" Window splits
+nnoremap <leader>- :action SplitHorizontally<CR>
+nnoremap <leader>| :action SplitVertically<CR>
+nnoremap <leader>wd :action Unsplit<CR>
+nnoremap <leader>wm :action MaximizeEditorInSplit<CR>
+let g:WhichKeyDesc_w = "<leader>w +windows"
+let g:WhichKeyDesc_wd = "<leader>wd close"
+let g:WhichKeyDesc_wm = "<leader>wm maximize"
+
+" Buffer navigation (LazyVim has both)
+nnoremap <S-h> :action PreviousTab<CR>
+nnoremap <S-l> :action NextTab<CR>
+nnoremap [b :action PreviousTab<CR>
+nnoremap ]b :action NextTab<CR>
+nnoremap <leader>bd :action CloseContent<CR>
+nnoremap <leader>bo :action CloseAllEditorsButActive<CR>
+nnoremap <leader>bb :action Switcher<CR>
+nnoremap <leader>` :action VimFilePrevious<CR>
+let g:WhichKeyDesc_b = "<leader>b +buffer"
+let g:WhichKeyDesc_bd = "<leader>bd delete"
+let g:WhichKeyDesc_bo = "<leader>bo close others"
+let g:WhichKeyDesc_bb = "<leader>bb switch"
+
+" Move lines
+nnoremap <A-j> :action MoveLineDown<CR>
+nnoremap <A-k> :action MoveLineUp<CR>
+inoremap <A-j> <Esc>:action MoveLineDown<CR>a
+inoremap <A-k> <Esc>:action MoveLineUp<CR>a
+vnoremap <A-j> :action MoveLineDown<CR>
+vnoremap <A-k> :action MoveLineUp<CR>
+
+" Better indenting
+vnoremap < <gv
+vnoremap > >gv
+
+" File explorer
+nnoremap <leader>e :action ActivateProjectToolWindow<CR>
+nnoremap <leader>E :action SelectInProjectView<CR>
+let g:WhichKeyDesc_e = "<leader>e Explorer"
+
+" Find (telescope equivalents)
+nnoremap <leader><space> :action GotoFile<CR>
+nnoremap <leader>ff :action GotoFile<CR>
+nnoremap <leader>fg :action FindInPath<CR>
+nnoremap <leader>fb :action RecentFiles<CR>
+nnoremap <leader>fr :action RecentFiles<CR>
+nnoremap <leader>fc :action FileStructurePopup<CR>
+nnoremap <leader>fn :action NewFile<CR>
+nnoremap <leader>/ :action FindInPath<CR>
+nnoremap <leader>, :action RecentFiles<CR>
+let g:WhichKeyDesc_f = "<leader>f +find"
+let g:WhichKeyDesc_ff = "<leader>ff files"
+let g:WhichKeyDesc_fg = "<leader>fg grep"
+let g:WhichKeyDesc_fb = "<leader>fb buffers"
+let g:WhichKeyDesc_fr = "<leader>fr recent"
+let g:WhichKeyDesc_fc = "<leader>fc structure"
+let g:WhichKeyDesc_fn = "<leader>fn new file"
+
+" Search
+nnoremap <leader>sr :action ReplaceInPath<CR>
+nnoremap <leader>sw :action FindWordAtCaret<CR>
+nnoremap <leader>sg :action FindInPath<CR>
+nnoremap <leader>sG :action FindInPath<CR>
+let g:WhichKeyDesc_s = "<leader>s +search"
+let g:WhichKeyDesc_sr = "<leader>sr replace"
+let g:WhichKeyDesc_sw = "<leader>sw word"
+let g:WhichKeyDesc_sg = "<leader>sg grep (root)"
+let g:WhichKeyDesc_sG = "<leader>sG grep (cwd)"
+
+" LSP/Code navigation
+nnoremap gd :action GotoDeclaration<CR>
+nnoremap gr :action FindUsages<CR>
+nnoremap gI :action GotoImplementation<CR>
+nnoremap gy :action GotoTypeDeclaration<CR>
+nnoremap gO :action FileStructurePopup<CR>
+nnoremap gW :action GotoSymbol<CR>
+nnoremap K :action QuickJavaDoc<CR>
+nnoremap gK :action ParameterInfo<CR>
+
+" Code actions
+nnoremap <leader>ca :action ShowIntentionActions<CR>
+vnoremap <leader>ca :action ShowIntentionActions<CR>
+nnoremap <leader>cr :action RenameElement<CR>
+nnoremap <leader>cf :action ReformatCode<CR>
+vnoremap <leader>cf :action ReformatCode<CR>
+nnoremap <leader>cd :action ShowErrorDescription<CR>
+nnoremap <leader>co :action OptimizeImports<CR>
+nnoremap <leader>cs :action FileStructurePopup<CR>
+let g:WhichKeyDesc_c = "<leader>c +code"
+let g:WhichKeyDesc_ca = "<leader>ca actions"
+let g:WhichKeyDesc_cr = "<leader>cr rename"
+let g:WhichKeyDesc_cf = "<leader>cf format"
+let g:WhichKeyDesc_cd = "<leader>cd diagnostics"
+let g:WhichKeyDesc_co = "<leader>co imports"
+let g:WhichKeyDesc_cs = "<leader>cs symbols"
+
+" Diagnostics
+nnoremap ]d :action GotoNextError<CR>
+nnoremap [d :action GotoPreviousError<CR>
+nnoremap <leader>xx :action ActivateProblemsViewToolWindow<CR>
+nnoremap <leader>xq :action ActivateProblemsViewToolWindow<CR>
+let g:WhichKeyDesc_x = "<leader>x +diagnostics"
+let g:WhichKeyDesc_xx = "<leader>xx problems"
+
+" Git
+nnoremap <leader>gg :action ActivateVersionControlToolWindow<CR>
+nnoremap <leader>gb :action Annotate<CR>
+nnoremap <leader>gB :action Github.Open.In.Browser<CR>
+nnoremap <leader>gl :action Vcs.Show.Log<CR>
+nnoremap <leader>gf :action Vcs.ShowTabbedFileHistory<CR>
+nnoremap <leader>gd :action Compare.LastVersion<CR>
+nnoremap <leader>gp :action Vcs.Push<CR>
+nnoremap <leader>gs :action Vcs.Show.Local.Changes<CR>
+nnoremap ]h :action VcsShowNextChangeMarker<CR>
+nnoremap [h :action VcsShowPrevChangeMarker<CR>
+let g:WhichKeyDesc_g = "<leader>g +git"
+let g:WhichKeyDesc_gg = "<leader>gg status"
+let g:WhichKeyDesc_gb = "<leader>gb blame"
+let g:WhichKeyDesc_gB = "<leader>gB browse"
+let g:WhichKeyDesc_gl = "<leader>gl log"
+let g:WhichKeyDesc_gf = "<leader>gf file history"
+let g:WhichKeyDesc_gd = "<leader>gd diff"
+let g:WhichKeyDesc_gp = "<leader>gp push"
+let g:WhichKeyDesc_gs = "<leader>gs changes"
+
+" Terminal
+nnoremap <leader>ft :action ActivateTerminalToolWindow<CR>
+nnoremap <C-/> :action ActivateTerminalToolWindow<CR>
+nnoremap <C-_> :action ActivateTerminalToolWindow<CR>
+let g:WhichKeyDesc_ft = "<leader>ft terminal"
+
+" Refactoring
+nnoremap <leader>rr :action Refactorings.QuickListPopupAction<CR>
+nnoremap <leader>rm :action ExtractMethod<CR>
+nnoremap <leader>rv :action IntroduceVariable<CR>
+nnoremap <leader>ri :action Inline<CR>
+let g:WhichKeyDesc_r = "<leader>r +refactor"
+let g:WhichKeyDesc_rr = "<leader>rr menu"
+let g:WhichKeyDesc_rm = "<leader>rm method"
+let g:WhichKeyDesc_rv = "<leader>rv variable"
+let g:WhichKeyDesc_ri = "<leader>ri inline"
+
+" Debug
+nnoremap <leader>db :action ToggleLineBreakpoint<CR>
+nnoremap <leader>dc :action Debug<CR>
+nnoremap <leader>dr :action Run<CR>
+nnoremap <leader>do :action StepOver<CR>
+nnoremap <leader>di :action StepInto<CR>
+nnoremap <leader>dO :action StepOut<CR>
+nnoremap <leader>dk :action Resume<CR>
+nnoremap <leader>dt :action Stop<CR>
+nnoremap <leader>de :action EvaluateExpression<CR>
+let g:WhichKeyDesc_d = "<leader>d +debug"
+let g:WhichKeyDesc_db = "<leader>db breakpoint"
+let g:WhichKeyDesc_dc = "<leader>dc debug"
+let g:WhichKeyDesc_dr = "<leader>dr run"
+let g:WhichKeyDesc_do = "<leader>do step over"
+let g:WhichKeyDesc_di = "<leader>di step into"
+let g:WhichKeyDesc_dO = "<leader>dO step out"
+let g:WhichKeyDesc_dk = "<leader>dk continue"
+let g:WhichKeyDesc_dt = "<leader>dt stop"
+let g:WhichKeyDesc_de = "<leader>de evaluate"
+
+" UI toggles
+nnoremap <leader>uf :action ToggleAutoFormatOnSave<CR>
+nnoremap <leader>us :set invspell<CR>
+nnoremap <leader>uw :set invwrap<CR>
+nnoremap <leader>uL :set invrelativenumber<CR>
+nnoremap <leader>ui :action ToggleInlineHintsAction<CR>
+nnoremap <leader>ul :set invnumber<CR>
+nnoremap <leader>uc :action EditorToggleShowIndentLines<CR>
+nnoremap <leader>uh :set invhlsearch<CR>
+nnoremap <leader>uz :action ToggleDistractionFreeMode<CR>
+let g:WhichKeyDesc_u = "<leader>u +ui"
+let g:WhichKeyDesc_uf = "<leader>uf format on save"
+let g:WhichKeyDesc_us = "<leader>us spelling"
+let g:WhichKeyDesc_uw = "<leader>uw wrap"
+let g:WhichKeyDesc_uL = "<leader>uL relative numbers"
+let g:WhichKeyDesc_ui = "<leader>ui inlay hints"
+let g:WhichKeyDesc_ul = "<leader>ul line numbers"
+let g:WhichKeyDesc_uc = "<leader>uc indent guides"
+let g:WhichKeyDesc_uh = "<leader>uh highlight"
+let g:WhichKeyDesc_uz = "<leader>uz zen mode"
+
+" Quit
+nnoremap <leader>qq :action Exit<CR>
+nnoremap <leader>qs :action SaveAll<CR>
+let g:WhichKeyDesc_q = "<leader>q +quit"
+let g:WhichKeyDesc_qq = "<leader>qq quit all"
+let g:WhichKeyDesc_qs = "<leader>qs save all"
+
+" Misc
+nnoremap <leader>: :action GotoAction<CR>
+nnoremap <leader>l :action ShowSettings<CR>
+nnoremap <leader>sn :action ShowNotifications<CR>
+nnoremap <leader>un :action CloseAllNotifications<CR>
+
+" Disable arrow keys
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+inoremap <Up> <Nop>
+inoremap <Down> <Nop>
+inoremap <Left> <Nop>
+inoremap <Right> <Nop>
