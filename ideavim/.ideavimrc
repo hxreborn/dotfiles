@@ -37,7 +37,7 @@ set NERDTree
 set matchit
 set which-key
 set notimeout
-let g:WhichKey_DefaultDelay = 500
+let g:WhichKey_DefaultDelay = 300
 
 " Which-Key appearance (Catppuccin)
 let g:WhichKey_FontFamily = 'JetBrains Mono'
