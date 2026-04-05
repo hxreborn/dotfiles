@@ -25,16 +25,22 @@ ya"  → yank around quotes
 dip  → delete paragraph
 ```
 
-## Surround Plugin
+## Surround (mini.surround)
 
 | Keys | Action |
 |------|--------|
-| `ds"` | Delete surrounding `"` |
-| `cs"'` | Change `"` to `'` |
-| `ysiw)` | Surround word with `()` |
-| `ysiw}` | Surround word with `{}` |
-| `ysiw"` | Surround word with `"` |
+| `sa` | Add surround |
+| `sd` | Delete surround |
+| `sf` | Find surround |
+| `sF` | Find left surround |
+| `sr` | Replace surround |
+| `sn` | Update n lines |
 | `S"` | Surround visual selection |
+
+**Examples**:
+- `sa"` → Add quotes around word
+- `sd"` → Delete surrounding quotes
+- `ysiw{` → Surround word with braces
 
 ## Flash (Quick Jump)
 
@@ -55,6 +61,34 @@ dip  → delete paragraph
 
 ## Navigation
 
+### Cursor Movement
+| Keys | Action |
+|------|--------|
+| `h j k l` | Left/down/up/right |
+| `w b` | Word forward/back |
+| `e b` | End of word forward/back |
+| `0 $` | Line start/end |
+| `gg G` | File start/end |
+| `{ }` | Paragraph up/down |
+| `Ctrl+u/d` | Half page up/down |
+| `%` | Jump to matching bracket |
+
+### Insert Mode Navigation (NEW)
+| Keys | Action | Mode |
+|------|------|--------|
+| `Alt+h` | Move left | Insert, Command |
+| `Alt+j` | Move down | Insert, Command |
+| `Alt+k` | Move up | Insert, Command |
+| `Alt+l` | Move right | Insert, Command |
+
+### Window Navigation
+| Keys | Action |
+|------|--------|
+| `Ctrl+h/j/k/l` | Move focus to left/lower/upper/right window |
+| `Shift+H` | Previous tab |
+| `Shift+L` | Next tab |
+
+### LSP Navigation
 | Keys | Action |
 |------|--------|
 | `gd` | Go to definition |
@@ -101,7 +135,9 @@ dip  → delete paragraph
 | `gd` | Diff |
 | `gh` | File history |
 | `gb` | Branches |
-| `gn` | Blame/annotate |
+| `gn` | Neogit status |
+| `<leader>ghb` | Blame line (full info) |
+| `<leader>ghB` | Blame buffer |
 
 ### UI Toggles
 | Keys | Action |
@@ -154,18 +190,30 @@ dip  → delete paragraph
 | `rm` | Extract method |
 | `rv` | Extract variable |
 | `ri` | Inline |
+| `<leader>rn` | Rename symbol (LSP) |
+| `gi` | Go to implementation (LSP) |
+| `gr` | Find references (LSP) |
+
+## Indentation (guess-indent.nvim)
+
+**Auto-detects indentation style** when opening files
+- Works with BufReadPost/BufNewFile events
+- Zero configuration needed
+- Consistent across projects
 
 ## Basic Motions
 
 | Keys | Action |
 |------|--------|
 | `h j k l` | Left/down/up/right |
-| `w` `b` | Word forward/back |
-| `e` | End of word |
-| `0` `$` | Line start/end |
-| `gg` `G` | File start/end |
-| `{` `}` | Paragraph up/down |
+| `w b` | Word forward/back |
+| `e b` | End of word forward/back |
+| `0 $` | Line start/end |
+| `gg G` | File start/end |
+| `{ }` | Paragraph up/down |
 | `Ctrl+u/d` | Half page up/down |
 | `%` | Jump to matching bracket |
 | `f{char}` | Find char forward |
 | `t{char}` | Till char forward |
+
+**Tip**: Use `Alt+h/j/k/l` in Insert mode for navigation without exiting
