@@ -19,6 +19,14 @@ vim.api.nvim_create_autocmd("InsertLeave", {
   end,
 })
 
+-- Close diffview panels with q
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "DiffviewFiles", "DiffviewFileHistory", "DiffviewFileHistoryPanel" },
+  callback = function(event)
+    vim.keymap.set("n", "q", "<cmd>DiffviewClose<cr>", { buffer = event.buf, silent = true })
+  end,
+})
+
 -- Disable diagnostics for markdown files
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
