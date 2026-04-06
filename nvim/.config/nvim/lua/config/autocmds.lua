@@ -34,3 +34,11 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.diagnostic.enable(false, { bufnr = args.buf })
   end,
 })
+
+-- Keep end-of-buffer tildes themed with NonText across colorscheme changes
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    vim.api.nvim_set_hl(0, "EndOfBuffer", { link = "NonText" })
+  end,
+})
