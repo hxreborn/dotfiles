@@ -5,6 +5,10 @@
 # Load ZLE module
 zmodload -i zsh/zle
 
+# Strip path separators and dots from word characters so Ctrl+Left/Right
+# stops at each segment in paths like ~/example/.test/
+WORDCHARS='*?_-[]~=&;!#$%^(){}<>'
+
 # bind_emacs SEQ WIDGET -> bind only to emacs keymap
 bind_emacs() { bindkey -M emacs "$1" "$2"; }
 
