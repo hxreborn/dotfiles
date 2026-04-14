@@ -52,7 +52,8 @@ Untracked, per-machine:
 
 ## Keybindings
 
-### [Neovim](https://github.com/LazyVim/LazyVim) -> LazyVim distribution
+### [Neovim](https://github.com/LazyVim/LazyVim)
+LazyVim distribution
 
 | Action          | Shortcut       |
 |-----------------|----------------|
@@ -64,7 +65,8 @@ Untracked, per-machine:
 | Format document | Leader + c + f |
 | Toggle terminal | Ctrl + /       |
 
-### [AeroSpace](https://github.com/nikitabobko/AeroSpace) -> i3-inspired tiling WM
+### [AeroSpace](https://github.com/nikitabobko/AeroSpace)
+i3-inspired tiling WM
 
 | Action            | Shortcut              |
 |-------------------|-----------------------|
@@ -77,7 +79,8 @@ Untracked, per-machine:
 | Send to workspace | ⌥ + ⇧ + A-G          |
 | Close             | ⌥ + Q                 |
 
-### [Amethyst](https://github.com/ianyh/Amethyst) -> automatic tiling WM
+### [Amethyst](https://github.com/ianyh/Amethyst)
+Automatic tiling WM
 
 | Action               | Shortcut              |
 |----------------------|-----------------------|
@@ -88,7 +91,8 @@ Untracked, per-machine:
 | Send to space        | ⌃ + ⇧ + 1-5          |
 | Cycle layout         | ⌃ + Space             |
 
-### [Yabai](https://github.com/koekeishiya/yabai) + [skhd](https://github.com/koekeishiya/skhd) -> BSP tiling WM + hotkey daemon
+### [Yabai](https://github.com/koekeishiya/yabai) + [skhd](https://github.com/koekeishiya/skhd)
+BSP tiling WM + hotkey daemon
 
 | Action            | Shortcut                    |
 |-------------------|-----------------------------|
@@ -103,7 +107,8 @@ Untracked, per-machine:
 | Terminal          | ⌥ + T                       |
 | Browser           | ⌥ + B                       |
 
-### [OmniWM](https://github.com/BarutSRB/OmniWM) -> dwindle tiling WM
+### [OmniWM](https://github.com/BarutSRB/OmniWM)
+Dwindle tiling WM
 
 | Action            | Shortcut              |
 |-------------------|-----------------------|
