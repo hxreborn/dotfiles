@@ -1,22 +1,15 @@
-# dotfiles — GNU Stow + Make
 # Usage: make help
 
 DOTFILES := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 STOW     := stow --dir=$(DOTFILES) --target=$(HOME) --verbose=1
 UNAME    := $(shell uname -s)
 
-# ── Package lists ────────────────────────────────────────
-# Shared across platforms
-SHARED := nvim zsh git ideavim
+SHARED   := nvim zsh git ideavim
+MACOS    := karabiner
+LINUX    := waybar
 
-# macOS (included in 'make all' on Darwin)
-MACOS := aerospace karabiner omniwm
-
-# macOS optional (stow individually: make yabai, make skhd)
-MACOS_OPT := yabai skhd amethyst
-
-# Linux (included in 'make all' on Linux)
-LINUX := waybar
+# WMs conflict -> pick one
+MACOS_WM := aerospace omniwm yabai-skhd amethyst
 
 ifeq ($(UNAME),Darwin)
   ALL := $(SHARED) $(MACOS)
@@ -24,9 +17,8 @@ else
   ALL := $(SHARED) $(LINUX)
 endif
 
-STOW_PKGS := $(SHARED) $(MACOS) $(MACOS_OPT) $(LINUX)
+STOW_PKGS := $(SHARED) $(MACOS) $(MACOS_WM) $(LINUX)
 
-# ── Default target ───────────────────────────────────────
 .PHONY: help
 help:
 	@echo "make list            show packages for this OS"
@@ -42,25 +34,22 @@ help:
 	@echo "make doctor          verify symlinks"
 	@echo "make dry-run         preview what 'make all' would do"
 
-# ── List ─────────────────────────────────────────────────
 .PHONY: list
 list:
 	@echo "shared:   $(SHARED)"
 ifeq ($(UNAME),Darwin)
 	@echo "macos:    $(MACOS)"
-	@echo "optional: $(MACOS_OPT)"
+	@echo "optional: $(MACOS_WM)"
 else
 	@echo "linux:    $(LINUX)"
 endif
 
-# ── Stow targets ────────────────────────────────────────
 .PHONY: all $(STOW_PKGS)
 all: $(ALL)
 
 $(STOW_PKGS):
 	$(STOW) $@
 
-# ── Remove targets ──────────────────────────────────────
 .PHONY: remove-all
 remove-all:
 	@for pkg in $(ALL); do \
@@ -71,7 +60,6 @@ remove-all:
 remove-%:
 	$(STOW) -D $*
 
-# ── Restow targets ─────────────────────────────────────
 .PHONY: restow-all
 restow-all:
 	@for pkg in $(ALL); do \
@@ -82,7 +70,7 @@ restow-all:
 restow-%:
 	$(STOW) -R $*
 
-# ── VSCode (cross-platform, not stow-managed) ──────────
+# vscode paths differ per OS -> symlink manually
 .PHONY: vscode remove-vscode
 vscode:
 ifeq ($(UNAME),Darwin)
@@ -110,7 +98,6 @@ else
 endif
 	@echo "vscode unlinked"
 
-# ── Bootstrap ───────────────────────────────────────────
 .PHONY: bootstrap
 bootstrap:
 ifeq ($(UNAME),Darwin)
@@ -132,7 +119,6 @@ endif
 	@$(MAKE) vscode
 	@echo "bootstrap complete"
 
-# ── Doctor ──────────────────────────────────────────────
 .PHONY: doctor
 doctor:
 	@ok=0; fail=0; \
@@ -156,7 +142,6 @@ doctor:
 	done; \
 	if [ "$$fail" -eq 0 ]; then echo "all symlinks ok"; fi
 
-# ── Dry run ─────────────────────────────────────────────
 .PHONY: dry-run
 dry-run:
 	@for pkg in $(ALL); do \

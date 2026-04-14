@@ -1,0 +1,58 @@
+[include]
+	path = config.local
+
+[core]
+	excludesFile = ~/.config/git/ignore
+
+[commit]
+	gpgsign = true
+
+[tag]
+	gpgsign = true
+
+[gpg]
+	format = ssh
+
+[init]
+	defaultBranch = main
+
+[push]
+	default = simple
+
+[pull]
+	rebase = false
+
+[fetch]
+	prune = true
+
+[rerere]
+	enabled = true
+
+[color]
+	ui = auto
+
+[status]
+	short = true
+	branch = true
+
+[merge]
+	conflictstyle = zdiff3
+
+[rebase]
+	autosquash = true
+	autostash = true
+
+[diff]
+	tool = delta
+	algorithm = histogram
+
+[branch]
+	sort = -committerdate
+
+[column]
+	ui = auto
+
+[delta]
+	navigate = true
+	line-numbers = true
+	syntax-theme = GitHub

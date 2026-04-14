@@ -1,61 +1,29 @@
-# Ignore OS and editor junk everywhere
+# OS
 .DS_Store
-Thumbs.db
-*.swp
-*.swo
-*.tmp
-*~
-.nfs*
-
-# macOS
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
+Thumbs.db
 ehthumbs.db
+
+# Editor swap/backup
+*.swp
+*.swo
+*.tmp
+*.bak
+*~
+.nfs*
 
 # Archives
 *.zip
 *.tar.gz
 *.rar
 
-# Editor backups
-*.bak
+# Local overrides (never tracked)
+*.local
+*.local.*
 
-# Ignore everything else by default
-*
-!.gitignore
-!.gitattributes
-!.gitinclude
-!README.md
-!setup.sh
-
-# Unignore stow packages
-!scripts/
-!scripts/**
-!nvim/
-!nvim/**
-!zsh/
-!zsh/**
-!waybar/
-!waybar/**
-!vscode/
-!vscode/**
-!aerospace/
-!aerospace/**
-!amethyst/
-!amethyst/**
-!yabai/
-!yabai/**
-!skhd/
-!skhd/**
-!karabiner/
-!karabiner/**
-!.local/
-!.local/**
-!ideavim/
-!ideavim/**
-!fish/
-!fish/**
-!omniwm/
-!omniwm/**
+# Repo-level generated files
+/.config/
+/.local/

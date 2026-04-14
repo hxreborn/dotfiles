@@ -1,86 +1,56 @@
 # dotfiles
 
-Dotfiles managed with GNU Stow.
+GNU Stow + Make. macOS, Arch, Fedora, Ubuntu.
 
-## Prerequisites
-
-```sh
-# Install stow
-# Arch/CachyOS
-sudo pacman -S stow
-
-# macOS
-brew install stow
-
-# Debian/Ubuntu
-sudo apt install stow
-```
-
-## Quick Start
+## Setup
 
 ```sh
 git clone https://github.com/hxreborn/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-
-# Install individual package
-stow nvim
-
-# Install multiple packages
-stow nvim zsh waybar
-
-# Remove package
-stow -D nvim
+make bootstrap
 ```
 
-## Index
+## Packages
 
-- [How Stow Works](#how-stow-works)
-- [Available Packages](#available-packages)
-- [Neovim](#neovim)
-- [zsh](#zsh)
-- [VSCode](#vscode)
-- [Waybar](#waybar)
-- [macOS WMs](#macos-wms)
+| Package   | Platform | Description                     |
+|-----------|----------|---------------------------------|
+| nvim      | all      | Neovim (LazyVim)                |
+| zsh       | all      | Zsh (HyDE framework)           |
+| git       | all      | Git config, local override      |
+| ideavim   | all      | IdeaVim for JetBrains           |
+| vscode    | all      | VSCode settings, keybindings    |
+| aerospace  | macOS    | AeroSpace tiling WM            |
+| yabai-skhd | macOS    | Yabai + skhd (SIP off)         |
+| omniwm     | macOS    | OmniWM tiling WM               |
+| amethyst   | macOS    | Amethyst tiling WM              |
+| karabiner  | macOS    | Karabiner-Elements              |
+| waybar     | Linux    | Waybar (Wayland)                |
 
-## How Stow Works
+Pick one WM. AeroSpace, yabai-skhd, omniwm, and amethyst conflict with each other.
 
-Each directory is a "package" that mirrors your home directory structure:
+## Usage
 
-```
-dotfiles/
-├── nvim/.config/nvim/      → ~/.config/nvim
-├── zsh/.config/zsh/        → ~/.config/zsh
-├── waybar/.config/waybar/  → ~/.config/waybar
-└── ...
-```
+Fresh machine: `make bootstrap`. Day-to-day: `make all` or `make nvim`. See `make help` for every target.
 
-Stow creates symlinks from `~` to the repo.
+`make restow-<package>` after adding or removing files from a package.
 
-## Available Packages
+New package: create `<name>/.config/<name>/`, add to the Makefile, `make <name>`.
 
-| Package   | Description                    |
-|-----------|--------------------------------|
-| nvim      | LazyVim configuration          |
-| zsh       | Shell configuration            |
-| waybar    | Wayland status bar             |
-| vscode    | VSCode settings & keybindings  |
-| aerospace | macOS tiling WM                |
-| amethyst  | macOS tiling WM                |
-| yabai     | macOS tiling WM                |
-| skhd      | macOS hotkey daemon            |
-| karabiner | macOS keyboard customizer      |
+## Local Overrides
 
-## Neovim
+Untracked, per-machine:
 
-LazyVim configuration.
+- `~/.config/git/config.local` -> email, signing key
+- `~/.config/zsh/local.zsh` -> env, PATH
 
-```sh
-cd ~/dotfiles
-stow nvim
-```
+---
+
+## Keybindings
+
+### Neovim
 
 | Action          | Shortcut       |
-| --------------- | -------------- |
+|-----------------|----------------|
 | File explorer   | Leader + e     |
 | Find files      | Leader + Space |
 | Find text       | Leader + /     |
@@ -91,82 +61,46 @@ stow nvim
 
 Clean reinstall: `rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim && nvim`
 
-## zsh
+### AeroSpace
+
+i3-inspired tiling. Needs Accessibility permission in System Settings.
 
 ```sh
-cd ~/dotfiles
-stow zsh
+brew install --cask nikitabobko/tap/aerospace
 ```
 
-## VSCode
-
-```sh
-cd ~/dotfiles
-stow vscode
-```
-
-Linux: `~/.config/Code/User/`
-macOS: `~/Library/Application Support/Code/User/`
-
-## Waybar
-
-```sh
-cd ~/dotfiles
-stow waybar
-```
-
----
-
-## macOS WMs
-
-All require Accessibility permission.
+| Action            | Shortcut              |
+|-------------------|-----------------------|
+| Focus             | ⌥ + H J K L           |
+| Move window       | ⌥ + ⇧ + H J K L      |
+| Resize            | ⌥ + ⌃ + H J K L      |
+| Fullscreen        | ⌥ + M                 |
+| Float             | ⌥ + ⇧ + Space        |
+| Switch workspace  | ⌥ + A S D F G         |
+| Send to workspace | ⌥ + ⇧ + A-G          |
+| Close             | ⌥ + Q                 |
 
 ### Amethyst
 
 ```sh
 brew install --cask amethyst
-cd ~/dotfiles
-stow amethyst
 ```
 
 | Action               | Shortcut              |
-| -------------------- | --------------------- |
-| Move focus           | ^ + ← ↓ ↑ →           |
-| Move window          | ^ + ⇧ + ← ↓ ↑ →       |
-| Toggle float         | ^ + T                 |
-| Switch to Space      | ^ + 1 / 2 / 3 / 4 / 5 |
-| Move window to Space | ^ + ⇧ + 1–5           |
-| Cycle layout         | ^ + Space             |
-
-### AeroSpace
-
-i3-inspired tiling. Beta (v0.18.5).
-
-```sh
-brew install --cask nikitabobko/tap/aerospace
-cd ~/dotfiles
-stow aerospace
-```
-
-| Action            | Shortcut        |
-| ----------------- | --------------- |
-| Focus movement    | ⌥ + H J K L     |
-| Move window       | ⌥ + ⇧ + H J K L |
-| Resize window     | ⌥ + ^ + H J K L |
-| Toggle fullscreen | ⌥ + M           |
-| Toggle floating   | ⌥ + ⇧ + Space   |
-| Switch workspace  | ⌥ + A S D F G   |
-| Send to workspace | ⌥ + ⇧ + A–G     |
-| Close window      | ⌥ + Q           |
+|----------------------|-----------------------|
+| Focus                | ⌃ + Arrows            |
+| Move window          | ⌃ + ⇧ + Arrows       |
+| Float                | ⌃ + T                 |
+| Switch space         | ⌃ + 1-5               |
+| Send to space        | ⌃ + ⇧ + 1-5          |
+| Cycle layout         | ⌃ + Space             |
 
 ### Yabai + skhd
 
-Requires SIP disabled for full features.
+Disable SIP partially for full features.
 
 ```sh
 brew install koekeishiya/formulae/yabai koekeishiya/formulae/skhd
-cd ~/dotfiles
-stow yabai skhd
 yabai --start-service && skhd --start-service
 ```
 
