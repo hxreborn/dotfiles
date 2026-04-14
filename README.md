@@ -3,7 +3,7 @@
 ![macOS](https://img.shields.io/badge/macOS-000?logo=apple&logoColor=fff)
 ![Linux](https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=000)
 
-Personal dotfiles managed with GNU Stow and Make. Works on macOS, Arch, Fedora, and Ubuntu-based systems.
+Personal dotfiles managed with GNU Stow and Make. Works on macOS, Arch, Fedora, and Debian-based systems.
 
 ## Setup
 
