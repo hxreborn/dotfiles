@@ -17,13 +17,17 @@ make bootstrap
 
 | Package | Platform | Description |
 |---------|----------|-------------|
-| nvim      | all   | LazyVim config               |
-| zsh       | all   | Zsh config                   |
-| git       | all   | Git config, local override  |
-| ideavim   | all   | IdeaVim for JetBrains       |
-| vscode    | all   | VSCode settings, keybindings|
-| karabiner | macOS | Karabiner-Elements          |
-| waybar    | Linux | Waybar (Wayland)            |
+| `nvim`      | all   | LazyVim config               |
+| `zsh`       | all   | Zsh config                   |
+| `git`       | all   | Git config, local override   |
+| `ideavim`   | all   | IdeaVim for JetBrains        |
+| `kitty`     | all   | Kitty terminal               |
+| `fastfetch` | all   | Fastfetch system info        |
+| `lazygit`   | all   | Lazygit TUI                  |
+| `vscode`    | all   | VSCode settings, keybindings |
+| `karabiner` | macOS | Karabiner-Elements           |
+| `waybar`    | Linux | Waybar                       |
+| `satty`     | Linux | Satty screenshot annotation  |
 
 **macOS tiling window managers** (pick one):
 [AeroSpace](https://github.com/nikitabobko/AeroSpace) ·
@@ -54,74 +58,74 @@ Untracked, per-machine:
 
 ### [LazyVim](https://github.com/LazyVim/LazyVim)
 
-| Action          | Shortcut       |
-|-----------------|----------------|
-| File explorer   | `<leader>e`      |
-| Find files      | `<leader><space>` |
-| Find text       | `<leader>/`       |
-| Git status      | `<leader>gs`      |
-| Code actions    | `<leader>ca`      |
-| Format document | `<leader>cf`      |
-| Toggle terminal | `<C-/>`           |
+| Key | Action |
+|-----|--------|
+| `<leader>e` | File explorer |
+| `<leader><space>` | Find files |
+| `<leader>/` | Find text |
+| `<leader>gs` | Git status |
+| `<leader>ca` | Code actions |
+| `<leader>cf` | Format document |
+| `<C-/>` | Toggle terminal |
 
 ---
 
 ### [AeroSpace](https://github.com/nikitabobko/AeroSpace)
 macOS tiling window manager, i3-like keybindings
 
-| Action            | Shortcut              |
-|-------------------|-----------------------|
-| Focus             | ⌥ + H J K L           |
-| Move window       | ⌥ + ⇧ + H J K L      |
-| Resize            | ⌥ + ⌃ + H J K L      |
-| Fullscreen        | ⌥ + M                 |
-| Float             | ⌥ + ⇧ + Space        |
-| Switch workspace  | ⌥ + A S D F G         |
-| Send to workspace | ⌥ + ⇧ + A-G          |
-| Close             | ⌥ + Q                 |
+| Key | Action |
+|-----|--------|
+| `⌥ + H J K L` | Focus |
+| `⌥ + ⇧ + H J K L` | Move window |
+| `⌥ + ⌃ + H J K L` | Resize |
+| `⌥ + M` | Fullscreen |
+| `⌥ + ⇧ + Space` | Float |
+| `⌥ + A S D F G` | Switch workspace |
+| `⌥ + ⇧ + A-G` | Send to workspace |
+| `⌥ + Q` | Close |
 
 ---
 
 ### [Amethyst](https://github.com/ianyh/Amethyst)
 macOS tiling window manager, layout-based
 
-| Action               | Shortcut              |
-|----------------------|-----------------------|
-| Focus                | ⌃ + Arrows            |
-| Move window          | ⌃ + ⇧ + Arrows       |
-| Float                | ⌃ + T                 |
-| Switch space         | ⌃ + 1-5               |
-| Send to space        | ⌃ + ⇧ + 1-5          |
-| Cycle layout         | ⌃ + Space             |
+| Key | Action |
+|-----|--------|
+| `⌃ + Arrows` | Focus |
+| `⌃ + ⇧ + Arrows` | Move window |
+| `⌃ + T` | Float |
+| `⌃ + 1-5` | Switch space |
+| `⌃ + ⇧ + 1-5` | Send to space |
+| `⌃ + Space` | Cycle layout |
 
 ---
 
 ### [Yabai](https://github.com/koekeishiya/yabai) + [skhd](https://github.com/koekeishiya/skhd)
-macOS tiling window manager (BSP) + hotkey daemon
+macOS tiling window manager, BSP + hotkey daemon
 
-| Action            | Shortcut                    |
-|-------------------|-----------------------------|
-| Focus             | ⌥ + Arrows                  |
-| Resize            | ⌥ + ⇧ + Arrows             |
-| Swap              | ⌥ + ⌃ + ⇧ + Arrows         |
-| Float             | ⌥ + W                       |
-| Fullscreen        | ⇧ + F11                     |
-| Rotate layout     | ⌥ + R                       |
-| Switch workspace  | ⌥ + 1-9                     |
-| Send to workspace | ⌥ + ⇧ + 1-9                |
-| Terminal          | ⌥ + T                       |
-| Browser           | ⌥ + B                       |
+| Key | Action |
+|-----|--------|
+| `⌥ + Arrows` | Focus |
+| `⌥ + ⇧ + Arrows` | Resize |
+| `⌥ + ⌃ + ⇧ + Arrows` | Swap |
+| `⌥ + W` | Float |
+| `⇧ + F11` | Fullscreen |
+| `⌥ + R` | Rotate layout |
+| `⌥ + 1-9` | Switch workspace |
+| `⌥ + ⇧ + 1-9` | Send to workspace |
+| `⌥ + T` | Terminal |
+| `⌥ + B` | Browser |
 
 ---
 
 ### [OmniWM](https://github.com/BarutSRB/OmniWM)
 macOS tiling window manager, dwindle layout
 
-| Action            | Shortcut              |
-|-------------------|-----------------------|
-| Focus             | ⌥ + Arrows            |
-| Move window       | ⌥ + ⇧ + Arrows       |
-| Switch workspace  | ⌥ + 1-9               |
-| Send to workspace | ⌥ + ⇧ + 1-9          |
-| Fullscreen        | ⌥ + F                 |
-| Quake terminal    | ⌥ + `                 |
+| Key | Action |
+|-----|--------|
+| `⌥ + Arrows` | Focus |
+| `⌥ + ⇧ + Arrows` | Move window |
+| `⌥ + 1-9` | Switch workspace |
+| `⌥ + ⇧ + 1-9` | Send to workspace |
+| `⌥ + F` | Fullscreen |
+| `` ⌥ + ` `` | Quake terminal |
