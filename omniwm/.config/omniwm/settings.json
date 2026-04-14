@@ -1,5 +1,5 @@
 {
-  "animationsEnabled" : false,
+  "animationsEnabled" : true,
   "appRules" : [
     {
       "bundleId" : "com.openai.codex",
@@ -80,10 +80,19 @@
       "minWidth" : 660
     },
     {
-      "bundleId" : "ru.keepcoder.Telegram",
-      "id" : "6FD0C43F-5A2A-447F-ABCC-3A320A089E67",
-      "minHeight" : 400,
-      "minWidth" : 500
+      "bundleId" : "org.pqrs.Karabiner-Elements.Settings",
+      "id" : "3EDDDEE3-0FCF-4457-8DBA-0A56CC2EF39B",
+      "layout" : "float"
+    },
+    {
+      "bundleId" : "org.pqrs.Karabiner-Elements",
+      "id" : "6EC7280E-FD17-479E-B38F-7D2B75E565CF",
+      "layout" : "float"
+    },
+    {
+      "bundleId" : "com.apple.systempreferences",
+      "id" : "B36F26F0-70B0-4DF3-A932-45746B55D0DA",
+      "layout" : "float"
     }
   ],
   "appearanceMode" : "dark",
@@ -103,7 +112,7 @@
   "dwindleUseGlobalGaps" : true,
   "focusFollowsMouse" : true,
   "focusFollowsWindowToMonitor" : false,
-  "gapSize" : 5,
+  "gapSize" : 8,
   "gestureFingerCount" : 3,
   "gestureInvertDirection" : true,
   "hiddenBarIsCollapsed" : true,
@@ -393,19 +402,19 @@
       "id" : "swapSplit"
     },
     {
-      "binding" : "Command+Option+Left Arrow",
+      "binding" : "Option+Command+Left Arrow",
       "id" : "resizeGrow.left"
     },
     {
-      "binding" : "Command+Option+Right Arrow",
+      "binding" : "Option+Command+Right Arrow",
       "id" : "resizeGrow.right"
     },
     {
-      "binding" : "Command+Option+Up Arrow",
+      "binding" : "Option+Command+Up Arrow",
       "id" : "resizeGrow.up"
     },
     {
-      "binding" : "Command+Option+Down Arrow",
+      "binding" : "Option+Command+Down Arrow",
       "id" : "resizeGrow.down"
     },
     {
@@ -524,10 +533,10 @@
   "niriMaxVisibleColumns" : 2,
   "niriMaxWindowsPerColumn" : 3,
   "niriSingleWindowAspectRatio" : "4:3",
-  "outerGapBottom" : 10,
-  "outerGapLeft" : 10,
-  "outerGapRight" : 10,
-  "outerGapTop" : 10,
+  "outerGapBottom" : 1,
+  "outerGapLeft" : 1,
+  "outerGapRight" : 1,
+  "outerGapTop" : 1,
   "preventSleepEnabled" : false,
   "quakeTerminalAnimationDuration" : 0.2,
   "quakeTerminalAutoHide" : false,
@@ -608,38 +617,6 @@
         "type" : "main"
       },
       "name" : "5"
-    },
-    {
-      "id" : "9A913AA7-B067-4EFC-9F6D-CE265880494C",
-      "layoutType" : "dwindle",
-      "monitorAssignment" : {
-        "type" : "main"
-      },
-      "name" : "6"
-    },
-    {
-      "id" : "20E9657D-91F0-4993-85AF-47EC62D79258",
-      "layoutType" : "dwindle",
-      "monitorAssignment" : {
-        "type" : "main"
-      },
-      "name" : "7"
-    },
-    {
-      "id" : "D2CE9699-0D45-45CD-AE07-BBA0B2A02D71",
-      "layoutType" : "dwindle",
-      "monitorAssignment" : {
-        "type" : "main"
-      },
-      "name" : "8"
-    },
-    {
-      "id" : "2342FC32-BBD4-4564-993F-24E70A977B02",
-      "layoutType" : "dwindle",
-      "monitorAssignment" : {
-        "type" : "main"
-      },
-      "name" : "9"
     }
   ]
 }
