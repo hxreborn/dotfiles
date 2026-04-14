@@ -25,7 +25,7 @@ make bootstrap
 | karabiner | macOS | Karabiner-Elements          |
 | waybar    | Linux | Waybar (Wayland)            |
 
-**macOS WMs** (pick one):
+**macOS tiling window managers** (pick one):
 [AeroSpace](https://github.com/nikitabobko/AeroSpace) ·
 [Yabai + skhd](https://github.com/koekeishiya/yabai) (SIP off) ·
 [OmniWM](https://github.com/BarutSRB/OmniWM) ·
@@ -66,7 +66,7 @@ LazyVim distribution
 | Toggle terminal | Ctrl + /       |
 
 ### [AeroSpace](https://github.com/nikitabobko/AeroSpace)
-i3-inspired tiling WM
+macOS tiling window manager, i3-like keybindings
 
 | Action            | Shortcut              |
 |-------------------|-----------------------|
@@ -80,7 +80,7 @@ i3-inspired tiling WM
 | Close             | ⌥ + Q                 |
 
 ### [Amethyst](https://github.com/ianyh/Amethyst)
-Automatic tiling WM
+macOS tiling window manager, layout-based
 
 | Action               | Shortcut              |
 |----------------------|-----------------------|
@@ -92,7 +92,7 @@ Automatic tiling WM
 | Cycle layout         | ⌃ + Space             |
 
 ### [Yabai](https://github.com/koekeishiya/yabai) + [skhd](https://github.com/koekeishiya/skhd)
-BSP tiling WM + hotkey daemon
+macOS tiling window manager (BSP) + hotkey daemon
 
 | Action            | Shortcut                    |
 |-------------------|-----------------------------|
@@ -108,7 +108,7 @@ BSP tiling WM + hotkey daemon
 | Browser           | ⌥ + B                       |
 
 ### [OmniWM](https://github.com/BarutSRB/OmniWM)
-Dwindle tiling WM
+macOS tiling window manager, dwindle layout
 
 | Action            | Shortcut              |
 |-------------------|-----------------------|
