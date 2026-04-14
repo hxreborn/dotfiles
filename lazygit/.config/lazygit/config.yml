@@ -1,0 +1,23 @@
+gui:
+  nerdFontsVersion: "3"
+  showFileTree: true
+  sidePanelWidth: 0.25
+  expandFocusedSidePanel: true
+  expandedSidePanelWeight: 2
+  mainPanelSplitMode: flexible
+  showCommandLog: false
+  showBottomLine: true
+  scrollOffMargin: 2
+
+git:
+  autoFetch: true
+  autoRefresh: true
+  autoForwardBranches: onlyMainBranches
+  fetchAll: false
+
+update:
+  method: never
+
+refresher:
+  refreshInterval: 15
+  fetchInterval: 180
