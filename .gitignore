@@ -24,6 +24,10 @@ ehthumbs.db
 *.local
 *.local.*
 
+# AI agent metadata
+CLAUDE.md
+AGENTS.md
+
 # Repo-level generated files
 /.config/
 /.local/
