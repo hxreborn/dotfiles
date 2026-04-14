@@ -12,27 +12,23 @@ make bootstrap
 
 ## Packages
 
-| Package   | Platform | Description                     |
-|-----------|----------|---------------------------------|
-| nvim      | all      | Neovim (LazyVim)                |
-| zsh       | all      | Zsh (HyDE framework)           |
-| git       | all      | Git config, local override      |
-| ideavim   | all      | IdeaVim for JetBrains           |
-| vscode    | all      | VSCode settings, keybindings    |
-| aerospace  | macOS    | AeroSpace tiling WM            |
-| yabai-skhd | macOS    | Yabai + skhd (SIP off)         |
-| omniwm     | macOS    | OmniWM tiling WM               |
-| amethyst   | macOS    | Amethyst tiling WM              |
-| karabiner  | macOS    | Karabiner-Elements              |
-| waybar     | Linux    | Waybar (Wayland)                |
-
-Pick one WM. AeroSpace, yabai-skhd, omniwm, and amethyst conflict with each other.
+| Package | Platform | Description | Notes |
+|---------|----------|-------------|-------|
+| [nvim](https://github.com/LazyVim/LazyVim) | all | Neovim (LazyVim) | |
+| [zsh](https://github.com/HyDE-Project/HyDE) | all | Zsh (HyDE framework) | |
+| git | all | Git config, local override | |
+| [ideavim](https://github.com/JetBrains/ideavim) | all | IdeaVim for JetBrains | |
+| [vscode](https://code.visualstudio.com) | all | VSCode settings, keybindings | |
+| [aerospace](https://github.com/nikitabobko/AeroSpace) | macOS | AeroSpace tiling WM | pick one |
+| [yabai-skhd](https://github.com/koekeishiya/yabai) | macOS | Yabai + skhd | SIP off, pick one |
+| [omniwm](https://github.com/BarutSRB/OmniWM) | macOS | OmniWM tiling WM | pick one |
+| [amethyst](https://github.com/ianyh/Amethyst) | macOS | Amethyst tiling WM | pick one |
+| [karabiner](https://karabiner-elements.pqrs.org) | macOS | Karabiner-Elements | |
+| [waybar](https://github.com/Alexays/Waybar) | Linux | Waybar (Wayland) | |
 
 ## Usage
 
-Fresh machine: `make bootstrap`. Day-to-day: `make all` or `make nvim`. See `make help` for every target.
-
-`make restow-<package>` after adding or removing files from a package.
+Fresh machine: `make bootstrap`. Day-to-day: `make all` or `make nvim`. `make restow-<package>` if you add or remove files. `make help` for the full list.
 
 New package: create `<name>/.config/<name>/`, add to the Makefile, `make <name>`.
 
@@ -65,10 +61,6 @@ Clean reinstall: `rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim &
 
 i3-inspired tiling. Needs Accessibility permission in System Settings.
 
-```sh
-brew install --cask nikitabobko/tap/aerospace
-```
-
 | Action            | Shortcut              |
 |-------------------|-----------------------|
 | Focus             | ⌥ + H J K L           |
@@ -82,10 +74,6 @@ brew install --cask nikitabobko/tap/aerospace
 
 ### Amethyst
 
-```sh
-brew install --cask amethyst
-```
-
 | Action               | Shortcut              |
 |----------------------|-----------------------|
 | Focus                | ⌃ + Arrows            |
@@ -96,12 +84,5 @@ brew install --cask amethyst
 | Cycle layout         | ⌃ + Space             |
 
 ### Yabai + skhd
-
-Disable SIP partially for full features.
-
-```sh
-brew install koekeishiya/formulae/yabai koekeishiya/formulae/skhd
-yabai --start-service && skhd --start-service
-```
 
 Keybindings in `~/.config/skhd/skhdrc`.
