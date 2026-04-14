@@ -78,6 +78,12 @@
       "id" : "552FB77D-BF0E-4737-90A6-B5BC6986C579",
       "minHeight" : 320,
       "minWidth" : 660
+    },
+    {
+      "bundleId" : "ru.keepcoder.Telegram",
+      "id" : "6FD0C43F-5A2A-447F-ABCC-3A320A089E67",
+      "minHeight" : 400,
+      "minWidth" : 500
     }
   ],
   "appearanceMode" : "dark",
@@ -602,6 +608,38 @@
         "type" : "main"
       },
       "name" : "5"
+    },
+    {
+      "id" : "9A913AA7-B067-4EFC-9F6D-CE265880494C",
+      "layoutType" : "dwindle",
+      "monitorAssignment" : {
+        "type" : "main"
+      },
+      "name" : "6"
+    },
+    {
+      "id" : "20E9657D-91F0-4993-85AF-47EC62D79258",
+      "layoutType" : "dwindle",
+      "monitorAssignment" : {
+        "type" : "main"
+      },
+      "name" : "7"
+    },
+    {
+      "id" : "D2CE9699-0D45-45CD-AE07-BBA0B2A02D71",
+      "layoutType" : "dwindle",
+      "monitorAssignment" : {
+        "type" : "main"
+      },
+      "name" : "8"
+    },
+    {
+      "id" : "2342FC32-BBD4-4564-993F-24E70A977B02",
+      "layoutType" : "dwindle",
+      "monitorAssignment" : {
+        "type" : "main"
+      },
+      "name" : "9"
     }
   ]
 }
