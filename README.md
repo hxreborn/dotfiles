@@ -1,6 +1,6 @@
 # dotfiles
 
-GNU Stow + Make. macOS, Arch, Fedora, Ubuntu.
+Personal dotfiles managed with GNU Stow and Make. Works on macOS, Arch, Fedora, and Ubuntu-based systems.
 
 ## Setup
 
@@ -12,25 +12,33 @@ make bootstrap
 
 ## Packages
 
-| Package | Platform | Description | Notes |
-|---------|----------|-------------|-------|
-| [nvim](https://github.com/LazyVim/LazyVim) | all | Neovim (LazyVim) | |
-| [zsh](https://github.com/HyDE-Project/HyDE) | all | Zsh (HyDE framework) | |
-| git | all | Git config, local override | |
-| [ideavim](https://github.com/JetBrains/ideavim) | all | IdeaVim for JetBrains | |
-| [vscode](https://code.visualstudio.com) | all | VSCode settings, keybindings | |
-| [aerospace](https://github.com/nikitabobko/AeroSpace) | macOS | AeroSpace tiling WM | pick one |
-| [yabai-skhd](https://github.com/koekeishiya/yabai) | macOS | Yabai + skhd | SIP off, pick one |
-| [omniwm](https://github.com/BarutSRB/OmniWM) | macOS | OmniWM tiling WM | pick one |
-| [amethyst](https://github.com/ianyh/Amethyst) | macOS | Amethyst tiling WM | pick one |
-| [karabiner](https://karabiner-elements.pqrs.org) | macOS | Karabiner-Elements | |
-| [waybar](https://github.com/Alexays/Waybar) | Linux | Waybar (Wayland) | |
+| Package | Platform | Description |
+|---------|----------|-------------|
+| nvim      | all   | Neovim (LazyVim)            |
+| zsh       | all   | Zsh (HyDE framework)        |
+| git       | all   | Git config, local override  |
+| ideavim   | all   | IdeaVim for JetBrains       |
+| vscode    | all   | VSCode settings, keybindings|
+| karabiner | macOS | Karabiner-Elements          |
+| waybar    | Linux | Waybar (Wayland)            |
+
+**macOS WMs** (pick one):
+[AeroSpace](https://github.com/nikitabobko/AeroSpace) ·
+[Yabai + skhd](https://github.com/koekeishiya/yabai) (SIP off) ·
+[OmniWM](https://github.com/BarutSRB/OmniWM) ·
+[Amethyst](https://github.com/ianyh/Amethyst)
 
 ## Usage
 
-Fresh machine: `make bootstrap`. Day-to-day: `make all` or `make nvim`. `make restow-<package>` if you add or remove files. `make help` for the full list.
+```sh
+make bootstrap          # first time
+make all                # apply everything
+make nvim               # apply one package
+make restow-nvim        # after adding/removing files in a package
+make help               # all targets
+```
 
-New package: create `<name>/.config/<name>/`, add to the Makefile, `make <name>`.
+For new packages: create `<name>/.config/<name>/`, add to the Makefile, `make <name>`.
 
 ## Local Overrides
 
@@ -39,11 +47,9 @@ Untracked, per-machine:
 - `~/.config/git/config.local` -> email, signing key
 - `~/.config/zsh/local.zsh` -> env, PATH
 
----
-
 ## Keybindings
 
-### Neovim
+### [Neovim](https://github.com/LazyVim/LazyVim) -> LazyVim distribution
 
 | Action          | Shortcut       |
 |-----------------|----------------|
@@ -55,11 +61,7 @@ Untracked, per-machine:
 | Format document | Leader + c + f |
 | Toggle terminal | Ctrl + /       |
 
-Clean reinstall: `rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim && nvim`
-
-### AeroSpace
-
-i3-inspired tiling. Needs Accessibility permission in System Settings.
+### [AeroSpace](https://github.com/nikitabobko/AeroSpace) -> i3-inspired tiling WM
 
 | Action            | Shortcut              |
 |-------------------|-----------------------|
@@ -72,7 +74,7 @@ i3-inspired tiling. Needs Accessibility permission in System Settings.
 | Send to workspace | ⌥ + ⇧ + A-G          |
 | Close             | ⌥ + Q                 |
 
-### Amethyst
+### [Amethyst](https://github.com/ianyh/Amethyst) -> automatic tiling WM
 
 | Action               | Shortcut              |
 |----------------------|-----------------------|
@@ -83,6 +85,28 @@ i3-inspired tiling. Needs Accessibility permission in System Settings.
 | Send to space        | ⌃ + ⇧ + 1-5          |
 | Cycle layout         | ⌃ + Space             |
 
-### Yabai + skhd
+### [Yabai](https://github.com/koekeishiya/yabai) + [skhd](https://github.com/koekeishiya/skhd) -> BSP tiling WM + hotkey daemon
 
-Keybindings in `~/.config/skhd/skhdrc`.
+| Action            | Shortcut                    |
+|-------------------|-----------------------------|
+| Focus             | ⌥ + Arrows                  |
+| Resize            | ⌥ + ⇧ + Arrows             |
+| Swap              | ⌥ + ⌃ + ⇧ + Arrows         |
+| Float             | ⌥ + W                       |
+| Fullscreen        | ⇧ + F11                     |
+| Rotate layout     | ⌥ + R                       |
+| Switch workspace  | ⌥ + 1-9                     |
+| Send to workspace | ⌥ + ⇧ + 1-9                |
+| Terminal          | ⌥ + T                       |
+| Browser           | ⌥ + B                       |
+
+### [OmniWM](https://github.com/BarutSRB/OmniWM) -> dwindle tiling WM
+
+| Action            | Shortcut              |
+|-------------------|-----------------------|
+| Focus             | ⌥ + Arrows            |
+| Move window       | ⌥ + ⇧ + Arrows       |
+| Switch workspace  | ⌥ + 1-9               |
+| Send to workspace | ⌥ + ⇧ + 1-9          |
+| Fullscreen        | ⌥ + F                 |
+| Quake terminal    | ⌥ + `                 |
