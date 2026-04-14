@@ -10,9 +10,9 @@ UNAME_S  := $(shell uname -s)
 STOW      ?= stow
 STOW_FLAGS = --dir="$(DOTFILES)" --target="$(HOME)" --verbose=1
 
-SHARED   := nvim zsh git ideavim
+SHARED   := nvim zsh git ideavim kitty fastfetch
 MACOS    := karabiner
-LINUX    := waybar
+LINUX    := waybar satty
 
 # Mutually exclusive window manager packages on macOS
 MACOS_WM := aerospace omniwm yabai-skhd amethyst
