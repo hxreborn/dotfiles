@@ -3,6 +3,7 @@
 
 [core]
 	excludesFile = ~/.config/git/ignore
+	hooksPath = ~/.config/git/hooks
 
 [commit]
 	gpgsign = true
