@@ -17,8 +17,8 @@ make bootstrap
 
 | Package | Platform | Description |
 |---------|----------|-------------|
-| nvim      | all   | Neovim (LazyVim)            |
-| zsh       | all   | Zsh (HyDE framework)        |
+| nvim      | all   | LazyVim config               |
+| zsh       | all   | Zsh config                   |
 | git       | all   | Git config, local override  |
 | ideavim   | all   | IdeaVim for JetBrains       |
 | vscode    | all   | VSCode settings, keybindings|
@@ -52,18 +52,19 @@ Untracked, per-machine:
 
 ## Keybindings
 
-### [Neovim](https://github.com/LazyVim/LazyVim)
-LazyVim distribution
+### [LazyVim](https://github.com/LazyVim/LazyVim)
 
 | Action          | Shortcut       |
 |-----------------|----------------|
-| File explorer   | Leader + e     |
-| Find files      | Leader + Space |
-| Find text       | Leader + /     |
-| Git status      | Leader + g + s |
-| Code actions    | Leader + c + a |
-| Format document | Leader + c + f |
-| Toggle terminal | Ctrl + /       |
+| File explorer   | `<leader>e`      |
+| Find files      | `<leader><space>` |
+| Find text       | `<leader>/`       |
+| Git status      | `<leader>gs`      |
+| Code actions    | `<leader>ca`      |
+| Format document | `<leader>cf`      |
+| Toggle terminal | `<C-/>`           |
+
+---
 
 ### [AeroSpace](https://github.com/nikitabobko/AeroSpace)
 macOS tiling window manager, i3-like keybindings
@@ -79,6 +80,8 @@ macOS tiling window manager, i3-like keybindings
 | Send to workspace | ⌥ + ⇧ + A-G          |
 | Close             | ⌥ + Q                 |
 
+---
+
 ### [Amethyst](https://github.com/ianyh/Amethyst)
 macOS tiling window manager, layout-based
 
@@ -90,6 +93,8 @@ macOS tiling window manager, layout-based
 | Switch space         | ⌃ + 1-5               |
 | Send to space        | ⌃ + ⇧ + 1-5          |
 | Cycle layout         | ⌃ + Space             |
+
+---
 
 ### [Yabai](https://github.com/koekeishiya/yabai) + [skhd](https://github.com/koekeishiya/skhd)
 macOS tiling window manager (BSP) + hotkey daemon
@@ -106,6 +111,8 @@ macOS tiling window manager (BSP) + hotkey daemon
 | Send to workspace | ⌥ + ⇧ + 1-9                |
 | Terminal          | ⌥ + T                       |
 | Browser           | ⌥ + B                       |
+
+---
 
 ### [OmniWM](https://github.com/BarutSRB/OmniWM)
 macOS tiling window manager, dwindle layout
