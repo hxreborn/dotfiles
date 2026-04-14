@@ -93,6 +93,12 @@
       "bundleId" : "com.apple.systempreferences",
       "id" : "B36F26F0-70B0-4DF3-A932-45746B55D0DA",
       "layout" : "float"
+    },
+    {
+      "bundleId" : "ru.keepcoder.Telegram",
+      "id" : "6FD0C43F-5A2A-447F-ABCC-3A320A089E67",
+      "minHeight" : 400,
+      "minWidth" : 500
     }
   ],
   "appearanceMode" : "dark",
