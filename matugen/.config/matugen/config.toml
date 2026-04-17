@@ -1,0 +1,6 @@
+[config]
+
+[templates.starship]
+input_path = "~/.config/matugen/templates/starship.toml"
+output_path = "~/.config/starship/starship.toml"
+
