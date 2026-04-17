@@ -10,7 +10,7 @@ UNAME_S  := $(shell uname -s)
 STOW      ?= stow
 STOW_FLAGS = --dir="$(DOTFILES)" --target="$(HOME)" --verbose=1
 
-SHARED   := nvim zsh git ideavim kitty fastfetch lazygit
+SHARED   := nvim zsh git ideavim kitty fastfetch lazygit starship
 MACOS    := karabiner
 LINUX    := waybar satty
 
