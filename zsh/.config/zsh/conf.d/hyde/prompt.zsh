@@ -19,7 +19,12 @@ if command -v starship &>/dev/null; then
     # ===== START Initialize Starship prompt =====
     eval "$(starship init zsh)"
     export STARSHIP_CACHE=$XDG_CACHE_HOME/starship
-    export STARSHIP_CONFIG=$XDG_CONFIG_HOME/starship/starship.toml
+    # prefer live matugen-themed config, fall back to stowed seed
+    if [[ -r "${XDG_STATE_HOME:-$HOME/.local/state}/matugen/starship.toml" ]]; then
+        export STARSHIP_CONFIG="${XDG_STATE_HOME:-$HOME/.local/state}/matugen/starship.toml"
+    else
+        export STARSHIP_CONFIG=$XDG_CONFIG_HOME/starship/starship.toml
+    fi
 # ===== END Initialize Starship prompt =====
 elif [ -r $HOME/.p10k.zsh ] || [ -r $ZDOTDIR/.p10k.zsh ]; then
     # ===== START Initialize Powerlevel10k theme =====
