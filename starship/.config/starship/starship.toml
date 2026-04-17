@@ -1,0 +1,197 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+add_newline = false
+continuation_prompt = '▶▶ '
+
+format = """\
+  󰣇 \
+  $directory\
+  $git_branch$git_commit$git_state $git_status\
+  $character\
+"""
+
+right_format = """
+$kubernetes\
+$c\
+$cpp\
+$dart\
+$deno\
+$elixir\
+$golang\
+$haskell\
+$java\
+$julia\
+$kotlin\
+$gradle\
+$lua\
+$nodejs\
+$python\
+$ruby\
+$rust\
+$swift\
+$zig\
+$conda\
+$memory_usage\
+$aws\
+$gcloud\
+$azure\
+$nix_shell\
+$terraform\
+$status\
+$os\
+$time"""
+
+[character]
+success_symbol = '[❯](bold green)'
+error_symbol = '[❯](bold red)'
+
+[directory]
+format = "[$path](bold fg:#8be9fd)"
+truncate_to_repo = false
+
+[git_branch]
+format = " [  $branch](fg:#9198a1)"
+
+[git_status]
+ahead = '⇡${count}'
+behind = '⇣${count}'
+diverged = '⇕⇡${ahead_count}⇣${behind_count}'
+format = '[[( $all_status$ahead_behind )](fg:#769ff0)]($style)'
+style = "bg:#394260"
+
+[time]
+disabled = false
+format = '[[  $time ](fg:#a0a9cb)]($style)'
+time_format = "%R"
+
+[memory_usage]
+style = "bold bright-cyan"
+format = " mem [${ram}( ${swap})]($style)"
+symbol = "▪▫▪ "
+
+[nix_shell]
+format = '[$symbol nix⎪$state⎪]($style) [$name](italic dimmed white)'
+impure_msg = '[⌽](bold dimmed red)'
+pure_msg = '[⌾](bold dimmed green)'
+style = 'bold italic dimmed blue'
+symbol = ' '
+
+[kubernetes]
+style = "bold bright-cyan"
+format = " [$symbol]($style)"
+symbol = " "
+
+[aws]
+disabled = true
+format = " [$symbol $profile $region]($style)"
+style = "bold blue"
+symbol = " "
+
+[gcloud]
+format = " [$symbol]($style)"
+style = "bold bright-cyan"
+symbol = "gcloud "
+
+[azure]
+format = " [$symbol]($style)"
+style = "bold bright-yellow"
+symbol = " "
+
+[terraform]
+style = "bold bright-cyan"
+format = " [$symbol]($style)"
+symbol = "tf "
+
+[conda]
+style = "bold bright-red"
+format = " [$symbol$environment]($style)"
+symbol = "◯ "
+
+[c]
+style = "bold bright-cyan"
+format = " [$symbol(-$name)]($style)"
+symbol = "ℂ "
+
+[cpp]
+style = "bold bright-cyan"
+format = " [$symbol]($style)"
+symbol = " "
+
+[dart]
+style = "bold bright-cyan"
+format = " [$symbol]($style)"
+symbol = " "
+
+[deno]
+format = " [ ](green bold)"
+version_format = "${raw}"
+
+[elixir]
+style = "bold bright-yellow"
+format = " [$symbol OTP $otp_version]($style)"
+symbol = " "
+
+[golang]
+style = "bold bright-blue"
+format = " [$symbol]($style)"
+symbol = "∩ "
+
+[haskell]
+style = "bold bright-yellow"
+format = " [$symbol]($style)"
+symbol = "❯λ "
+
+[java]
+style = "bold bright-red"
+format = " [${symbol}]($style)"
+symbol = " "
+
+[julia]
+style = "bold bright-cyan"
+format = " [$symbol]($style)"
+symbol = "◎ "
+
+[kotlin]
+format = " [$symbol]($style)"
+style = "bold bright-red"
+symbol = " "
+
+[lua]
+format = " [${symbol}]($style)"
+style = "bold bright-yellow"
+symbol = "⨀ "
+version_format = "${raw}"
+
+[nodejs]
+detect_extensions = []
+detect_files = ["package-lock.json", "yarn.lock"]
+detect_folders = ["node_modules"]
+format = "[ ](bold bright-green)"
+version_format = "${raw}"
+
+[python]
+format = "[${symbol}(${virtualenv}) ${version}]($style)"
+style = "bold bright-yellow"
+symbol = "[ ](bold bright-blue)"
+version_format = "${raw}"
+
+[ruby]
+format = " [${symbol}]($style)"
+style = "bold red"
+symbol = " "
+version_format = "${raw}"
+
+[rust]
+style = "bold bright-red"
+format = " [$symbol]($style)"
+symbol = " "
+
+[swift]
+format = " [${symbol}]($style)"
+style = "bold bright-red"
+symbol = " "
+version_format = "${raw}"
+
+[zig]
+style = "bold bright-yellow"
+format = " [$symbol]($style)"
+symbol = " "

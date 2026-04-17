@@ -1,0 +1,19 @@
+# Minimal, fast starship config
+format = """$directory$git_branch$git_status$character"""
+
+[character]
+success_symbol = '[>](bold green)'
+error_symbol = '[>](bold red)'
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+style = 'bold cyan'
+
+[git_branch]
+format = '[$branch]($style) '
+style = 'bold purple'
+
+[git_status]
+format = '[$all_status$ahead_behind]($style) '
+style = 'bold yellow'
