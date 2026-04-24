@@ -31,3 +31,9 @@ AGENTS.md
 # Repo-level generated files
 /.config/
 /.local/
+
+# OmniWM runtime state (written by app on launch)
+omniwm/.config/omniwm/runtime-state.json
+
+# OmniWM v4 legacy config (v5 uses settings.toml)
+omniwm/.config/omniwm/settings.json
