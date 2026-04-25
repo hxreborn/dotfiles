@@ -18,6 +18,19 @@ for key, hint in pairs(arrow_hints) do
   end
 end
 
+-- Copy file path to clipboard
+vim.keymap.set("n", "<leader>fp", function()
+  local path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":.")
+  vim.fn.setreg("+", path)
+  vim.notify(path, vim.log.levels.INFO, { title = "Copied path" })
+end, { desc = "Copy file path (relative)" })
+
+vim.keymap.set("n", "<leader>fP", function()
+  local path = vim.api.nvim_buf_get_name(0)
+  vim.fn.setreg("+", path)
+  vim.notify(path, vim.log.levels.INFO, { title = "Copied path" })
+end, { desc = "Copy file path (absolute)" })
+
 -- Alt+hjkl navigation in insert/command/other modes
 for _, mode in ipairs({ "i", "c", "o", "t", "s" }) do
   vim.keymap.set(mode, "<A-h>", "<Left>",  { noremap = true, silent = true, desc = "Move left" })

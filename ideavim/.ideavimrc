@@ -1,12 +1,14 @@
-" IdeaVim config - LazyVim defaults
+" IdeaVim config
 " ============ CHEATSHEET ============
-" TEXT OBJECTS: vi{ vi( vi[ vi" vit viw vip | af/if=func aa/ia=arg ae/ie=file
-" SURROUND: ds" cs"' ysiw) S" (visual)
-" FLASH: s + 2 chars = jump anywhere, S = treesitter
-" COMMENT: gcc = line, gc = operator
-" NAV: gd=def gr=refs gI=impl K=docs gt=type
+" TEXT OBJECTS: vi{ vi( vi[ vi" vit viw vip
+"   af/if=func  ac/ic=class  aa/ia=arg  ae/ie=file
+" SURROUND (vim-surround): ds cs ysiw | aliases: sd=ds sr=cs
+" FLASH: s=jump S=treesitter r=remote-op
+" COMMENT: gcc=line gc=operator
+" NAV: gd=def gD=decl gr=refs gI=impl gy=type K=docs gK=sig
+" FUNC: ]f [f = next/prev method
 " DIAG: ]d [d = next/prev error
-" HUNK: ]h [h = next/prev git change
+" HUNK: ]h [h = next/prev  ]H [H = last/first
 " ====================================
 
 " Leader
@@ -59,6 +61,10 @@ nmap S <Action>(flash.treesitter)
 xmap S <Action>(flash.treesitter)
 omap r <Action>(flash.remote)
 
+" Surround aliases
+nmap sd ds
+nmap sr cs
+
 " Clear search
 nnoremap <Esc> :nohlsearch<CR>
 
@@ -81,7 +87,7 @@ let g:WhichKeyDesc_w = "<leader>w +windows"
 let g:WhichKeyDesc_wd = "<leader>wd close"
 let g:WhichKeyDesc_wm = "<leader>wm maximize"
 
-" Buffer navigation (LazyVim has both)
+" Buffer navigation
 nnoremap <S-h> :action PreviousTab<CR>
 nnoremap <S-l> :action NextTab<CR>
 nnoremap [b :action PreviousTab<CR>
@@ -103,6 +109,10 @@ inoremap <A-k> <Esc>:action MoveLineUp<CR>a
 vnoremap <A-j> :action MoveLineDown<CR>
 vnoremap <A-k> :action MoveLineUp<CR>
 
+" Alt+hl navigation in insert mode
+inoremap <A-h> <Left>
+inoremap <A-l> <Right>
+
 " Better indenting
 vnoremap < <gv
 vnoremap > >gv
@@ -112,7 +122,7 @@ nnoremap <leader>e :action ActivateProjectToolWindow<CR>
 nnoremap <leader>E :action SelectInProjectView<CR>
 let g:WhichKeyDesc_e = "<leader>e Explorer"
 
-" Find (telescope equivalents)
+" Find
 nnoremap <leader><space> :action GotoFile<CR>
 nnoremap <leader>ff :action GotoFile<CR>
 nnoremap <leader>fg :action FindInPath<CR>
@@ -120,15 +130,19 @@ nnoremap <leader>fb :action RecentFiles<CR>
 nnoremap <leader>fr :action RecentFiles<CR>
 nnoremap <leader>fc :action FileStructurePopup<CR>
 nnoremap <leader>fn :action NewFile<CR>
+nnoremap <leader>fp :action CopyReference<CR>
+nnoremap <leader>fP :action CopyAbsolutePath<CR>
 nnoremap <leader>/ :action FindInPath<CR>
 nnoremap <leader>, :action RecentFiles<CR>
-let g:WhichKeyDesc_f = "<leader>f +find"
+let g:WhichKeyDesc_f = "<leader>f +file/find"
 let g:WhichKeyDesc_ff = "<leader>ff files"
 let g:WhichKeyDesc_fg = "<leader>fg grep"
 let g:WhichKeyDesc_fb = "<leader>fb buffers"
 let g:WhichKeyDesc_fr = "<leader>fr recent"
 let g:WhichKeyDesc_fc = "<leader>fc structure"
 let g:WhichKeyDesc_fn = "<leader>fn new file"
+let g:WhichKeyDesc_fp = "<leader>fp copy path"
+let g:WhichKeyDesc_fP = "<leader>fP copy path (abs)"
 
 " Search
 nnoremap <leader>sr :action ReplaceInPath<CR>
@@ -141,7 +155,7 @@ let g:WhichKeyDesc_sw = "<leader>sw word"
 let g:WhichKeyDesc_sg = "<leader>sg grep (root)"
 let g:WhichKeyDesc_sG = "<leader>sG grep (cwd)"
 
-" LSP/Code navigation
+" LSP navigation
 nnoremap gd :action GotoDeclaration<CR>
 nnoremap gr :action FindUsages<CR>
 nnoremap gI :action GotoImplementation<CR>
@@ -168,6 +182,10 @@ let g:WhichKeyDesc_cd = "<leader>cd diagnostics"
 let g:WhichKeyDesc_co = "<leader>co imports"
 let g:WhichKeyDesc_cs = "<leader>cs symbols"
 
+" Function navigation
+nnoremap ]f :action MethodDown<CR>
+nnoremap [f :action MethodUp<CR>
+
 " Diagnostics
 nnoremap ]d :action GotoNextError<CR>
 nnoremap [d :action GotoPreviousError<CR>
@@ -187,6 +205,22 @@ nnoremap <leader>gp :action Vcs.Push<CR>
 nnoremap <leader>gs :action Vcs.Show.Local.Changes<CR>
 nnoremap ]h :action VcsShowNextChangeMarker<CR>
 nnoremap [h :action VcsShowPrevChangeMarker<CR>
+nnoremap ]H :action VcsShowNextChangeMarker<CR>
+nnoremap [H :action VcsShowPrevChangeMarker<CR>
+
+" Hunk actions
+nnoremap <leader>ghp :action VcsShowCurrentChangeMarker<CR>
+nnoremap <leader>ghP :action VcsShowCurrentChangeMarker<CR>
+nnoremap <leader>ghs :action Vcs.Rollback<CR>
+vnoremap <leader>ghs :action Vcs.Rollback<CR>
+nnoremap <leader>ghr :action Vcs.Rollback<CR>
+vnoremap <leader>ghr :action Vcs.Rollback<CR>
+nnoremap <leader>ghS :action ChangesView.AddUnversioned<CR>
+nnoremap <leader>ghR :action Vcs.Rollback<CR>
+nnoremap <leader>ghb :action Annotate<CR>
+nnoremap <leader>ghB :action Annotate<CR>
+nnoremap <leader>ghd :action Compare.LastVersion<CR>
+
 let g:WhichKeyDesc_g = "<leader>g +git"
 let g:WhichKeyDesc_gg = "<leader>gg status"
 let g:WhichKeyDesc_gb = "<leader>gb blame"
@@ -196,6 +230,16 @@ let g:WhichKeyDesc_gf = "<leader>gf file history"
 let g:WhichKeyDesc_gd = "<leader>gd diff"
 let g:WhichKeyDesc_gp = "<leader>gp push"
 let g:WhichKeyDesc_gs = "<leader>gs changes"
+let g:WhichKeyDesc_gh = "<leader>gh +hunks"
+let g:WhichKeyDesc_ghp = "<leader>ghp preview inline"
+let g:WhichKeyDesc_ghP = "<leader>ghP preview popup"
+let g:WhichKeyDesc_ghs = "<leader>ghs stage hunk"
+let g:WhichKeyDesc_ghr = "<leader>ghr reset hunk"
+let g:WhichKeyDesc_ghS = "<leader>ghS stage buffer"
+let g:WhichKeyDesc_ghR = "<leader>ghR reset buffer"
+let g:WhichKeyDesc_ghb = "<leader>ghb blame line"
+let g:WhichKeyDesc_ghB = "<leader>ghB blame buffer"
+let g:WhichKeyDesc_ghd = "<leader>ghd diff this"
 
 " Terminal
 nnoremap <leader>ft :action ActivateTerminalToolWindow<CR>
