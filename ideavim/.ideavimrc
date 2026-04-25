@@ -130,7 +130,7 @@ nnoremap <leader>fb :action RecentFiles<CR>
 nnoremap <leader>fr :action RecentFiles<CR>
 nnoremap <leader>fc :action FileStructurePopup<CR>
 nnoremap <leader>fn :action NewFile<CR>
-nnoremap <leader>fp :action CopyReference<CR>
+nnoremap <leader>fp :action CopyPathFromRepositoryRootProvider<CR>
 nnoremap <leader>fP :action CopyAbsolutePath<CR>
 nnoremap <leader>/ :action FindInPath<CR>
 nnoremap <leader>, :action RecentFiles<CR>
