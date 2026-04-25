@@ -18,12 +18,14 @@ for key, hint in pairs(arrow_hints) do
   end
 end
 
--- Copy file path to clipboard
+-- Copy file path relative to git root
 vim.keymap.set("n", "<leader>fp", function()
-  local path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":.")
+  local filepath = vim.api.nvim_buf_get_name(0)
+  local git_root = vim.fs.root(0, ".git") or vim.fn.getcwd()
+  local path = vim.fn.fnamemodify(filepath, ":s?" .. vim.pesc(git_root .. "/") .. "??")
   vim.fn.setreg("+", path)
   vim.notify(path, vim.log.levels.INFO, { title = "Copied path" })
-end, { desc = "Copy file path (relative)" })
+end, { desc = "Copy file path (git root)" })
 
 vim.keymap.set("n", "<leader>fP", function()
   local path = vim.api.nvim_buf_get_name(0)
