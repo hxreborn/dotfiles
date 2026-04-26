@@ -92,8 +92,8 @@ hiddenBarIsCollapsed = true
 
 [statusBar]
 showAppNames = true
-showWorkspaceName = true
-useWorkspaceId = true
+showWorkspaceName = false
+useWorkspaceId = false
 
 [workspaceBar]
 backgroundOpacity = 0.0
@@ -105,10 +105,10 @@ labelFontSize = 11.0
 notchAware = false
 position = "overlappingMenuBar"
 reserveLayoutSpace = false
-showFloatingWindows = false
+showFloatingWindows = true
 showLabels = true
 windowLevel = "popup"
-xOffset = -70.0
+xOffset = 0.0
 yOffset = 0.0
 
 [workspaceBar.accentColor]
@@ -486,35 +486,35 @@ binding = "Unassigned"
 id = "swapSplit"
 
 [[hotkeys]]
-binding = "Command+Option+Left Arrow"
+binding = "Option+Command+Left Arrow"
 id = "resizeGrow.left"
 
 [[hotkeys]]
-binding = "Command+Option+Right Arrow"
+binding = "Option+Command+Right Arrow"
 id = "resizeGrow.right"
 
 [[hotkeys]]
-binding = "Command+Option+Up Arrow"
+binding = "Option+Command+Up Arrow"
 id = "resizeGrow.up"
 
 [[hotkeys]]
-binding = "Command+Option+Down Arrow"
+binding = "Option+Command+Down Arrow"
 id = "resizeGrow.down"
 
 [[hotkeys]]
-binding = "Command+Option+Shift+Left Arrow"
+binding = "Option+Shift+Command+Left Arrow"
 id = "resizeShrink.left"
 
 [[hotkeys]]
-binding = "Command+Option+Shift+Right Arrow"
+binding = "Option+Shift+Command+Right Arrow"
 id = "resizeShrink.right"
 
 [[hotkeys]]
-binding = "Command+Option+Shift+Up Arrow"
+binding = "Option+Shift+Command+Up Arrow"
 id = "resizeShrink.up"
 
 [[hotkeys]]
-binding = "Command+Option+Shift+Down Arrow"
+binding = "Option+Shift+Command+Down Arrow"
 id = "resizeShrink.down"
 
 [[hotkeys]]
