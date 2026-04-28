@@ -2,9 +2,12 @@
 set -euo pipefail
 
 HYPR="$HOME/.config/hypr"
+GTK3="$HOME/.config/gtk-3.0"
+GTK4="$HOME/.config/gtk-4.0"
 
 declare -A SHELL_PATTERN=([noctalia]="qs.*noctalia-shell" [dms]="dms run")
 declare -A SHELL_CMD=([noctalia]="qs -c noctalia-shell" [dms]="dms run")
+declare -A GTK_CSS=([noctalia]="noctalia.css" [dms]="dank-colors.css")
 
 is_running() { pgrep -f "${SHELL_PATTERN[$1]}" &>/dev/null; }
 
@@ -30,8 +33,18 @@ start_shell() {
 }
 
 apply_config() {
-    ln -sf "${1}-binds.conf" "$HYPR/active-shell-binds.conf"
-    echo "exec-once = ${SHELL_CMD[$1]}" > "$HYPR/shell-start.conf"
+    local shell="$1"
+    local css="${GTK_CSS[$shell]}"
+
+    ln -sf "${shell}-binds.conf" "$HYPR/active-shell-binds.conf"
+    ln -sf "${shell}-colors.conf" "$HYPR/active-colors.conf"
+    echo "exec-once = ${SHELL_CMD[$shell]}" > "$HYPR/shell-start.conf"
+
+    ln -sf "$css" "$GTK3/active-colors.css"
+    ln -sf "$css" "$GTK4/active-colors.css"
+    echo '@import url("active-colors.css");' > "$GTK3/gtk.css"
+    echo '@import url("active-colors.css");' > "$GTK4/gtk.css"
+
     hyprctl reload 2>/dev/null || true
 }
 
@@ -39,13 +52,7 @@ current="none"
 is_running noctalia && current="noctalia"
 is_running dms && current="dms"
 
-shells=(noctalia dms)
-# Put the non-current shell first so fzf highlights it by default
-ordered=()
-for s in "${shells[@]}"; do [[ "$s" != "$current" ]] && ordered+=("$s"); done
-for s in "${shells[@]}"; do [[ "$s" == "$current" ]] && ordered+=("$s"); done
-
-selected=$(printf '%s\n' "${ordered[@]}" | while read -r s; do
+selected=$(printf '%s\n' noctalia dms | while read -r s; do
     [[ "$s" == "$current" ]] && echo "● $s (active)|$s" || echo "  $s|$s"
 done | fzf --prompt="Switch shell: " --height=40% --border=rounded --reverse \
     --ansi --delimiter='|' --with-nth=1 --header="Current: $current" | cut -d'|' -f2)

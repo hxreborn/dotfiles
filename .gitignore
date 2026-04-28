@@ -21,8 +21,9 @@ ehthumbs.db
 *.rar
 
 # Local overrides (never tracked)
-*.local
 *.local.*
+# Stow .local dirs are fine
+!*/.local/
 
 # AI agent metadata
 CLAUDE.md

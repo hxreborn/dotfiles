@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# Cycles animation or workflow presets in Hyprland config.
+# Usage: hypr-cycle-preset {animation|workflow} {next|prev}
+
+set -euo pipefail
+
+HYPR_DIR="$HOME/.config/hypr"
+TYPE="${1:-animation}"
+DIR="${2:-next}"
+
+case "$TYPE" in
+    animation)
+        CONF="$HYPR_DIR/animations.conf"
+        PRESET_DIR="$HYPR_DIR/animations"
+        VAR_NAME='$ANIMATION'
+        PATH_VAR='$ANIMATION_PATH'
+        ;;
+    workflow)
+        CONF="$HYPR_DIR/workflows.conf"
+        PRESET_DIR="$HYPR_DIR/workflows"
+        VAR_NAME='$WORKFLOW'
+        PATH_VAR='$WORKFLOWS_PATH'
+        ;;
+    *)
+        echo "Unknown type: $TYPE" >&2
+        exit 1
+        ;;
+esac
+
+mapfile -t PRESETS < <(find "$PRESET_DIR" -name '*.conf' -printf '%f\n' | sed 's/\.conf$//' | sort)
+
+if [[ ${#PRESETS[@]} -eq 0 ]]; then
+    notify-send "Hyprland" "No ${TYPE} presets found"
+    exit 1
+fi
+
+CURRENT=$(grep -oP "^\\\$${TYPE^^}=\K.*" "$CONF" 2>/dev/null || echo "${PRESETS[0]}")
+
+IDX=0
+for i in "${!PRESETS[@]}"; do
+    if [[ "${PRESETS[$i]}" == "$CURRENT" ]]; then
+        IDX=$i
+        break
+    fi
+done
+
+if [[ "$DIR" == "next" ]]; then
+    IDX=$(( (IDX + 1) % ${#PRESETS[@]} ))
+else
+    IDX=$(( (IDX - 1 + ${#PRESETS[@]}) % ${#PRESETS[@]} ))
+fi
+
+NEW="${PRESETS[$IDX]}"
+
+sed -i "s|^${VAR_NAME}=.*|${VAR_NAME}=${NEW}|" "$CONF"
+sed -i "s|^${PATH_VAR}=.*|${PATH_VAR}=./${TYPE}s/${NEW}.conf|" "$CONF"
+
+hyprctl reload 2>/dev/null || true
+notify-send -t 2000 "Hyprland ${TYPE^}" "$NEW"
