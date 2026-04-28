@@ -1,0 +1,231 @@
+#!/usr/bin/env bash
+# clip2path — Wayland/X11 clipboard → Kitty paste handler
+# Image in clipboard → save to temp file, paste quoted path
+# Text in clipboard → delegate to kitty paste_from_clipboard
+#
+# Deps: kitty + wl-clipboard (Wayland) or xclip/xsel (X11)
+# Kitty binding needs --allow-remote-control so KITTY_LISTEN_ON is set.
+#
+# CLIP2PATH_TMPDIR  : temp dir for saved images (default: $TMPDIR or /tmp)
+# CLIP2PATH_DEBUG=1 : debug output to stderr
+
+set -Eeuo pipefail
+IFS=$'\n\t'
+umask 077
+export LC_ALL=C
+
+debug() { [[ "${CLIP2PATH_DEBUG:-0}" == "1" ]] && printf '[clip2path] %s\n' "$*" >&2 || true; }
+
+die() {
+  printf 'clip2path: %s\n' "$*" >&2
+  exit 1
+}
+
+have() { command -v "$1" >/dev/null 2>&1; }
+
+detect_display_server() {
+  if [[ -n "${WAYLAND_DISPLAY:-}" ]]; then
+    echo "wayland"
+  elif [[ -n "${DISPLAY:-}" ]]; then
+    echo "x11"
+  else
+    echo "unknown"
+  fi
+}
+
+choose_x11_tool() {
+  if have xclip; then
+    echo "xclip"
+  elif have xsel; then
+    echo "xsel"
+  else
+    echo "none"
+  fi
+}
+
+# Uses KITTY_LISTEN_ON (set by --allow-remote-control) for targeted send.
+kitty_send_text() {
+  if [[ -n "${KITTY_LISTEN_ON:-}" ]]; then
+    kitty @ --to "$KITTY_LISTEN_ON" send-text --stdin
+  else
+    kitty @ send-text --stdin
+  fi
+}
+
+sh_quote() {
+  local s=$1
+  # Replace each ' with '"'"'
+  printf "'%s'" "${s//\'/\'\"\'\"\'}"
+}
+
+urldecode() {
+  local s=${1//+/ } out
+  s="$(printf '%s' "$s" | sed -E 's/%([0-9a-fA-F]{2})/\\x\1/g')"
+  printf '%b' "$s"
+}
+
+# Prefer image/png; fall back to first image/* type.
+pick_image_mime() {
+  local types=$1
+  local mime
+  mime="$(printf '%s\n' "$types" | awk '/^image\/png([;]|$)/{print; exit}')"
+  [[ -z "$mime" ]] && mime="$(printf '%s\n' "$types" | awk '/^image\//{print; exit}')"
+  printf '%s' "$mime"
+}
+
+ext_from_mime() {
+  local mime=$1 main=${mime%%/*} rest=${mime#*/}
+  local base=${rest%%;*}
+  base=${base,,}
+  case "$mime" in
+    image/jpeg|image/jpg) printf 'jpg';;
+    image/tiff)           printf 'tif';;
+    image/svg+xml)        printf 'svg';;
+    *)                    printf '%s' "${base//[^a-z0-9]/}";;
+  esac
+  [[ -z "$base" ]] && printf 'bin'
+}
+
+# mktemp suffix flags are not portable; use rename trick instead.
+unique_image_path() {
+  local ext=$1
+  local tdir=${CLIP2PATH_TMPDIR:-${TMPDIR:-/tmp}}
+  [[ -d "$tdir" && -w "$tdir" ]] || die "temp dir not writable: $tdir"
+  local tmp
+  tmp="$(mktemp -p "$tdir" clip2path_XXXXXX)" || die "mktemp failed"
+  local file="${tmp}.${ext}"
+  mv "$tmp" "$file" || die "failed to reserve temp file"
+  printf '%s' "$file"
+}
+
+list_types_wayland() {
+  wl-paste --list-types 2>/dev/null || true
+}
+
+list_types_x11() {
+  local tool=$(choose_x11_tool)
+  case "$tool" in
+    xclip) xclip -selection clipboard -t TARGETS -o 2>/dev/null || true;;
+    xsel)  # xsel has no TARGETS support; probe directly
+           local types=()
+           xsel --clipboard --output >/dev/null 2>&1 && types+=("text/plain")
+           if xclip -selection clipboard -t image/png -o >/dev/null 2>&1; then
+             types+=("image/png")
+           fi
+           printf '%s\n' "${types[@]}";;
+    *)     echo "";;
+  esac
+}
+
+list_types() {
+  local display_server=$(detect_display_server)
+  case "$display_server" in
+    wayland) list_types_wayland;;
+    x11)     list_types_x11;;
+    *)       echo "";;
+  esac
+}
+
+save_image_wayland() {
+  local mime=$1 file=$2
+  wl-paste --type "$mime" >"$file"
+}
+
+save_image_x11() {
+  local mime=$1 file=$2
+  local tool=$(choose_x11_tool)
+  case "$tool" in
+    xclip) xclip -selection clipboard -t "$mime" -o >"$file";;
+    xsel)  xsel --clipboard --output >"$file";;
+    *)     return 1;;
+  esac
+}
+
+save_image_and_paste_path() {
+  local types=$1 mime ext file display_server
+  mime="$(pick_image_mime "$types")"
+  [[ -z "$mime" ]] && return 1
+  ext="$(ext_from_mime "$mime")"
+  [[ -z "$ext" ]] && ext="bin"
+  file="$(unique_image_path "$ext")"
+  debug "saving image as $file (mime=$mime)"
+
+  display_server=$(detect_display_server)
+  case "$display_server" in
+    wayland) save_image_wayland "$mime" "$file";;
+    x11)     save_image_x11 "$mime" "$file";;
+    *)       return 1;;
+  esac
+
+  if [[ $? -ne 0 ]]; then
+    rm -f -- "$file"
+    return 1
+  fi
+
+  sh_quote "$file" | kitty_send_text
+}
+
+have kitty || die "missing dependency: kitty"
+
+display_server=$(detect_display_server)
+case "$display_server" in
+  wayland)
+    have wl-paste || die "missing dependency: wl-clipboard (wl-paste) for Wayland"
+    debug "detected Wayland environment"
+    ;;
+  x11)
+    x11_tool=$(choose_x11_tool)
+    [[ "$x11_tool" != "none" ]] || die "missing dependency: xclip or xsel for X11"
+    debug "detected X11 environment using $x11_tool"
+    ;;
+  *)
+    die "unsupported display server: neither WAYLAND_DISPLAY nor DISPLAY is set"
+    ;;
+esac
+
+# CLAUDECODE is not inherited by kitty's background launch; check focused window's /proc environ.
+_focused_pid() {
+  kitty @ ls 2>/dev/null | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+for tab in data:
+  for win in tab.get('windows', []):
+    if win.get('is_focused'):
+      procs = win.get('foreground_processes', [])
+      if procs: print(procs[-1].get('pid', ''))
+      sys.exit()
+" 2>/dev/null
+}
+_focused_pid_val="$(_focused_pid)"
+if [[ -n "$_focused_pid_val" ]] && tr '\0' '\n' </proc/"$_focused_pid_val"/environ 2>/dev/null | grep -q '^CLAUDECODE=1$'; then
+  debug "cc detected in focused window (pid=$_focused_pid_val), delegating paste"
+  if [[ -n "${KITTY_LISTEN_ON:-}" ]]; then
+    kitty @ --to "$KITTY_LISTEN_ON" action paste_from_clipboard
+  else
+    kitty @ action paste_from_clipboard
+  fi
+  exit 0
+fi
+
+if [[ -z "${KITTY_LISTEN_ON:-}" ]]; then
+  debug "KITTY_LISTEN_ON not set; falling back to default kitty @ (consider using --allow-remote-control)"
+fi
+
+types="$(list_types)"
+debug "clipboard types: $(printf '%q' "$types")"
+
+if grep -Eq '^image/' <<<"$types"; then
+  debug "found image in clipboard, saving to file"
+  if save_image_and_paste_path "$types"; then
+    exit 0
+  fi
+  debug "image save failed"
+  die "failed to save image from clipboard"
+else
+  debug "no image found, delegating to kitty for text paste"
+  if [[ -n "${KITTY_LISTEN_ON:-}" ]]; then
+    kitty @ --to "$KITTY_LISTEN_ON" action paste_from_clipboard
+  else
+    kitty @ action paste_from_clipboard
+  fi
+fi
