@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+kitty_at() { kitty @ ${KITTY_LISTEN_ON:+--to "$KITTY_LISTEN_ON"} "$@"; }
+types=$(wl-paste --list-types 2>/dev/null || true)
+if printf '%s\n' "$types" | grep -q '^image/'; then
+  printf '\x16' | kitty_at send-text --stdin
+else
+  kitty_at action paste_from_clipboard
+fi
