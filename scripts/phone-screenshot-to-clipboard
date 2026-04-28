@@ -1,0 +1,64 @@
+#!/bin/bash
+set -o pipefail
+
+ADB_BIN="/opt/android-sdk/platform-tools/adb"
+if [[ ! -x "$ADB_BIN" ]]; then
+    ADB_BIN="$(command -v adb || true)"
+fi
+
+notify() {
+    notify-send -i phone "$@" 2>/dev/null || true
+}
+
+copy_to_clipboard() {
+    if [[ -n "$WAYLAND_DISPLAY" ]] && command -v wl-copy &>/dev/null; then
+        wl-copy --type image/png
+    elif command -v xclip &>/dev/null; then
+        xclip -selection clipboard -t image/png
+    else
+        notify -u critical "Phone Screenshot" "No clipboard tool (wl-copy/xclip)"
+        return 1
+    fi
+}
+
+# Preflight
+if [[ -z "$ADB_BIN" ]]; then
+    notify -u critical "Phone Screenshot" "adb not found"
+    exit 1
+fi
+
+# Get ready devices as array
+mapfile -t DEVICES < <("$ADB_BIN" devices 2>/dev/null | awk '/\tdevice$/ {print $1}')
+
+if [[ ${#DEVICES[@]} -eq 0 ]]; then
+    notify -u critical "Phone Screenshot" "No ADB device connected"
+    exit 1
+fi
+
+if [[ ${#DEVICES[@]} -eq 1 ]]; then
+    DEVICE="${DEVICES[0]}"
+else
+    # Multiple devices - try rofi with model names
+    if command -v rofi &>/dev/null; then
+        MENU=""
+        for dev in "${DEVICES[@]}"; do
+            MODEL=$(timeout 2s "$ADB_BIN" -s "$dev" shell getprop ro.product.model 2>/dev/null | tr -d '\r')
+            MENU+="${dev} (${MODEL:-unknown})"$'\n'
+        done
+        CHOICE=$(echo -n "$MENU" | rofi -dmenu -p "Device")
+        [[ -z "$CHOICE" ]] && exit 0
+        DEVICE="${CHOICE%% *}"
+    else
+        # No rofi - use first device
+        DEVICE="${DEVICES[0]}"
+        notify "Phone Screenshot" "Multiple devices, using ${DEVICE}"
+    fi
+fi
+
+# Take screenshot with timeout
+if timeout 5s "$ADB_BIN" -s "$DEVICE" exec-out screencap -p | copy_to_clipboard; then
+    notify -t 1200 "Phone Screenshot" "Copied to clipboard"
+else
+    notify -u critical "Phone Screenshot" "Failed to capture"
+    exit 1
+fi

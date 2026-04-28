@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+APP_NAME="clipboard-watcher"
+TIMEOUT_MS="1200"
+MAX_PREVIEW_CHARS="80"
+SOUND_FILE="/usr/share/sounds/freedesktop/stereo/message.oga"
+LOCK_FILE="/tmp/clipboard-notify.lock"
+DEBOUNCE_MS=50
+
+if [[ "${1:-}" != "--handler" ]]; then
+  while true; do
+    wl-paste --type text --watch "$0" --handler || true
+    sleep 0.2
+  done
+fi
+
+# Debounce: skip if last run was < DEBOUNCE_MS ago
+if [[ -f "$LOCK_FILE" ]]; then
+  last=$(cat "$LOCK_FILE" 2>/dev/null || echo 0)
+  now=$(($(date +%s%3N)))
+  if (( now - last < DEBOUNCE_MS )); then
+    exit 0
+  fi
+fi
+echo "$(($(date +%s%3N)))" > "$LOCK_FILE"
+
+content="$(cat || true)"
+[[ -z "${content//[[:space:]]/}" ]] && exit 0
+
+preview="$(printf '%s' "$content" | tr '\n' ' ' | sed -E 's/[[:space:]]+/ /g')"
+(( ${#preview} > MAX_PREVIEW_CHARS )) && preview="${preview:0:MAX_PREVIEW_CHARS}..."
+
+# Fire-and-forget sound, kill previous if still playing
+pkill -f "paplay.*$SOUND_FILE" 2>/dev/null || true
+[[ -f "$SOUND_FILE" ]] && paplay --volume=131072 "$SOUND_FILE" &
+
+notify-send -a "$APP_NAME" -u low -t "$TIMEOUT_MS" \
+  -i edit-copy \
+  -h string:sound-name: -h boolean:transient:true \
+  "Clipboard" "$preview"
