@@ -56,4 +56,4 @@ sed -i "s|^${VAR_NAME}=.*|${VAR_NAME}=${NEW}|" "$CONF"
 sed -i "s|^${PATH_VAR}=.*|${PATH_VAR}=./${TYPE}s/${NEW}.conf|" "$CONF"
 
 hyprctl reload 2>/dev/null || true
-notify-send -t 2000 "Hyprland ${TYPE^}" "$NEW"
+notify-send -t 2000 -i /usr/share/pixmaps/archlinux-logo.png "Hyprland ${TYPE^}" "$NEW"
