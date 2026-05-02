@@ -4,7 +4,9 @@ return {
   opts = {
     enabled = true,
     execution_message = {
-      message = function() return "" end,
+      message = function()
+        return ""
+      end,
     },
     trigger_events = {
       immediate_save = { "BufLeave", "FocusLost" },
