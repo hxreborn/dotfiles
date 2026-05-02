@@ -50,8 +50,8 @@ apply_config() {
         local css="${GTK_CSS[$shell]}"
         ln -sf "$css" "$GTK3/active-colors.css"
         ln -sf "$css" "$GTK4/active-colors.css"
-        echo '@import url("active-colors.css");' > "$GTK3/gtk.css"
-        echo '@import url("active-colors.css");' > "$GTK4/gtk.css"
+        rm -f "$GTK3/gtk.css" && echo '@import url("active-colors.css");' > "$GTK3/gtk.css"
+        rm -f "$GTK4/gtk.css" && echo '@import url("active-colors.css");' > "$GTK4/gtk.css"
     fi
 
     hyprctl reload 2>/dev/null || true
@@ -68,7 +68,7 @@ done | fzf --prompt="Switch shell: " --height=40% --border=rounded --reverse \
 
 [[ -z "$selected" || "$selected" == "$current" ]] && exit 0
 
-if ! stop_shell "$current"; then
+if [[ "$current" != "none" ]] && ! stop_shell "$current"; then
     notify-send -u critical "Shell Switch" "Failed to stop $current" 2>/dev/null || true
     exit 1
 fi
