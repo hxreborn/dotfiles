@@ -1,6 +1,11 @@
 [config]
+post_hook = "~/.local/bin/regen-kvantum-noctalia.sh"
 
 [templates.starship]
 input_path = "~/.config/matugen/templates/starship.toml"
 output_path = "~/.local/state/matugen/starship.toml"
+
+[templates.noctalia-colors]
+input_path = "~/.config/matugen/templates/noctalia-colors.json"
+output_path = "~/.config/noctalia/colors.json"
 
