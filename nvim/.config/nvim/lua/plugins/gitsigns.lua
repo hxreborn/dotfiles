@@ -17,19 +17,22 @@ return {
       -- Navigate hunks with inline preview
       local function nav_and_preview(direction)
         gs.nav_hunk(direction)
-        -- Need to wait for cursor to settle, then trigger preview
         vim.defer_fn(function()
           vim.cmd("Gitsigns preview_hunk_inline")
         end, 300)
       end
 
       map("n", "]h", function()
-        if vim.wo.diff then return "]c" end
+        if vim.wo.diff then
+          return "]c"
+        end
         nav_and_preview("next")
       end, "Next Hunk")
 
       map("n", "[h", function()
-        if vim.wo.diff then return "[c" end
+        if vim.wo.diff then
+          return "[c"
+        end
         nav_and_preview("prev")
       end, "Prev Hunk")
 
@@ -53,7 +56,9 @@ return {
       map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
       map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
       map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
-      map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
+      map("n", "<leader>ghb", function()
+        gs.blame_line({ full = true })
+      end, "Blame Line")
       map("n", "<leader>ghB", gs.blame, "Blame Buffer")
       map("n", "<leader>ghd", gs.diffthis, "Diff This")
 
