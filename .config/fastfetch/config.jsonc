@@ -2,67 +2,53 @@
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
     "source": "\"$(fastfetch.sh logo)\"",
-    "height": 20
+    "height": 18
   },
   "display": {
     "separator": " : ",
-    "color": "90"
+    "color": "90",
+    "size": {
+      "binaryPrefix": "SI"
+    }
   },
   "modules": [
-    {
-      "type": "command",
-      "key": "  󰍩",
-      "keyColor": "38;2;163;201;255",
-      "text": "splash=$(hyprctl splash);echo $splash"
-    },
     {
       "type": "custom",
       "format": "┌──────────────────────────────────────────┐"
     },
     {
       "type": "os",
-      "key": "   Distro",
-      "format": "{name} {arch}",
-      "keyColor": "38;2;163;201;255"
+      "key": "   OS",
+      "format": "{name} {version} {arch}",
+      "keyColor": "38;2;243;139;168"
     },
     {
       "type": "kernel",
-      "key": "   Kernel",
-      "format": "{2}",
-      "keyColor": "38;2;163;201;255"
-    },
-    {
-      "type": "bootmgr",
-      "key": "  󰒓 Bootmgr",
-      "format": "{1}",
-      "keyColor": "38;2;188;199;219"
-    },
-    {
-      "type": "command",
-      "key": "  󰉁 Init",
-      "keyColor": "38;2;188;199;219",
-      "text": "cat /proc/1/comm"
+      "key": "  󰒓 Kernel",
+      "format": "{1} {2}",
+      "keyColor": "38;2;242;205;205"
     },
     {
       "type": "shell",
-      "key": "  󰈺 Shell",
-      "keyColor": "38;2;217;189;227"
+      "key": "  󰆍 Shell",
+      "keyColor": "38;2;166;227;161"
+    },
+    {
+      "type": "display",
+      "key": "  󰍹 Display",
+      "format": "{width}x{height} @ {refresh-rate} Hz ({inch}\")",
+      "keyColor": "38;2;148;226;213"
     },
     {
       "type": "terminal",
-      "key": "  󰆍 Term",
-      "keyColor": "38;2;217;189;227"
+      "key": "   Terminal",
+      "keyColor": "38;2;249;226;175"
     },
     {
-      "type": "wm",
-      "key": "  󰖯 WM",
-      "format": "{pretty-name} {version} ({protocol-name})",
-      "keyColor": "38;2;163;201;255"
-    },
-    {
-      "type": "lm",
-      "key": "  󰍂 LM",
-      "keyColor": "38;2;188;199;219"
+      "type": "battery",
+      "key": "  󰁹 Battery",
+      "format": "{capacity} ({time-formatted} remaining)",
+      "keyColor": "38;2;250;179;135"
     },
     {
       "type": "custom",
@@ -72,7 +58,7 @@
     {
       "type": "title",
       "key": "  ",
-      "keyColor": "38;2;227;226;230",
+      "keyColor": "38;2;203;166;247",
       "format": "{6} {7} {8}"
     },
     {
@@ -82,46 +68,40 @@
     {
       "type": "cpu",
       "key": "  󰘚 CPU",
-      "format": "{name} @ {freq-max}",
-      "keyColor": "38;2;163;201;255"
+      "keyColor": "38;2;137;180;250"
     },
     {
       "type": "gpu",
-      "key": "  󰢮 GPU",
-      "keyColor": "38;2;163;201;255"
-    },
-    {
-      "type": "display",
-      "key": "  󰍹 Monitor",
-      "format": "{1}x{2} @ {3}Hz [{7}]",
-      "keyColor": "38;2;188;199;219"
+      "key": "  󰊴 GPU",
+      "keyColor": "38;2;116;199;236"
     },
     {
       "type": "memory",
       "key": "  󰍛 Memory",
-      "keyColor": "38;2;217;189;227"
+      "keyColor": "38;2;203;166;247"
     },
     {
       "type": "command",
-      "key": "  󰋊 Root",
-      "keyColor": "38;2;255;180;171",
-      "text": "df -hT / | awk 'NR==2{printf \"%s / %s (%s) - %s\", $4, $3, $6, $2}'"
-    },
-    {
-      "type": "packages",
-      "key": "  󰏖 Pkgs",
-      "keyColor": "38;2;217;189;227"
+      "key": "  󰋊 macOS (/)",
+      "keyColor": "38;2;203;166;247",
+      "text": "~/.config/fastfetch/disk.sh macos"
     },
     {
       "type": "command",
-      "key": "  󰃩 OS Age",
-      "keyColor": "38;2;195;198;207",
-      "text": "bash -c 'DAYS=$(( ($(date +%s) - $(stat -c %W /)) / 86400 )); DATE=$(LC_TIME=C date -d @$(stat -c %W /) \"+%b %d, %Y\"); echo \"$DAYS days ($DATE)\"'"
+      "key": "  󰋊 Asahi",
+      "keyColor": "38;2;203;166;247",
+      "text": "~/.config/fastfetch/disk.sh asahi"
+    },
+    {
+      "type": "command",
+      "key": "  󱦟 OS Age",
+      "keyColor": "38;2;235;160;172",
+      "text": "bash -c 'BIRTH=$(stat -f %B /var/db/.AppleSetupDone 2>/dev/null || stat -f %B /); DAYS=$(( ($(date +%s) - BIRTH) / 86400 )); DATE=$(date -r $BIRTH \"+%b %d, %Y\"); echo \"$DAYS days ($DATE)\"'"
     },
     {
       "type": "uptime",
-      "key": "  󱑂 Uptime",
-      "keyColor": "38;2;195;198;207"
+      "key": "  󱫐 Uptime",
+      "keyColor": "38;2;245;194;231"
     },
     {
       "type": "custom",
@@ -132,10 +112,7 @@
       "paddingLeft": 2,
       "symbol": "circle",
       "block": {
-        "range": [
-          0,
-          7
-        ]
+        "range": [0, 7]
       }
     },
     "break"

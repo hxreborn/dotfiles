@@ -1,23 +1,280 @@
+# Awesome Lazygit Configuration
+# Cool custom layout with modern styling and useful features
+
+os:
+  editPreset: "nvim"
+  openDir: "subl"
+
 gui:
-  nerdFontsVersion: "3"
-  showFileTree: true
-  sidePanelWidth: 0.25
-  expandFocusedSidePanel: true
-  expandedSidePanelWeight: 2
-  mainPanelSplitMode: flexible
-  showCommandLog: false
-  showBottomLine: true
-  scrollOffMargin: 2
+  # Modern dark theme
+  theme:
+    activeBorderColor:
+      - "#61afef"
+      - "bold"
+    inactiveBorderColor: "#2c2c2c"
+    optionsTextColor: "#61afef"
+    selectedBgColor: "reverse"
+    selectedFgColor: "#abb2bf"
+    cherryPickedCommitBgColor: "#9f7efe"
+    cherryPickedCommitFgColor: "#ffffff"
+    unstagedChangesColor: "#e06c75"
+    defaultFgColor: "#abb2bf"
 
+  # Custom window layout
+  windowSplitStyle: "horizontal"
+
+  # Custom panel layouts
+  customPanelLayouts:
+    - name: "Code Flow"
+      panels:
+        - {
+            children: [
+              {type: "localCommits"},
+              {type: "files"},
+            ],
+            orientation: "horizontal",
+            sizes: [40, 60]
+          }
+    - name: "Git Power"
+      panels:
+        - {
+            children: [
+              {type: "branches"},
+              {type: "commits"},
+            ],
+            orientation: "horizontal",
+            sizes: [30, 70]
+          }
+        - {
+            children: [
+              {type: "files"},
+              {type: "stash"},
+            ],
+            orientation: "horizontal",
+            sizes: [60, 40]
+          },
+          orientation: "vertical"
+          sizes: [50, 50]
+        }
+
+# Universal keybindings
+keybinding:
+  universal:
+    quit: "q"
+    quitWithoutChangingDir: "Q"
+    escape: "<esc>"
+    togglePanel: "<tab>"
+    closeFocusPanel: "<c-w>"
+    previousPanel: "<c-p>"
+    nextPanel: "<c-n>"
+    nextTab: "<tab>"
+    prevTab: "<shift-tab>"
+    scrollLeft: "<c-h>"
+    scrollRight: "<c-l>"
+    scrollDown: "<c-j>"
+    scrollUp: "<c-k>"
+    scrollUpAlt: "<c-u>"
+    scrollDownAlt: "<c-d>"
+    scrollToTop: "g"
+    scrollToBottom: "G"
+    scrollToFirstChange: "["
+    scrollToLastChange: "]"
+    nextPage: "<c-f>"
+    prevPage: "<c-b>"
+    # Custom navigation
+    focusNextVisible: "<space>"
+    focusMain: "1"
+    focusSecondary: "2"
+    focusTertiary: "3"
+
+  # Enhanced file operations
+  files:
+    commitChanges: "c"
+    commitChangesWithoutHook: "C"
+    amendToCommit: "a"
+    rebaseBranch: "r"
+    renameBranch: "R"
+    createPullRequest: "p"
+    viewPullRequest: "P"
+    copyPullRequestUrl: "y"
+    openInBrowser: "o"
+    push: "<f5>"
+    pull: "<f6>"
+    forcePush: "<f7>"
+    fetch: "<f8>"
+    merge: "m"
+    viewStash: "s"
+    applyStash: "<c-a>"
+    popStash: "<c-o>"
+    dropStash: "d"
+    createBranch: "b"
+    checkoutCommit: "<c-o>"
+    viewCommitFiles: "v"
+    copyCommitHash: "y"
+
+  # Enhanced commit operations
+  commits:
+    squashDown: "s"
+    fixupCommit: "f"
+    renameCommit: "r"
+    resetCommit: "d"
+    moveCommitUp: "<c-k>"
+    moveCommitDown: "<c-j>"
+    pickCommit: "p"
+    dropCommit: "D"
+    revertCommit: "t"
+    tagCommit: "T"
+    createFixupCommit: "F"
+
+  # Branch operations
+  branches:
+    createBranch: "b"
+    checkoutBranch: "c"
+    forceCheckoutBranch: "C"
+    mergeBranch: "m"
+    rebaseBranch: "r"
+    renameBranch: "R"
+    deleteBranch: "D"
+    viewBranchFiles: "v"
+    copyBranchName: "y"
+    compareWithBase: "="
+
+  # Stash operations
+  stash:
+    popStash: "p"
+    dropStash: "d"
+    applyStash: "a"
+    createStash: "s"
+    renameStash: "r"
+    viewStashFiles: "v"
+
+# Custom commands for enhanced workflow
+customCommands:
+  # Quick git operations
+  - key: "gS"
+    context: "global"
+    command: "git status --short --branch"
+    description: "Show git status"
+    subprocess: true
+    stream: false
+    prompts:
+      - type: "input"
+        key: "directory"
+        title: "Directory to check"
+        default: "."
+
+  - key: "gD"
+    context: "global"
+    command: "git diff --stat"
+    description: "Show diff stats"
+    subprocess: true
+    stream: false
+
+  # Branch management
+  - key: "gB"
+    context: "branches"
+    command: "git branch -a --format='%(refname:short)'"
+    description: "List all branches"
+    subprocess: true
+    stream: false
+
+  - key: "gL"
+    context: "localCommits"
+    command: "git log --oneline -10"
+    description: "Show recent commits"
+    subprocess: true
+    stream: false
+
+  # File operations
+  - key: "gR"
+    context: "files"
+    command: "git restore"
+    description: "Restore file"
+    prompts:
+      - type: "input"
+        key: "file"
+        title: "File to restore"
+        default: ":/"
+        search: true
+    subprocess: true
+    stream: false
+
+  - key: "gW"
+    context: "files"
+    command: "git add -p"
+    description: "Add interactively"
+    subprocess: true
+    stream: false
+
+# User preferences
+updates:
+  showUnreleasedNotes: true
+
+# Startup behavior
+startup:
+  recentRepos:
+    maxCount: 10
+
+# Branch display
+branches:
+  recentCommitsCount: 5
+  recentBranchesCount: 5
+
+# Commit display
+commits:
+  commitWidth: 50
+  showGraph: true
+  showBranchNames: true
+  showPatches: false
+
+# File display
+files:
+  showFileIcons: true
+  showFooter: true
+
+# Display options
+display:
+  timeFormat: "2006-01-02 15:04:05"
+  branchColor: "#61afef"
+  tagColor: "#98c379"
+  localBranchColor: "#61afef"
+  remoteBranchColor: "#e06c75"
+  commitColor: "#abb2bf"
+  selectedLineFgColor: "#ffffff"
+  selectedLineBgColor: "reverse"
+
+# Git operations
 git:
-  autoFetch: true
-  autoRefresh: true
-  autoForwardBranches: onlyMainBranches
-  fetchAll: false
+  paging:
+    colorArg: "always"
+    pager: "delta --dark --features=interactive"
+  log:
+    contextSize: 5
+    order: "topo-order"
+    showGraph: true
 
-update:
-  method: never
+# Advanced features
+skipDiscardChangeWarning: false
+skipStashWarning: false
+skipStageWarning: false
+skipNoStashWarning: false
+skipConflictsWarning: false
 
-refresher:
-  refreshInterval: 15
-  fetchInterval: 180
+# Auto-refresh
+autoRefresh: true
+refreshInterval: "5s"
+
+# Mouse support
+mouseEvents: true
+
+# Window options
+window:
+  width: 0.9
+  height: 0.9
+  focusOnMouseOver: true
+
+# Terminal options
+terminal:
+  # Use tmux if available
+  command: "tmux"
+  arguments: ["new-session", "-c", "{{.CurrentBranchDir}}", "-A", "-s", "lazygit"]
