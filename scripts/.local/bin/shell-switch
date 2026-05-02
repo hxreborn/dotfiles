@@ -36,9 +36,7 @@ apply_config() {
     local shell="$1"
     local css="${GTK_CSS[$shell]}"
 
-    ln -sf "${shell}-binds.conf" "$HYPR/active-shell-binds.conf"
-    ln -sf "${shell}-colors.conf" "$HYPR/active-colors.conf"
-    echo "exec-once = ${SHELL_CMD[$shell]}" > "$HYPR/shell-start.conf"
+    ln -sf "shells/${shell}.conf" "$HYPR/active-shell.conf"
 
     ln -sf "$css" "$GTK3/active-colors.css"
     ln -sf "$css" "$GTK4/active-colors.css"
