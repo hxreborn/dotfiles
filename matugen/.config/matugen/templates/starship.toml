@@ -49,7 +49,7 @@ format = "[$path](bold fg:{{colors.primary.default.hex}})"
 truncate_to_repo = false
 
 [git_branch]
-format = " [  $branch](fg:{{colors.on_surface_variant.default.hex}})"
+format = " [ $branch](fg:{{colors.on_surface_variant.default.hex}})"
 
 [git_status]
 ahead = '⇡${count}'
@@ -60,7 +60,7 @@ style = "bg:{{colors.surface_container.default.hex}}"
 
 [time]
 disabled = false
-format = '[[  $time ](fg:{{colors.on_surface_variant.default.hex}})]($style)'
+format = '[ [ $time ](fg:{{colors.on_surface_variant.default.hex}})]($style)'
 time_format = "%R"
 
 [memory_usage]
@@ -73,18 +73,18 @@ format = '[$symbol nix⎪$state⎪]($style) [$name](italic dimmed white)'
 impure_msg = '[⌽](bold dimmed red)'
 pure_msg = '[⌾](bold dimmed green)'
 style = 'bold italic dimmed blue'
-symbol = ' '
+symbol = ' '
 
 [kubernetes]
 style = "bold bright-cyan"
 format = " [$symbol]($style)"
-symbol = " "
+symbol = " "
 
 [aws]
 disabled = true
 format = " [$symbol $profile $region]($style)"
 style = "bold blue"
-symbol = " "
+symbol = " "
 
 [gcloud]
 format = " [$symbol]($style)"
@@ -94,7 +94,7 @@ symbol = "gcloud "
 [azure]
 format = " [$symbol]($style)"
 style = "bold bright-yellow"
-symbol = " "
+symbol = " "
 
 [terraform]
 style = "bold bright-cyan"
@@ -114,21 +114,21 @@ symbol = "ℂ "
 [cpp]
 style = "bold bright-cyan"
 format = " [$symbol]($style)"
-symbol = " "
+symbol = " "
 
 [dart]
 style = "bold bright-cyan"
 format = " [$symbol]($style)"
-symbol = " "
+symbol = " "
 
 [deno]
-format = " [ ](green bold)"
+format = " [](green bold)"
 version_format = "${raw}"
 
 [elixir]
 style = "bold bright-yellow"
 format = " [$symbol OTP $otp_version]($style)"
-symbol = " "
+symbol = " "
 
 [golang]
 style = "bold bright-blue"
@@ -143,7 +143,7 @@ symbol = "❯λ "
 [java]
 style = "bold bright-red"
 format = " [${symbol}]($style)"
-symbol = " "
+symbol = " "
 
 [julia]
 style = "bold bright-cyan"
@@ -153,7 +153,13 @@ symbol = "◎ "
 [kotlin]
 format = " [$symbol]($style)"
 style = "bold bright-red"
-symbol = " "
+symbol = " "
+
+[gradle]
+format = " [$symbol($version)]($style)"
+style = "bold bright-cyan"
+symbol = "🐘"
+version_format = "${raw}"
 
 [lua]
 format = " [${symbol}]($style)"
@@ -165,33 +171,33 @@ version_format = "${raw}"
 detect_extensions = []
 detect_files = ["package-lock.json", "yarn.lock"]
 detect_folders = ["node_modules"]
-format = "[ ](bold bright-green)"
+format = "[](bold bright-green)"
 version_format = "${raw}"
 
 [python]
 format = "[${symbol}(${virtualenv}) ${version}]($style)"
 style = "bold bright-yellow"
-symbol = "[ ](bold bright-blue)"
+symbol = "[](bold bright-blue)"
 version_format = "${raw}"
 
 [ruby]
 format = " [${symbol}]($style)"
 style = "bold red"
-symbol = " "
+symbol = " "
 version_format = "${raw}"
 
 [rust]
 style = "bold bright-red"
 format = " [$symbol]($style)"
-symbol = " "
+symbol = " "
 
 [swift]
 format = " [${symbol}]($style)"
 style = "bold bright-red"
-symbol = " "
+symbol = " "
 version_format = "${raw}"
 
 [zig]
 style = "bold bright-yellow"
 format = " [$symbol]($style)"
-symbol = " "
+symbol = " "
