@@ -5,8 +5,16 @@ HYPR="$HOME/.config/hypr"
 GTK3="$HOME/.config/gtk-3.0"
 GTK4="$HOME/.config/gtk-4.0"
 
-declare -A SHELL_PATTERN=([noctalia]="noctalia" [dms]="dms run")
-declare -A SHELL_CMD=([noctalia]="noctalia" [dms]="dms run")
+# v5 dropped Qt/GTK entirely, runs as a plain C++ binary
+if command -v noctalia &>/dev/null; then
+    NOCTALIA_V5=1
+    declare -A SHELL_PATTERN=([noctalia]="noctalia" [dms]="dms run")
+    declare -A SHELL_CMD=([noctalia]="noctalia" [dms]="dms run")
+else
+    NOCTALIA_V5=0
+    declare -A SHELL_PATTERN=([noctalia]="qs.*noctalia-shell" [dms]="dms run")
+    declare -A SHELL_CMD=([noctalia]="qs -c noctalia-shell" [dms]="dms run")
+fi
 declare -A GTK_CSS=([noctalia]="noctalia.css" [dms]="dank-colors.css")
 
 is_running() { pgrep -f "${SHELL_PATTERN[$1]}" &>/dev/null; }
@@ -34,14 +42,17 @@ start_shell() {
 
 apply_config() {
     local shell="$1"
-    local css="${GTK_CSS[$shell]}"
 
     ln -sf "shells/${shell}.conf" "$HYPR/active-shell.conf"
 
-    ln -sf "$css" "$GTK3/active-colors.css"
-    ln -sf "$css" "$GTK4/active-colors.css"
-    echo '@import url("active-colors.css");' > "$GTK3/gtk.css"
-    echo '@import url("active-colors.css");' > "$GTK4/gtk.css"
+    # v5 has no GTK so skip CSS theming for it
+    if [[ "$shell" != "noctalia" || "$NOCTALIA_V5" -eq 0 ]]; then
+        local css="${GTK_CSS[$shell]}"
+        ln -sf "$css" "$GTK3/active-colors.css"
+        ln -sf "$css" "$GTK4/active-colors.css"
+        echo '@import url("active-colors.css");' > "$GTK3/gtk.css"
+        echo '@import url("active-colors.css");' > "$GTK4/gtk.css"
+    fi
 
     hyprctl reload 2>/dev/null || true
 }
