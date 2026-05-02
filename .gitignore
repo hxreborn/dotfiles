@@ -12,6 +12,7 @@ ehthumbs.db
 *.swo
 *.tmp
 *.bak
+*.bak-*
 *~
 .nfs*
 
@@ -29,12 +30,12 @@ ehthumbs.db
 CLAUDE.md
 AGENTS.md
 
-# Repo-level generated files
-/.config/
-/.local/
+# OmniWM runtime state
+.config/omniwm/runtime-state.json
 
-# OmniWM runtime state (written by app on launch)
-omniwm/.config/omniwm/runtime-state.json
+# OmniWM v4 legacy config
+.config/omniwm/settings.json
 
-# OmniWM v4 legacy config (v5 uses settings.toml)
-omniwm/.config/omniwm/settings.json
+# One-shot migration artifacts (deleted after first run)
+/migrate-to-yadm.sh
+/instructions.md

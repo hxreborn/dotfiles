@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(yadm rev-parse --show-toplevel 2>/dev/null || echo "$HOME")"
+
+case "$(uname -s)" in
+  Darwin)
+    if ! command -v brew >/dev/null 2>&1; then
+      echo "Install Homebrew first: https://brew.sh"
+      exit 1
+    fi
+    if [[ -f "$ROOT/Brewfile" ]]; then
+      brew bundle --file="$ROOT/Brewfile"
+    fi
+    ;;
+  Linux)
+    if command -v pacman >/dev/null 2>&1; then
+      sudo pacman -S --needed --noconfirm neovim kitty fzf zsh starship lazygit fastfetch satty
+    elif command -v dnf >/dev/null 2>&1; then
+      sudo dnf install -y neovim kitty fzf zsh starship lazygit fastfetch
+    elif command -v apt >/dev/null 2>&1; then
+      sudo apt update
+      sudo apt install -y neovim kitty fzf zsh fastfetch
+    else
+      echo "No supported package manager found"
+      exit 1
+    fi
+    ;;
+  *)
+    echo "Unsupported OS: $(uname -s)"
+    exit 1
+    ;;
+esac
+
+if [[ "$SHELL" != *zsh ]]; then
+  if command -v zsh >/dev/null 2>&1; then
+    echo "Switch login shell with: chsh -s $(command -v zsh)"
+  fi
+fi
+
+echo "bootstrap complete"

@@ -1,4 +1,4 @@
-brew "stow"
+brew "yadm"
 brew "neovim"
 brew "fzf"
 
