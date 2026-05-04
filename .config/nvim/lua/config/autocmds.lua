@@ -27,6 +27,16 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- Lock pickers to the opened dir instead of the shell's cwd
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    local arg = vim.fn.argv(0) --[[@as string]]
+    if arg ~= "" and vim.fn.isdirectory(arg) == 1 then
+      vim.cmd.cd(arg)
+    end
+  end,
+})
+
 -- Disable diagnostics for markdown files
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
