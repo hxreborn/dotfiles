@@ -1,9 +1,170 @@
 #!/usr/bin/env bash
-set -euo pipefail
-kitty_at() { kitty @ ${KITTY_LISTEN_ON:+--to "$KITTY_LISTEN_ON"} "$@"; }
-types=$(wl-paste --list-types 2>/dev/null || true)
-if printf '%s\n' "$types" | grep -q '^image/'; then
-  printf '\x16' | kitty_at send-text --stdin
+# Kitty ctrl+v handler. Text pastes via wl-paste. Images forward raw \x16 so
+# Claude Code reads them from clipboard natively and shows [Image #1].
+# Needs: kitty --allow-remote-control, wl-clipboard (Wayland) or xclip/xsel (X11).
+# CLIP2PATH_DEBUG=1 emits debug to stderr.
+
+set -Eeuo pipefail
+IFS=$'\n\t'
+umask 077
+export LC_ALL=C
+
+debug() { [[ "${CLIP2PATH_DEBUG:-0}" == "1" ]] && printf '[clip2path] %s\n' "$*" >&2 || true; }
+
+die() {
+  printf 'clip2path: %s\n' "$*" >&2
+  exit 1
+}
+
+have() { command -v "$1" >/dev/null 2>&1; }
+
+detect_display_server() {
+  if [[ -n "${WAYLAND_DISPLAY:-}" ]]; then
+    echo "wayland"
+  elif [[ -n "${DISPLAY:-}" ]]; then
+    echo "x11"
+  else
+    echo "unknown"
+  fi
+}
+
+# xclip preferred over xsel
+choose_x11_tool() {
+  if have xclip; then
+    echo "xclip"
+  elif have xsel; then
+    echo "xsel"
+  else
+    echo "none"
+  fi
+}
+
+# KITTY_LISTEN_ON is set when kitty launches this with --allow-remote-control
+kitty_send_text() {
+  if [[ -n "${KITTY_LISTEN_ON:-}" ]]; then
+    kitty @ --to "$KITTY_LISTEN_ON" send-text --stdin
+  else
+    kitty @ send-text --stdin
+  fi
+}
+
+sh_quote() {
+  local s=$1
+  # Replace each ' with '"'"'
+  printf "'%s'" "${s//\'/\'\"\'\"\'}"
+}
+
+urldecode() {
+  local s=${1//+/ } out
+  # %XX → \xXX for printf %b; only converts valid %HH patterns
+  s="$(printf '%s' "$s" | sed -E 's/%([0-9a-fA-F]{2})/\\x\1/g')"
+  printf '%b' "$s"
+}
+
+# prefers image/png over other image/* types
+pick_image_mime() {
+  local types=$1
+  local mime
+  mime="$(printf '%s\n' "$types" | awk '/^image\/png([;]|$)/{print; exit}')"
+  [[ -z "$mime" ]] && mime="$(printf '%s\n' "$types" | awk '/^image\//{print; exit}')"
+  printf '%s' "$mime"
+}
+
+# fallback to "bin" for unknown types
+ext_from_mime() {
+  local mime=$1 main=${mime%%/*} rest=${mime#*/}
+  local base=${rest%%;*}
+  base=${base,,}
+  case "$mime" in
+    image/jpeg|image/jpg) printf 'jpg';;
+    image/tiff)           printf 'tif';;
+    image/svg+xml)        printf 'svg';;
+    *)                    printf '%s' "${base//[^a-z0-9]/}";;
+  esac
+  [[ -n "$base" ]] || printf 'bin'
+}
+
+# avoids non-portable mktemp suffix flags
+unique_image_path() {
+  local ext=$1
+  local tdir=${CLIP2PATH_TMPDIR:-${TMPDIR:-/tmp}}
+  [[ -d "$tdir" && -w "$tdir" ]] || die "temp dir not writable: $tdir"
+  local tmp
+  tmp="$(mktemp -p "$tdir" clip2path_XXXXXX)" || die "mktemp failed"
+  local file="${tmp}.${ext}"
+  mv "$tmp" "$file" || die "failed to reserve temp file"
+  printf '%s' "$file"
+}
+
+list_types_wayland() {
+  wl-paste --list-types 2>/dev/null || true
+}
+
+list_types_x11() {
+  local tool=$(choose_x11_tool)
+  case "$tool" in
+    xclip) xclip -selection clipboard -t TARGETS -o 2>/dev/null || true;;
+    xsel)  # xsel has no TARGETS support
+           local types=()
+           xsel --clipboard --output >/dev/null 2>&1 && types+=("text/plain")
+           if xclip -selection clipboard -t image/png -o >/dev/null 2>&1; then
+             types+=("image/png")
+           fi
+           printf '%s\n' "${types[@]}";;
+    *)     echo "";;
+  esac
+}
+
+list_types() {
+  local display_server=$(detect_display_server)
+  case "$display_server" in
+    wayland) list_types_wayland;;
+    x11)     list_types_x11;;
+    *)       echo "";;
+  esac
+}
+
+save_image_wayland() {
+  local mime=$1 file=$2
+  wl-paste --type "$mime" >"$file"
+}
+
+save_image_x11() {
+  local mime=$1 file=$2
+  local tool=$(choose_x11_tool)
+  case "$tool" in
+    xclip) xclip -selection clipboard -t "$mime" -o >"$file";;
+    xsel)  xsel --clipboard --output >"$file";;  # no MIME type support
+    *)     return 1;;
+  esac
+}
+
+have kitty || die "missing dependency: kitty"
+
+display_server=$(detect_display_server)
+case "$display_server" in
+  wayland)
+    have wl-paste || die "missing dependency: wl-clipboard (wl-paste) for Wayland"
+    ;;
+  x11)
+    x11_tool=$(choose_x11_tool)
+    [[ "$x11_tool" != "none" ]] || die "missing dependency: xclip or xsel for X11"
+    ;;
+  *)
+    die "unsupported display server: neither WAYLAND_DISPLAY nor DISPLAY is set"
+    ;;
+esac
+
+if [[ -z "${KITTY_LISTEN_ON:-}" ]]; then
+  debug "KITTY_LISTEN_ON not set"
+fi
+
+types="$(list_types)"
+debug "clipboard types: $(printf '%q' "$types")"
+
+if grep -Eq '^image/' <<<"$types"; then
+  # \x16 reaches Claude Code as ctrl+v so it reads the image natively ([Image #1])
+  printf '\x16' | kitty_send_text
 else
-  kitty_at action paste_from_clipboard
+  wl-paste | kitty_send_text
 fi
