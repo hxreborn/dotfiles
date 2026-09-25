@@ -26,7 +26,17 @@ else
     Y=''; D=''; N=''; CLR=''
 fi
 
-finish() { "$HOME/.local/bin/patch-claude-fixes"; exit 0; }
+finish() {
+    "$HOME/.local/bin/patch-claude-fixes"
+    if [ -f "$bin" ]; then
+        v="$latest"
+        if [ -z "$v" ] && [ -f "$installed" ]; then
+            read -r v _ < "$installed"
+        fi
+        [ -n "$v" ] && printf '%s %s\n' "$v" "$(stat -c %Y "$bin" 2>/dev/null)" > "$installed"
+    fi
+    exit 0
+}
 
 mb() { printf '%d.%d' $(($1 / 1048576)) $(($1 * 10 / 1048576 % 10)); }
 
