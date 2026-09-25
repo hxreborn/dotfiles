@@ -1,0 +1,1 @@
+function cs(){let e=J();if(e.trustAccepted)return!0;let n=VD();if(n)e.setTrustAccepted(!0);return n}

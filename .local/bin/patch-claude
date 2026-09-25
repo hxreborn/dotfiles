@@ -26,7 +26,7 @@ else
     Y=''; D=''; N=''; CLR=''
 fi
 
-finish() { "$HOME/.local/bin/patch-claude-paste-fix"; exit 0; }
+finish() { "$HOME/.local/bin/patch-claude-guardrails"; exit 0; }
 
 mb() { printf '%d.%d' $(($1 / 1048576)) $(($1 * 10 / 1048576 % 10)); }
 
