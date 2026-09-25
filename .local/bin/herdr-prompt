@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+import json
+import subprocess
+import sys
+import time
+
+SPECIAL = {" ": "space", "\t": "tab", "\n": "shift+enter"}
+
+
+def herdr(*args):
+    r = subprocess.run(["herdr", *args], capture_output=True, text=True)
+    if r.returncode != 0:
+        sys.exit(f"herdr {' '.join(args)} failed: {r.stderr.strip()}")
+    return r.stdout.strip()
+
+
+def resolve_pane(target):
+    info = json.loads(herdr("agent", "get", target))
+    return info["result"]["agent"]["pane_id"]
+
+
+def send(pane, text, chunk=150):
+    tokens = [SPECIAL.get(c, c) for c in text]
+    for i in range(0, len(tokens), chunk):
+        herdr("pane", "send-keys", pane, *tokens[i : i + chunk])
+
+
+def clipboard():
+    r = subprocess.run(["wl-paste", "-n"], capture_output=True, text=True)
+    if r.returncode != 0:
+        sys.exit(f"wl-paste failed: {r.stderr.strip()}")
+    return r.stdout
+
+
+def main():
+    if len(sys.argv) < 2:
+        sys.exit(f"usage: {sys.argv[0]} <target> [text] [--wait] [--until STATUS] [--timeout MS]")
+    target = sys.argv[1]
+    if len(sys.argv) > 2 and not sys.argv[2].startswith("--"):
+        text, rest = sys.argv[2], sys.argv[3:]
+    else:
+        text, rest = clipboard(), sys.argv[2:]
+
+    pane = resolve_pane(target)
+    send(pane, text)
+    time.sleep(0.2)
+    herdr("pane", "send-keys", pane, "enter")
+
+    if "--wait" in rest:
+        until = [s for s, v in zip(rest, rest[1:]) if s == "--until"]
+        until_args = []
+        for i, a in enumerate(rest):
+            if a == "--until":
+                until_args += ["--until", rest[i + 1]]
+        timeout_args = []
+        for i, a in enumerate(rest):
+            if a == "--timeout":
+                timeout_args += ["--timeout", rest[i + 1]]
+        print(herdr("agent", "wait", target, *until_args, *timeout_args))
+
+
+if __name__ == "__main__":
+    main()
