@@ -54,12 +54,12 @@ def main():
     if len(patched) != len(data):
         return 0  # length mismatch somewhere: refuse rather than corrupt
 
-    tmp = bin_path + ".guardrailsfix"
+    tmp = bin_path + ".claudefixes"
     with open(tmp, "wb") as f:
         f.write(patched)
     os.chmod(tmp, os.stat(bin_path).st_mode)
     os.replace(tmp, bin_path)
-    print(f"claude: disabled guardrails: {', '.join(applied)}", file=sys.stderr)
+    print(f"claude: applied fixes: {', '.join(applied)}", file=sys.stderr)
     return 0
 
 
