@@ -1,21 +1,16 @@
 #!/usr/bin/env python3
 import os
+import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 PATCHES = [
-    (
-        ".patch-claude-kpt-original.bin",
-        'function Kpt(e,n,o){return e??""',
-        "}",
-    ),
-    (
-        ".patch-claude-cs-original.bin",
-        "function cs(){return!0",
-        "}",
-    ),
+    (".patch-claude-kpt-original.bin", 'return e??""'),
+    (".patch-claude-cs-original.bin", "return!0"),
 ]
+
+SIGNATURE_RE = re.compile(r"^function \w+\([^)]*\)\{")
 
 
 def find_binary():
@@ -34,8 +29,14 @@ def main():
     text = data.decode("latin1")
     applied = []
 
-    for original_file, head, tail in PATCHES:
+    for original_file, return_body in PATCHES:
         original = open(os.path.join(HERE, original_file), "rb").read().decode("latin1")
+
+        m = SIGNATURE_RE.match(original)
+        if not m:
+            continue  # reference file itself doesn't look like a function anymore
+        head = m.group(0) + return_body
+        tail = "}"
         pad_len = len(original) - len(head) - len(tail)
         if pad_len < 0:
             continue
@@ -48,6 +49,7 @@ def main():
         applied.append(original_file)
 
     if not applied:
+        print("claude: 0 of {} known fixes applied (binary shape changed?)".format(len(PATCHES)), file=sys.stderr)
         return 0
 
     patched = text.encode("latin1")
