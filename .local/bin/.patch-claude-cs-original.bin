@@ -1,1 +1,1 @@
-function ps(){if(Do())return!1;let e=Z();if(e.trustAccepted)return!0;let n=KI();if(n)e.setTrustAccepted(!0);return n}
+function os(){if(Uo())return!1;let e=Q();if(e.trustAccepted)return!0;let n=UN();if(n)e.setTrustAccepted(!0);return n}

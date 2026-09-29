@@ -3,14 +3,129 @@ import os
 import re
 import sys
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+# Every pattern here is structural, not exact-byte: minified top-level function
+# names reassign every build, but parameter/local names and call shapes have
+# stayed stable across 2.1.282-284. Each patch verifies exactly one match
+# before touching anything, so an upstream refactor degrades to a silent skip
+# instead of a corruption risk.
+
+KPT_RE = re.compile(r'function (\w+)\(e,n,o\)\{let r=e\?\?""')
+
+CS_RE = re.compile(
+    r'function (\w+)\(\)\{(?:if\(\w+\(\)\)return!1;)?'
+    r'let e=\w+\(\);if\(e\.trustAccepted\)return!0;'
+    r'let n=\w+\(\);if\(n\)e\.setTrustAccepted\(!0\);return n\}'
+)
+
+GATE_RE = re.compile(r'if\((\w+)=(\w+)\(\),\1&&!(\w+)\(\)\)return null')
+
+DECISION_RE = re.compile(
+    r'function (\w+)\(\)\{if\(\w+\(\)\)return"skip";'
+    r'return \w+\(\)&&!\w+\(\)\?"trusted":"ask"\}'
+)
+
+
+def brace_match(text, start):
+    """start indexes the '{' right after a matched function signature."""
+    i = start
+    depth = 1
+    in_str = None
+    esc = False
+    while i < len(text):
+        c = text[i]
+        if in_str:
+            if esc:
+                esc = False
+            elif c == "\\":
+                esc = True
+            elif c == in_str:
+                in_str = None
+        elif c in ("'", '"', "`"):
+            in_str = c
+        elif c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                return i + 1
+        i += 1
+    return None
+
+
+def patch_kpt(text):
+    matches = list(KPT_RE.finditer(text))
+    if len(matches) != 1:
+        return text, False
+    m = matches[0]
+    end = brace_match(text, m.end() - 1)
+    if end is None:
+        return text, False
+    original = text[m.start() : end]
+    head = f'function {m.group(1)}(e,n,o){{return e??""'
+    pad = len(original) - len(head) - 1
+    if pad < 0:
+        return text, False
+    replacement = head + (" " * pad) + "}"
+    return text[: m.start()] + replacement + text[end:], True
+
+
+def patch_cs(text):
+    matches = list(CS_RE.finditer(text))
+    if len(matches) != 1:
+        return text, False
+    m = matches[0]
+    name = m.group(1)
+    original = m.group(0)
+    head = f"function {name}(){{return!0"
+    pad = len(original) - len(head) - 1
+    if pad < 0:
+        return text, False
+    replacement = head + (" " * pad) + "}"
+    return text[: m.start()] + replacement + text[m.end() :], True
+
+
+def patch_gate(text):
+    matches = list(GATE_RE.finditer(text))
+    if len(matches) != 1:
+        return text, False
+    m = matches[0]
+    original = m.group(0)
+    tail = ")return null"
+    pad = len(original) - len("if(!0") - len(tail)
+    if pad < 0:
+        return text, False
+    replacement = "if(!0" + (" " * pad) + tail
+    return text[: m.start()] + replacement + text[m.end() :], True
+
+
+def patch_decision(text):
+    matches = list(DECISION_RE.finditer(text))
+    if len(matches) != 1:
+        return text, False
+    m = matches[0]
+    name = m.group(1)
+    original = m.group(0)
+    head = f'function {name}(){{return"trusted"'
+    pad = len(original) - len(head) - 1
+    if pad < 0:
+        return text, False
+    replacement = head + (" " * pad) + "}"
+    return text[: m.start()] + replacement + text[m.end() :], True
+
+
+ALREADY_PATCHED_RE = {
+    "pasted-content tagging (Kpt)": re.compile(r'function \w+\(e,n,o\)\{return e\?\?""'),
+    "trust-dialog check (cs)": re.compile(r"function \w+\(\)\{return!0"),
+    "trust-dialog gate call": re.compile(r"if\(!0\s*\)return null"),
+    "trust-dialog cold-start decision": re.compile(r'function \w+\(\)\{return"trusted"'),
+}
 
 PATCHES = [
-    (".patch-claude-kpt-original.bin", 'return e??""'),
-    (".patch-claude-cs-original.bin", "return!0"),
+    ("pasted-content tagging (Kpt)", patch_kpt),
+    ("trust-dialog check (cs)", patch_cs),
+    ("trust-dialog gate call", patch_gate),
+    ("trust-dialog cold-start decision", patch_decision),
 ]
-
-SIGNATURE_RE = re.compile(r"^function \w+\([^)]*\)\{")
 
 
 def find_binary():
@@ -30,32 +145,16 @@ def main():
     applied = []
     stale = []
 
-    for original_file, return_body in PATCHES:
-        original = open(os.path.join(HERE, original_file), "rb").read().decode("latin1")
-
-        m = SIGNATURE_RE.match(original)
-        if not m:
-            stale.append(original_file)
-            continue  # reference file itself doesn't look like a function anymore
-        head = m.group(0) + return_body
-        tail = "}"
-        pad_len = len(original) - len(head) - len(tail)
-        if pad_len < 0:
-            stale.append(original_file)
-            continue
-        replacement = head + (" " * pad_len) + tail
-
-        if replacement in text:
-            continue  # already patched: healthy, nothing to do
-        if text.count(original) != 1:
-            stale.append(original_file)  # neither form found: reference bytes are stale
-            continue
-
-        text = text.replace(original, replacement, 1)
-        applied.append(original_file)
+    for name, fn in PATCHES:
+        new_text, changed = fn(text)
+        if changed:
+            text = new_text
+            applied.append(name)
+        elif not ALREADY_PATCHED_RE[name].search(text):
+            stale.append(name)
 
     if stale:
-        print(f"claude: {len(stale)} of {len(PATCHES)} fixes stale, needs re-deriving: {', '.join(stale)}", file=sys.stderr)
+        print(f"claude: {len(stale)} fix(es) stale, needs re-deriving: {', '.join(stale)}", file=sys.stderr)
 
     if not applied:
         return 0
