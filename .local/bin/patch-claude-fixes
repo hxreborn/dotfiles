@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import re
+import struct
 import sys
 
 # Every pattern here is structural, not exact-byte: minified top-level function
@@ -9,19 +10,19 @@ import sys
 # before touching anything, so an upstream refactor degrades to a silent skip
 # instead of a corruption risk.
 
-KPT_RE = re.compile(r'function (\w+)\(e,n,o\)\{let r=e\?\?""')
+KPT_RE = re.compile(r'function ([\w$]+)\(e,n,o\)\{let r=e\?\?""')
 
 CS_RE = re.compile(
-    r'function (\w+)\(\)\{(?:if\(\w+\(\)\)return!1;)?'
-    r'let e=\w+\(\);if\(e\.trustAccepted\)return!0;'
-    r'let n=\w+\(\);if\(n\)e\.setTrustAccepted\(!0\);return n\}'
+    r'function ([\w$]+)\(\)\{(?:if\([\w$]+\(\)\)return!1;)?'
+    r'let e=[\w$]+\(\);if\(e\.trustAccepted\)return!0;'
+    r'let n=[\w$]+\(\);if\(n\)e\.setTrustAccepted\(!0\);return n\}'
 )
 
-GATE_RE = re.compile(r'if\((\w+)=(\w+)\(\),\1&&!(\w+)\(\)\)return null')
+GATE_RE = re.compile(r'if\(([\w$]+)=([\w$]+)\(\),\1&&!([\w$]+)\(\)\)return null')
 
 DECISION_RE = re.compile(
-    r'function (\w+)\(\)\{if\(\w+\(\)\)return"skip";'
-    r'return \w+\(\)&&!\w+\(\)\?"trusted":"ask"\}'
+    r'function ([\w$]+)\(\)\{if\([\w$]+\(\)\)return"skip";'
+    r'return [\w$]+\(\)&&![\w$]+\(\)\?"trusted":"ask"\}'
 )
 
 
@@ -114,10 +115,10 @@ def patch_decision(text):
 
 
 ALREADY_PATCHED_RE = {
-    "pasted-content tagging (Kpt)": re.compile(r'function \w+\(e,n,o\)\{return e\?\?""'),
-    "trust-dialog check (cs)": re.compile(r"function \w+\(\)\{return!0"),
+    "pasted-content tagging (Kpt)": re.compile(r'function [\w$]+\(e,n,o\)\{return e\?\?""'),
+    "trust-dialog check (cs)": re.compile(r"function [\w$]+\(\)\{return!0"),
     "trust-dialog gate call": re.compile(r"if\(!0\s*\)return null"),
-    "trust-dialog cold-start decision": re.compile(r'function \w+\(\)\{return"trusted"'),
+    "trust-dialog cold-start decision": re.compile(r'function [\w$]+\(\)\{return"trusted"'),
 }
 
 PATCHES = [
@@ -126,6 +127,34 @@ PATCHES = [
     ("trust-dialog gate call", patch_gate),
     ("trust-dialog cold-start decision", patch_decision),
 ]
+
+
+BUNDLE_TRAILER = b"\n---- Bun! ----\n"
+MODULE_ENTRY = struct.Struct("<12I4B")
+BYTECODE_FIELD = 24
+BYTECODE_BACKED = ("trust-dialog gate call", "trust-dialog cold-start decision")
+
+
+def drop_bytecode(buf, text):
+    trailer = buf.rfind(BUNDLE_TRAILER)
+    if trailer < 32:
+        return []
+    byte_count, table_off, table_len = struct.unpack_from("<QII", buf, trailer - 32)
+    base = trailer - 32 - byte_count
+    hits = {name: [m.start() for m in ALREADY_PATCHED_RE[name].finditer(text)] for name in BYTECODE_BACKED}
+    dropped = []
+    for i in range(table_len // MODULE_ENTRY.size):
+        entry = base + table_off + i * MODULE_ENTRY.size
+        f = MODULE_ENTRY.unpack_from(buf, entry)
+        if not buf[base + f[0] : base + f[0] + 8].startswith(b"/$bunfs/") or f[7] == 0:
+            continue
+        start, end = base + f[2], base + f[2] + f[3]
+        for name in BYTECODE_BACKED:
+            if any(start <= at < end for at in hits[name]):
+                buf[entry + BYTECODE_FIELD : entry + BYTECODE_FIELD + 8] = bytes(8)
+                dropped.append(name)
+                break
+    return dropped
 
 
 def find_binary():
@@ -156,19 +185,20 @@ def main():
     if stale:
         print(f"claude: {len(stale)} fix(es) stale, needs re-deriving: {', '.join(stale)}", file=sys.stderr)
 
-    if not applied:
-        return 0
-
-    patched = text.encode("latin1")
+    patched = bytearray(text.encode("latin1"))
     if len(patched) != len(data):
         return 0  # length mismatch somewhere: refuse rather than corrupt
+
+    dropped = drop_bytecode(patched, text)
+    if not applied and not dropped:
+        return 0
 
     tmp = bin_path + ".claudefixes"
     with open(tmp, "wb") as f:
         f.write(patched)
     os.chmod(tmp, os.stat(bin_path).st_mode)
     os.replace(tmp, bin_path)
-    print(f"claude: applied fixes: {', '.join(applied)}", file=sys.stderr)
+    print(f"claude: applied fixes: {', '.join(applied + [f'{n} (bytecode dropped)' for n in dropped])}", file=sys.stderr)
     return 0
 
 
