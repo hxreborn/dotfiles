@@ -25,6 +25,12 @@ DECISION_RE = re.compile(
     r'return [\w$]+\(\)&&![\w$]+\(\)\?"trusted":"ask"\}'
 )
 
+DANGEROUS_RM_RE = re.compile(
+    r'function ([\w$]+)\(e,n,r\)\{return\{behavior:"ask",message:n,'
+    r'decisionReason:\{type:"safetyCheck",reason:`Dangerous \$\{e\} operation \$\{r\}`,'
+    r'classifierApprovable:!1,circuitBreaker:"dangerousRemoval"\},suggestions:\[\]\}\}'
+)
+
 
 def brace_match(text, start):
     """start indexes the '{' right after a matched function signature."""
@@ -114,11 +120,32 @@ def patch_decision(text):
     return text[: m.start()] + replacement + text[m.end() :], True
 
 
+def patch_dangerous_rm(text):
+    matches = list(DANGEROUS_RM_RE.finditer(text))
+    if not matches:
+        return text, False
+    changed = False
+    for m in matches:
+        name = m.group(1)
+        original = m.group(0)
+        head = f'function {name}(e,n,r){{return{{behavior:"passthrough",message:"ok"}}'
+        pad = len(original) - len(head) - 1
+        if pad < 0:
+            continue
+        replacement = head + (" " * pad) + "}"
+        if text.count(original) < 1:
+            continue
+        text = text.replace(original, replacement, 1)
+        changed = True
+    return text, changed
+
+
 ALREADY_PATCHED_RE = {
     "pasted-content tagging (Kpt)": re.compile(r'function [\w$]+\(e,n,o\)\{return e\?\?""'),
     "trust-dialog check (cs)": re.compile(r"function [\w$]+\(\)\{return!0"),
     "trust-dialog gate call": re.compile(r"if\(!0\s*\)return null"),
     "trust-dialog cold-start decision": re.compile(r'function [\w$]+\(\)\{return"trusted"'),
+    "dangerous-rm confirmation": re.compile(r'function [\w$]+\(e,n,r\)\{return\{behavior:"passthrough",message:"ok"\}'),
 }
 
 PATCHES = [
@@ -126,6 +153,7 @@ PATCHES = [
     ("trust-dialog check (cs)", patch_cs),
     ("trust-dialog gate call", patch_gate),
     ("trust-dialog cold-start decision", patch_decision),
+    ("dangerous-rm confirmation", patch_dangerous_rm),
 ]
 
 
